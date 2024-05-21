@@ -25,9 +25,9 @@ export default class CollisionHandler implements CellHandler {
     if (collisions.length > 0) {
       const max = Math.max(...collisions.map((x) => x.top));
       if (max <= bottom + 0.301) {
-        this.state.position.z = max;
-        this.state.lookZ = max + this.state.lookHeight;
-        this.state.top = max + this.state.height;
+        // this.state.position.z = max;
+        // this.state.lookZ = max + this.state.lookHeight;
+        // this.state.top = max + this.state.height;
         return RayAction.continue;
       }
     }

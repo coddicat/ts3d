@@ -62,8 +62,10 @@ const playerState = new PlayerState(
 const mainCanvas = ref(null as HTMLCanvasElement | null);
 const keyMap = new Map<string, boolean>();
 const currentKey = ref(keyMap);
-let fps = 0;
+
 const fpsDisplay = ref(0);
+
+
 let prevTimestamp = 0;
 const stopped = ref(false);
 const gameMap = new GameMap();
@@ -109,22 +111,20 @@ let animationFrame = 0;
 
 async function tick(timestamp: number) {
   if (stopped.value) return;
-  if (mod(timestamp | 0, 4) === 0) {
-    const diff = timestamp - prevTimestamp;
-    fps = (1000 / diff) | 0;
-    fpsDisplay.value = fps;
+
+  if (mod(timestamp | 0, 4) === 0) {    
+    fpsDisplay.value = (1000 / (timestamp - prevTimestamp)) | 0;
   }
+
   keyHandler(timestamp);
-  gameMap.tickMovingItem(timestamp);
-  //gameMap.tickPlatform(timestamp);
+  gameMap.tickMovingItem(timestamp);  
   player.tick(timestamp);
   main3D.renderMain();
   prevTimestamp = timestamp;
   animationFrame = window.requestAnimationFrame(tick);
 }
-const resolution = ref(
-  `${settings.resolution.width},${settings.resolution.height}`
-);
+
+const resolution = ref(`${settings.resolution.width},${settings.resolution.height}`);
 const levelTexture = ref(true);
 const wallTexture = ref(true);
 const fixFact = ref(settings.fixFact);
@@ -174,17 +174,7 @@ onMounted(async () => {
     }
     playerState.halfLookVertical =
       settings.halfHeight + playerState.lookVertical;
-  };
-
-  // if ('onpointerlockchange' in document) {
-  //   document.addEventListener('pointerlockchange', lockChangeAlert, false);
-  // } else if ('onmozpointerlockchange' in document) {
-  //   (document as Document).addEventListener(
-  //     'mozpointerlockchange',
-  //     () => { document.pointerLockElement === canvas },
-  //     false
-  //   );
-  // }
+  };  
 
   await textureStore.init();
   await gameMap.init();

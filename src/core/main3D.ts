@@ -58,24 +58,27 @@ export class Main3D {
   public renderMain() {
     this.rayCasting.reset();
     
-    const texture = textureStore.getTextureData(TextureType.Aim);
-    // this.interCtx.putImageData(texture!.imageData, 100, 100)    
 
     this.rayCasting.draw3D();
     this.interCtx.putImageData(this.imageData, 0, 0);
     this.context.save();
-    this.context.clearRect(
-      0,
-      0,
+    this.context.clearRect(0, 0,
       this.context.canvas.width,
       this.context.canvas.height
     );
     this.context.scale(
+      //TODO onetime calculation
       this.context.canvas.width / settings.resolution.width,
       this.context.canvas.height / settings.resolution.height
     );
     this.context.drawImage(this.interCanvas, 0, 0);    
+
+    
+    //TODO change to draw lines
+    const texture = textureStore.getTextureData(TextureType.Aim);
     this.context.drawImage(texture!.canvas, settings.resolution.width / 2 - texture!.width / 2, settings.resolution.height / 2 - texture!.height / 2);
+
+
     this.context.restore();
   }
 }
