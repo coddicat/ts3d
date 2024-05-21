@@ -1,5 +1,5 @@
 import Texture from './texture';
-import { TextureType } from './textureStore';
+import type { TextureType } from './textureStore';
 
 export default class TextureSet extends Texture {
   constructor(

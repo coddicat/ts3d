@@ -1,15 +1,23 @@
 import settings from './settings';
-import { MapItemType } from './gameMap/mapItemType';
-import Texture from './texture/texture';
+import type { MapItemType } from './gameMap/mapItemType';
+import type Texture from './texture/texture';
 
-export interface Position {
+export interface Position2D {
   x: number;
   y: number;
 }
 
-export interface Coordinates extends Position {
+export interface Position3D extends Position2D {
   z: number;
+}
+
+export interface Vector3D extends Position3D {
   angle: number;
+}
+
+export enum Axis {
+  x = 0,
+  y = 1
 }
 
 export type Level = {
@@ -44,12 +52,7 @@ export type MapItem = {
 export enum RayAction {
   stop,
   mirror,
-  continue,
-}
-
-export enum Axis {
-  x = 0,
-  y = 1,
+  continue
 }
 
 export type SpriteAngleState = {

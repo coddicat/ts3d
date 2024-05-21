@@ -1,18 +1,18 @@
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import { ItemSet, MovingItem, MovingItemProps, Wall } from '../../types';
+import type { ItemSet, MovingItem, MovingItemProps, Wall } from '../../types';
 
 const getDoorLevelTop = () => ({
   color: 0x02f00,
   bottom: 2.5,
-  texture: null,
+  texture: null
 });
 
 const getDoorLevelBottom = () => ({
   color: 0x002f00,
   bottom: 2.5,
-  texture: null,
+  texture: null
 });
 
 const getDoorWallTop = (
@@ -24,7 +24,7 @@ const getDoorWallTop = (
   top: 4,
   bottom: 2,
   render: true,
-  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, true),
+  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, true)
 });
 const getDoorWallBottom = (
   repeatX: number,
@@ -35,14 +35,14 @@ const getDoorWallBottom = (
   top: 2,
   bottom: 0,
   render: true,
-  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, false),
+  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, false)
 });
 
 const initMovingItem = (set: ItemSet, props: MovingItemProps): MovingItem => ({
   props,
   set,
   timestamp: 0,
-  state: true,
+  state: true
 });
 const speed = 0.003;
 export const doorMovingItemProps: MovingItemProps = {
@@ -58,8 +58,8 @@ export const doorMovingItemProps: MovingItemProps = {
     const bottom = item.state ? s : 2 - s;
 
     const mapItem = item.set.mapItem;
-    const topWall = mapItem.walls.find((w) => w.top === 4);
-    const bottomWall = mapItem.walls.find((w) => w.bottom === 0);
+    const topWall = mapItem.walls.find(w => w.top === 4);
+    const bottomWall = mapItem.walls.find(w => w.bottom === 0);
     const topLevel = mapItem.levels[0];
     const bottomLevel = mapItem.levels[1];
     bottomWall!.top = bottom;
@@ -68,7 +68,7 @@ export const doorMovingItemProps: MovingItemProps = {
     topLevel.bottom = top;
 
     return finish;
-  },
+  }
 };
 
 export default (repeatX: number, startX: number, startY: number) => ({
@@ -78,18 +78,18 @@ export default (repeatX: number, startX: number, startY: number) => ({
       top: 6,
       bottom: 5,
       render: true,
-      texture: new Texture(TextureType.WallBriks, 1),
+      texture: new Texture(TextureType.WallBriks, 1)
     },
     {
       color: 0xc8c8dc,
       top: 5,
       bottom: 4,
       render: true,
-      texture: new Texture(TextureType.WallWood, 1),
+      texture: new Texture(TextureType.WallWood, 1)
     },
     getDoorWallBottom(repeatX, startX, startY),
-    getDoorWallTop(repeatX, startX, startY),
+    getDoorWallTop(repeatX, startX, startY)
   ],
   levels: [getDoorLevelBottom(), getDoorLevelTop()],
-  stopRay: false,
+  stopRay: false
 });

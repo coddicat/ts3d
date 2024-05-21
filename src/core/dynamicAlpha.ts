@@ -1,8 +1,8 @@
 import settings from './settings';
-import PlayerState from './player/playerState';
-import RayHandler from './ray/rayHandler';
+import type PlayerState from './player/playerState';
+import type RayHandler from './ray/rayHandler';
 
-export default class DynamicAlpha {  
+export default class DynamicAlpha {
   private playerState: PlayerState;
   private rayHandlerState: RayHandler;
 
@@ -13,7 +13,7 @@ export default class DynamicAlpha {
 
   public init(bottom: number): void {
     this.distanceRate =
-      settings.resolution.width * (this.playerState.lookZ - bottom);    
+      settings.resolution.width * (this.playerState.lookZ - bottom);
   }
 
   public distanceRate = 0;
@@ -22,13 +22,15 @@ export default class DynamicAlpha {
 
   public setDistanceAlpha(y: number): void {
     const shift = y - this.playerState.halfLookVertical;
-    if (!shift) {      
+    if (!shift) {
       this.alpha = 0;
       this.distance = settings.lookLength;
       return;
     }
 
     this.distance = this.distanceRate / shift;
-    this.alpha = (settings.lookLength - this.distance) * this.rayHandlerState.alphaMaxLightFact;
+    this.alpha =
+      (settings.lookLength - this.distance) *
+      this.rayHandlerState.alphaMaxLightFact;
   }
 }

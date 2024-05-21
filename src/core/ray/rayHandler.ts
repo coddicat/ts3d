@@ -1,11 +1,12 @@
 import { angle, norm } from '../exts';
-import { GameMap } from '../gameMap/gameMap';
-import PlayerState from '../player/playerState';
-import Ray from './ray';
-import RayCasting from './rayCasting';
+import type { GameMap } from '../gameMap/gameMap';
+import type PlayerState from '../player/playerState';
+import type Ray from './ray';
+import type RayCasting from './rayCasting';
 import Render from '../render/render';
-import SpriteObject from '../sprite/spriteObject';
-import { MapItem, RayAction, SpriteAngleState, PixelCounter } from '../types';
+import type SpriteObject from '../sprite/spriteObject';
+import type { MapItem, SpriteAngleState } from '../types';
+import { RayAction, PixelCounter } from '../types';
 import settings from '../settings';
 
 export interface CellHandler {
@@ -53,7 +54,7 @@ class RayHandler implements CellHandler {
 
     this.spriteObjects = spriteObjects;
     this.spriteState = {
-      lastDistance: 0.6,
+      lastDistance: 0.6
     };
 
     this.render = new Render(
@@ -102,7 +103,7 @@ class RayHandler implements CellHandler {
   private refs = {
     playerStateTimestamp: null as null | number,
     aboveObjects: [] as SpriteObject[],
-    belowObjects: [] as SpriteObject[],
+    belowObjects: [] as SpriteObject[]
   };
 
   private handleLevels(ray: Ray): void {
@@ -110,20 +111,20 @@ class RayHandler implements CellHandler {
 
     if (this.refs.playerStateTimestamp !== this.playerState.timestamp) {
       this.refs.aboveObjects = this.spriteObjects.filter(
-        (o) => o.position.z > this.playerState.lookZ
+        o => o.position.z > this.playerState.lookZ
       );
       this.refs.belowObjects = this.spriteObjects.filter(
-        (o) => o.position.z <= this.playerState.lookZ
+        o => o.position.z <= this.playerState.lookZ
       );
       this.refs.playerStateTimestamp = this.playerState.timestamp;
     }
 
     if (this.prevItem.playerStateTimestamp !== this.playerState.timestamp) {
       this.prevItem.aboveLevels = this.prevItem.levels.filter(
-        (x) => x.bottom > this.playerState.lookZ
+        x => x.bottom > this.playerState.lookZ
       );
       this.prevItem.belowLevels = this.prevItem.levels
-        .filter((x) => x.bottom < this.playerState.lookZ)
+        .filter(x => x.bottom < this.playerState.lookZ)
         .reverse();
       this.prevItem.playerStateTimestamp = this.playerState.timestamp;
     }
@@ -198,19 +199,18 @@ class RayHandler implements CellHandler {
       texture = sprite.textures[0];
     }
     if (Math.abs(sideDistance) > sprite.halfWidth) return;
-    
+
     sprite.timestamp = this.rayCastingState.rayAngle.timestamp;
 
     this.render.handleSprite(
       sprite.top,
       sprite.position.z,
       distance,
-      
+
       //spriteX:
       ((side * sideDistance + sprite.halfWidth) * sprite.wRate) | 0,
-      
-      
-      texture.data!,
+
+      texture.data!
     );
   }
 }

@@ -1,5 +1,5 @@
 import { TextureType } from '../../texture/textureStore';
-import { MapItem } from '../../types';
+import type { MapItem } from '../../types';
 import { MapItemType } from '../mapItemType';
 import { ceil, floor, floorEmpty } from './basic';
 import Texture from '../../texture/texture';
@@ -13,27 +13,27 @@ function stair(top: number, open = true): MapItem {
       top,
       bottom,
       render: true,
-      texture: new Texture(TextureType.WallBriks, 1),
+      texture: new Texture(TextureType.WallBriks, 1)
     },
     {
       color: 0xc80fff,
       top: 6,
       bottom: 5,
       render: true,
-      texture: new Texture(TextureType.WallBriks, 1),
-    },
+      texture: new Texture(TextureType.WallBriks, 1)
+    }
   ];
 
   const levelTop = {
     color: 0x6496fa,
     bottom: top,
-    texture: new Texture(TextureType.Parquet, 1),
+    texture: new Texture(TextureType.Parquet, 1)
   };
 
   const levelBottom = {
     color: 0x6496fa,
     bottom: bottom,
-    texture: null,
+    texture: null
   };
 
   const levels = !bottom
@@ -42,12 +42,12 @@ function stair(top: number, open = true): MapItem {
         ...(open ? [floorEmpty] : [floor]),
         levelBottom,
         levelTop,
-        ...(open ? [] : [ceil]),
+        ...(open ? [] : [ceil])
       ];
   const item = {
     walls,
     levels,
-    stopRay: false,
+    stopRay: false
   };
   return item;
 }
@@ -68,5 +68,5 @@ export default new Map<MapItemType, MapItem>([
   [MapItemType.Stair13, stair(3.9)],
   [MapItemType.Stair14, stair(4.2)],
   [MapItemType.Stair15, stair(4.5)],
-  [MapItemType.Stair16, stair(4.8)],
+  [MapItemType.Stair16, stair(4.8)]
 ]);

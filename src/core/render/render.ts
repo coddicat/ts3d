@@ -2,12 +2,13 @@ import { mod } from '../exts';
 import settings from '../settings';
 import DynamicAlpha from '../dynamicAlpha';
 import Painter from './painter';
-import PlayerState from '../player/playerState';
-import Ray from '../ray/ray';
-import RayCasting from '../ray/rayCasting';
-import RayHandler from '../ray/rayHandler';
-import { TextureData } from '../texture/textureData';
-import { Wall, Level, PixelCounter, Axis } from '../types';
+import type PlayerState from '../player/playerState';
+import type Ray from '../ray/ray';
+import type RayCasting from '../ray/rayCasting';
+import type RayHandler from '../ray/rayHandler';
+import type { TextureData } from '../texture/textureData';
+import type { Wall, Level, PixelCounter } from '../types';
+import { Axis } from '../types';
 
 class Render {
   private rayHandlerState: RayHandler;
@@ -34,8 +35,7 @@ class Render {
 
   private drawWall(rayState: Ray, light: number, wall: Wall): void {
     const fact = settings.resolution.width / this.rayHandlerState.newDistance;
-    const a =
-      this.playerState.halfLookVertical + fact * this.playerState.lookZ;
+    const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const repeatX = wall.texture?.repeatX ?? 1;
     const startY = wall.texture?.startY ?? 0;
     const startX = wall.texture?.startX ?? 0;
@@ -45,32 +45,32 @@ class Render {
         ? mod(rayState.axisY.cellIndex - startY, repeatX)
         : mod(rayState.axisX.cellIndex - startX, repeatX);
 
-    const sideX = (rayState.sideX + s) / repeatX;
+    const offset = (rayState.offset + s) / repeatX;
 
     const y0 = a - wall.top * fact;
     const y1 = a - wall.bottom * fact;
-    
+
     const top = Math.max(0, Math.min(y0, y1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) +
-      this.rayCastingState.displayX;
-      
+      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
+
     if (settings.wallTexture && wall!.texture?.data) {
-      this.painter.drawSpriteLine(        
-        dataIndex, y0, y1, top, bottom,
+      this.painter.drawSpriteLine(
+        dataIndex,
+        y0,
+        y1,
+        top,
+        bottom,
 
         //spriteX:
-        wall.texture?.data
-          ? (sideX * wall.texture?.data.width) | 0
-          : 0,          
-        
+        wall.texture?.data ? (offset * wall.texture?.data.width) | 0 : 0,
+
         //repeatedHeight:
         //TODO improve to onetime calculatation
-        ((wall.top - wall.bottom) *
-          wall.texture.data.height) /
-        wall.texture.repeat,
-        
+        ((wall.top - wall.bottom) * wall.texture.data.height) /
+          wall.texture.repeat,
+
         //revert
         wall.texture.revert,
 
@@ -79,7 +79,7 @@ class Render {
 
         //light:
         light,
-        
+
         //textureData
         wall.texture?.data
       );
@@ -88,36 +88,47 @@ class Render {
     }
   }
 
-  private drawSprite(top: number, bottom: number, distance: number, spriteX: number, light: number, textureData: TextureData): void {
+  private drawSprite(
+    top: number,
+    bottom: number,
+    distance: number,
+    spriteX: number,
+    light: number,
+    textureData: TextureData
+  ): void {
     const fact = settings.resolution.width / distance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const y0 = a - top * fact;
     const y1 = a - bottom * fact;
-    
+
     const top_ = Math.max(0, Math.min(y0, y1) | 0);
     const bottom_ = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
       Math.imul(top_, settings.resolution.width) +
       this.rayCastingState.displayX;
 
-    this.painter.drawSpriteLine(    
-      dataIndex, y0, y1, top_, bottom_,
-      
-      //spriteX: 
+    this.painter.drawSpriteLine(
+      dataIndex,
+      y0,
+      y1,
+      top_,
+      bottom_,
+
+      //spriteX:
       spriteX,
-      
-      //repeatedHeight: 
+
+      //repeatedHeight:
       textureData.height,
-      
+
       //revert:
       false,
-      
-      //checkAlpha: 
+
+      //checkAlpha:
       true,
 
       //light:
       light,
-      
+
       textureData
     );
   }
@@ -134,23 +145,32 @@ class Render {
     const top = Math.max(0, Math.min(y0, y1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) +
-      this.rayCastingState.displayX;
-
+      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
 
     if (settings.levelTexture && level.texture?.data) {
-      this.painter.drawSpriteLineDynamic(dataIndex, top, bottom, rayState, level.texture?.data);
+      this.painter.drawSpriteLineDynamic(
+        dataIndex,
+        top,
+        bottom,
+        rayState,
+        level.texture?.data
+      );
     } else {
       this.painter.drawLineDynamic(dataIndex, top, bottom, level.color);
     }
   }
 
-  public handleSprite(top: number, bottom: number, distance: number, spriteX: number, textureData: TextureData): void {
+  public handleSprite(
+    top: number,
+    bottom: number,
+    distance: number,
+    spriteX: number,
+    textureData: TextureData
+  ): void {
     if (distance <= 0) return;
 
-    const light =      
-      (settings.lookLength - distance) *
-      this.rayHandlerState.alphaMaxLightFact;
+    const light =
+      (settings.lookLength - distance) * this.rayHandlerState.alphaMaxLightFact;
 
     if (light < 1) return;
 

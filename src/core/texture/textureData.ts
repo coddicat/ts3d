@@ -9,7 +9,12 @@ export class TextureData {
   public factY = 0;
   public canvas: CanvasImageSource;
 
-  constructor(width: number, height: number, data: Uint32Array, canvas: CanvasImageSource) {
+  constructor(
+    width: number,
+    height: number,
+    data: Uint32Array,
+    canvas: CanvasImageSource
+  ) {
     this.width = width;
     this.height = height;
     this.data = data;

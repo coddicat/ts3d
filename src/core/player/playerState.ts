@@ -1,7 +1,7 @@
 import settings from '../settings';
 import SpriteObject from '../sprite/spriteObject';
-import { TextureType } from '../texture/textureStore';
-import { Coordinates } from '../types';
+import type { TextureType } from '../texture/textureStore';
+import type { Vector3D } from '../types';
 
 export default class PlayerState extends SpriteObject {
   //object props
@@ -15,7 +15,7 @@ export default class PlayerState extends SpriteObject {
   public top = settings.playerHeight;
 
   constructor(
-    position: Coordinates,
+    position: Vector3D,
     size: { width: number; height: number },
     textureTypes: TextureType[],
     repeat: number

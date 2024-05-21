@@ -1,5 +1,5 @@
-import { TextureData } from './textureData';
-import { TextureType } from './textureStore';
+import type { TextureData } from './textureData';
+import type { TextureType } from './textureStore';
 
 export default class Texture {
   constructor(type: TextureType, repeat: number, transparent = false) {

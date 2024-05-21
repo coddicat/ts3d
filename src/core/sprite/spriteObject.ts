@@ -1,9 +1,9 @@
 import Texture from '../texture/texture';
-import { TextureType } from '../texture/textureStore';
-import { Coordinates } from '../types';
+import type { TextureType } from '../texture/textureStore';
+import type { Vector3D } from '../types';
 
 export default class SpriteObject {
-  position: Coordinates;
+  position: Vector3D;
   width: number;
   height: number;
   textures: Texture[];
@@ -13,7 +13,7 @@ export default class SpriteObject {
   wRate!: number;
 
   constructor(
-    position: Coordinates,
+    position: Vector3D,
     size: { width: number; height: number },
     textureTypes: TextureType[],
     repeat: number
@@ -21,7 +21,7 @@ export default class SpriteObject {
     this.position = position;
     this.width = size.width;
     this.height = size.height;
-    this.textures = textureTypes.map((t) => new Texture(t, repeat));
+    this.textures = textureTypes.map(t => new Texture(t, repeat));
     this.timestamp = 0;
     this.top = position.z + size.height;
     this.halfWidth = this.width / 2;

@@ -1,6 +1,6 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import { MapItem } from '../../types';
+import type { MapItem } from '../../types';
 import { MapItemType } from '../mapItemType';
 import { ceil } from './basic';
 
@@ -14,12 +14,12 @@ export default new Map<MapItemType, MapItem>([
           top: 10,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [],
-      stopRay: true,
-    },
+      stopRay: true
+    }
   ],
   [
     MapItemType.TowerWindow1,
@@ -30,30 +30,30 @@ export default new Map<MapItemType, MapItem>([
           top: 7,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
+          texture: new Texture(TextureType.WallBriks, 1)
         },
         {
           color: 0xcccccc,
           top: 10,
           bottom: 9,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [
         {
           color: 0xdcb9ac,
           bottom: 7,
-          texture: new Texture(TextureType.FloorMetal, 1),
+          texture: new Texture(TextureType.FloorMetal, 1)
         },
         {
           color: 0xdcb9ac,
           bottom: 9,
-          texture: new Texture(TextureType.FloorMetal, 1),
-        },
+          texture: new Texture(TextureType.FloorMetal, 1)
+        }
       ],
-      stopRay: false,
-    },
+      stopRay: false
+    }
   ],
   [
     MapItemType.TowerWindow2,
@@ -64,30 +64,30 @@ export default new Map<MapItemType, MapItem>([
           top: 10,
           bottom: 4,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
+          texture: new Texture(TextureType.WallBriks, 1)
         },
         {
           color: 0xcccccc,
           top: 2,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [
         {
           color: 0xdcb9ac,
           bottom: 2,
-          texture: new Texture(TextureType.FloorMetal, 1),
+          texture: new Texture(TextureType.FloorMetal, 1)
         },
         {
           color: 0xdcb9ac,
           bottom: 4,
-          texture: new Texture(TextureType.FloorMetal, 1),
-        },
+          texture: new Texture(TextureType.FloorMetal, 1)
+        }
       ],
-      stopRay: false,
-    },
+      stopRay: false
+    }
   ],
   [
     MapItemType.Window1,
@@ -98,44 +98,44 @@ export default new Map<MapItemType, MapItem>([
           top: 3,
           bottom: 1,
           render: true,
-          texture: new Texture(TextureType.Window, 2, true),
+          texture: new Texture(TextureType.Window, 2, true)
         },
         {
           color: 0xcccccc,
           top: 6,
           bottom: 5,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
+          texture: new Texture(TextureType.WallBriks, 1)
         },
         {
           color: 0xcccccc,
           top: 5,
           bottom: 3,
           render: true,
-          texture: new Texture(TextureType.WallWood, 1),
+          texture: new Texture(TextureType.WallWood, 1)
         },
         {
           color: 0xcccccc,
           top: 1,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallWood, 1),
-        },
+          texture: new Texture(TextureType.WallWood, 1)
+        }
       ],
       levels: [
         {
           color: 0xdcb9ac,
           bottom: 1,
-          texture: new Texture(TextureType.Parquet, 1),
+          texture: new Texture(TextureType.Parquet, 1)
         },
         {
           color: 0xdcb9ac,
           bottom: 3,
-          texture: new Texture(TextureType.Parquet, 1),
-        },
+          texture: new Texture(TextureType.Parquet, 1)
+        }
       ],
-      stopRay: false,
-    },
+      stopRay: false
+    }
   ],
   [
     MapItemType.Window2,
@@ -146,37 +146,37 @@ export default new Map<MapItemType, MapItem>([
           top: 3,
           bottom: 1,
           render: true,
-          texture: new Texture(TextureType.Window, 2, true),
+          texture: new Texture(TextureType.Window, 2, true)
         },
         {
           color: 0xcccccc,
           top: 6,
           bottom: 3,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
+          texture: new Texture(TextureType.WallBriks, 1)
         },
         {
           color: 0xcccccc,
           top: 1,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [
         {
           color: 0xdcb9ac,
           bottom: 1,
-          texture: new Texture(TextureType.FloorMetal, 1),
+          texture: new Texture(TextureType.FloorMetal, 1)
         },
         {
           color: 0xdcb9ac,
           bottom: 3,
-          texture: new Texture(TextureType.FloorMetal, 1),
-        },
+          texture: new Texture(TextureType.FloorMetal, 1)
+        }
       ],
-      stopRay: false,
-    },
+      stopRay: false
+    }
   ],
   [
     MapItemType.WallBriks,
@@ -187,12 +187,12 @@ export default new Map<MapItemType, MapItem>([
           top: 6,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [ceil],
-      stopRay: true,
-    },
+      stopRay: true
+    }
   ],
   [
     MapItemType.WallWood,
@@ -203,18 +203,18 @@ export default new Map<MapItemType, MapItem>([
           top: 5,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallWood, 1),
+          texture: new Texture(TextureType.WallWood, 1)
         },
         {
           color: 0xdcc8c8,
           top: 6,
           bottom: 5,
           render: true,
-          texture: new Texture(TextureType.WallBriks, 1),
-        },
+          texture: new Texture(TextureType.WallBriks, 1)
+        }
       ],
       levels: [],
-      stopRay: true,
-    },
-  ],
+      stopRay: true
+    }
+  ]
 ]);

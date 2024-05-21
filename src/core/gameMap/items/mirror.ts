@@ -1,6 +1,6 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import { MapItem } from '../../types';
+import type { MapItem } from '../../types';
 
 export default {
   walls: [
@@ -9,14 +9,14 @@ export default {
       top: 5,
       bottom: 4,
       render: true,
-      texture: new Texture(TextureType.WallWood, 1),
+      texture: new Texture(TextureType.WallWood, 1)
     },
     {
       color: 0xffffff,
       top: 0.25,
       bottom: 0,
       render: true,
-      texture: new Texture(TextureType.WallWood, 1),
+      texture: new Texture(TextureType.WallWood, 1)
     },
     //for collision
     {
@@ -24,10 +24,10 @@ export default {
       top: 4,
       bottom: 0,
       render: false,
-      texture: null,
-    },
+      texture: null
+    }
   ],
   levels: [],
   stopRay: false,
-  mirror: true,
+  mirror: true
 } as MapItem;

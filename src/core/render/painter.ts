@@ -1,10 +1,10 @@
 import { mod } from '../exts';
 import settings from '../settings';
-import DynamicAlpha from '../dynamicAlpha';
-import Ray from '../ray/ray';
-import { TextureData } from '../texture/textureData';
-import { PixelCounter } from '../types';
-import { RayAngle } from '../ray/rayAngle';
+import type DynamicAlpha from '../dynamicAlpha';
+import type Ray from '../ray/ray';
+import type { TextureData } from '../texture/textureData';
+import type { PixelCounter } from '../types';
+import type { RayAngle } from '../ray/rayAngle';
 
 class Painter {
   private dynamicAlpha;
@@ -13,10 +13,16 @@ class Painter {
   constructor(pixelsCounter: PixelCounter, dynamicAlpha: DynamicAlpha) {
     this.pixelsCounter = pixelsCounter;
     this.dynamicAlpha = dynamicAlpha;
-  }  
+  }
 
-  public drawLineStatic(dataIndex: number, top: number, bottom: number, color: number, light: number): void {
-    if (light < 1) return;  
+  public drawLineStatic(
+    dataIndex: number,
+    top: number,
+    bottom: number,
+    color: number,
+    light: number
+  ): void {
+    if (light < 1) return;
     const alphaMask = light << 24;
 
     while (top <= bottom) {
@@ -35,7 +41,12 @@ class Painter {
     }
   }
 
-  public drawLineDynamic(dataIndex: number, top: number, bottom: number, color: number): void {
+  public drawLineDynamic(
+    dataIndex: number,
+    top: number,
+    bottom: number,
+    color: number
+  ): void {
     while (top <= bottom) {
       if (settings.data[dataIndex]) {
         top++;
@@ -51,8 +62,7 @@ class Painter {
         continue;
       }
 
-      settings.data[dataIndex] =
-        color | (this.dynamicAlpha.alpha << 24);
+      settings.data[dataIndex] = color | (this.dynamicAlpha.alpha << 24);
 
       if (!this.pixelsCounter.increse()) return;
 
@@ -63,21 +73,24 @@ class Painter {
 
   public drawSpriteLine(
     dataIndex: number,
-    y0: number, y1: number,
-    top: number, bottom: number,         
+    y0: number,
+    y1: number,
+    top: number,
+    bottom: number,
 
     spriteX: number,
-    repeatedHeight: number, 
-    revert: boolean | undefined, 
+    repeatedHeight: number,
+    revert: boolean | undefined,
     checkAlpha: boolean,
     light: number,
     textureData: TextureData
   ): void {
     if (light < 1 || top === bottom) return;
-    const alphaMask = 0x00ffffff | (light << 24);              
+    const alphaMask = 0x00ffffff | (light << 24);
     const diff = top - y0;
     const hRate = repeatedHeight / (y1 - y0);
-    let spriteY = revert ? diff +
+    let spriteY = revert
+      ? diff +
         //todo
         (textureData.height - mod(repeatedHeight, textureData.height)) / hRate
       : diff;
@@ -115,7 +128,12 @@ class Painter {
     }
   }
 
-  public getSpriteIndexBySideX_positive(rayAngle: RayAngle, offset: number, textureData: TextureData, diff: number): number {
+  public getSpriteIndexBySideX_positive(
+    rayAngle: RayAngle,
+    offset: number,
+    textureData: TextureData,
+    diff: number
+  ): number {
     const { width } = textureData;
 
     const fixCosDiff = rayAngle.fixCos * diff;
@@ -125,17 +143,27 @@ class Painter {
     const fixedX = textureData.maxY - mod(spriteY, textureData.height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_positive(rayAngle: RayAngle, offset: number, textureData: TextureData, diff: number): number {
+  public getSpriteIndexBySideY_positive(
+    rayAngle: RayAngle,
+    offset: number,
+    textureData: TextureData,
+    diff: number
+  ): number {
     const { width } = textureData;
 
-    const fixSinDiff = rayAngle.fixSin * diff;    
+    const fixSinDiff = rayAngle.fixSin * diff;
     const side = offset - fixSinDiff + (fixSinDiff | 0) + 1;
     const spriteY = (side - (side | 0)) * textureData.height;
     const spriteX = (diff * textureData.factX) | 0;
     const fixedX = textureData.maxX - mod(spriteX, width);
     return Math.imul(spriteY, width) + fixedX;
   }
-  public getSpriteIndexBySideX_negative(rayAngle: RayAngle, offset: number, textureData: TextureData, diff: number): number {
+  public getSpriteIndexBySideX_negative(
+    rayAngle: RayAngle,
+    offset: number,
+    textureData: TextureData,
+    diff: number
+  ): number {
     const { width } = textureData;
 
     const fixCosDiff = rayAngle.fixCos * diff;
@@ -145,7 +173,12 @@ class Painter {
     const fixedX = mod(spriteY, textureData.height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_negative(rayAngle: RayAngle, offset: number, textureData: TextureData, diff: number): number {
+  public getSpriteIndexBySideY_negative(
+    rayAngle: RayAngle,
+    offset: number,
+    textureData: TextureData,
+    diff: number
+  ): number {
     const { width } = textureData;
 
     const fixSinDiff = rayAngle.fixSin * diff;
@@ -157,16 +190,19 @@ class Painter {
   }
 
   public drawSpriteLineDynamic(
-    dataIndex: number, top: number, bottom: number, 
-    rayState: Ray, textureData: TextureData
-  ): void {    
+    dataIndex: number,
+    top: number,
+    bottom: number,
+    rayState: Ray,
+    textureData: TextureData
+  ): void {
     const { rayAngle } = rayState;
     if (textureData.rayTimestamp !== rayAngle.timestamp) {
       textureData.factX = textureData.width * rayAngle.fixCosAbs;
       textureData.factY = textureData.height * rayAngle.fixSinAbs;
       textureData.rayTimestamp = rayAngle.timestamp;
     }
-    
+
     while (top <= bottom) {
       if (settings.data[dataIndex]) {
         top++;
@@ -182,10 +218,18 @@ class Painter {
         continue;
       }
 
-      const diff = Math.abs(rayState.fixedDistance - this.dynamicAlpha.distance);      
-      const pixel = textureData.data[
-        rayState.spriteIndexGetter(rayAngle, rayState.sideX, textureData, diff)
-      ];
+      const diff = Math.abs(
+        rayState.fixedDistance - this.dynamicAlpha.distance
+      );
+      const pixel =
+        textureData.data[
+          rayState.spriteIndexGetter(
+            rayAngle,
+            rayState.offset,
+            textureData,
+            diff
+          )
+        ];
 
       if (!pixel) {
         top++;
@@ -202,7 +246,6 @@ class Painter {
       dataIndex += settings.resolution.width;
     }
   }
-
 }
 
 export default Painter;

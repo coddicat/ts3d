@@ -15,9 +15,9 @@ export default (repeatX: number, startX: number, startY: number) => ({
         startY,
         repeatX,
         false
-      ),
-    },
+      )
+    }
   ],
   levels: [],
-  stopRay: false,
+  stopRay: false
 });

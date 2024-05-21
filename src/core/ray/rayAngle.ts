@@ -13,6 +13,11 @@ export class RayAngle {
   public cosAbs!: number;
   public sinAbs!: number;
 
+  public revertCos!: number;
+  public revertSin!: number;
+  public revertCosAbs!: number;
+  public revertSinAbs!: number;
+
   public fixCos!: number;
   public fixSin!: number;
   public fixCosAbs!: number;
@@ -35,11 +40,19 @@ export class RayAngle {
   private setAngleProps(): void {
     this.cos = Math.cos(this.angle);
     this.sin = Math.sin(this.angle);
+
+    this.revertCos = 1 / this.cos;
+    this.revertSin = 1 / this.sin;
+
     this.tan90 = Math.tan(this.angle + rad90);
     this.cosSign = sign(this.cos);
     this.sinSign = sign(this.sin);
     this.cosAbs = this.cos * this.cosSign;
-    this.sinAbs = Math.abs(this.sin);
+    this.sinAbs = this.sin * this.sinSign;
+
+    this.revertCosAbs = this.revertCos * this.cosSign;
+    this.revertSinAbs = this.revertSin * this.sinSign;
+
     this.spriteFact = this.sin - this.cos * this.tan90;
 
     this.fixCosAbs = this.cosAbs / this.fixDistance;

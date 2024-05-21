@@ -1,8 +1,8 @@
-import { MapItem, MovingItemProps } from '../types';
+import type { MapItem, MovingItemProps } from '../types';
 import { MapItemType } from './mapItemType';
 import Door, { doorMovingItemProps } from './items/door';
 import HighDoor, {
-  doorMovingItemProps as highDoorMovingItemProps,
+  doorMovingItemProps as highDoorMovingItemProps
 } from './items/highDoor';
 import WelcomeWall from './items/welcome';
 import Platform, { platformMovingItemProps } from './items/platform';
@@ -21,15 +21,15 @@ export const singleItems = new Map<MapItemType, MapItem>([
     {
       walls: [],
       levels: [towerFloor],
-      stopRay: false,
-    },
+      stopRay: false
+    }
   ],
   [MapItemType.Number, numberItem],
   ...Walls.entries(),
   ...Stairs.entries(),
   ...Ledges.entries(),
 
-  [MapItemType.Mirror, Mirror],
+  [MapItemType.Mirror, Mirror]
 ]);
 
 export type ItemSetGetter = (
@@ -42,11 +42,11 @@ export const itemsInSet = new Map<MapItemType, ItemSetGetter>([
   [MapItemType.WelcomeWall, WelcomeWall],
   [MapItemType.Door, Door],
   [MapItemType.HighDoor, HighDoor],
-  [MapItemType.Platform, Platform],
+  [MapItemType.Platform, Platform]
 ]);
 
 export const movingTypes = new Map<MapItemType, MovingItemProps>([
   [MapItemType.Door, doorMovingItemProps],
   [MapItemType.HighDoor, highDoorMovingItemProps],
-  [MapItemType.Platform, platformMovingItemProps],
+  [MapItemType.Platform, platformMovingItemProps]
 ]);

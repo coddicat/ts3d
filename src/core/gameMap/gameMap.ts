@@ -1,14 +1,15 @@
 import textureStore from '../texture/textureStore';
-import {
+import type {
   ItemSet,
   ItemSetByKey,
   Level,
   MapItem,
   MovingItem,
-  Wall,
+  Wall
 } from '../types';
 import gridMap from './grid';
-import { MapItemType, mapItemTypeKeys } from './mapItemType';
+import type { MapItemType } from './mapItemType';
+import { mapItemTypeKeys } from './mapItemType';
 import { emptyItem } from './items/basic';
 import { singleItems, itemsInSet, movingTypes } from './items';
 
@@ -29,9 +30,9 @@ export class GameMap {
     const key = mapItemTypeKeys.get(strKey);
     let item;
     if (key && itemsInSet.has(key)) {
-      const itemSet = this.setsByKey.find((x) => x.type === key);
-      const set = itemSet?.sets.find((d) =>
-        d.set.find((s) => s.x === x && s.y === y)
+      const itemSet = this.setsByKey.find(x => x.type === key);
+      const set = itemSet?.sets.find(d =>
+        d.set.find(s => s.x === x && s.y === y)
       );
       item = set?.mapItem;
     } else {
@@ -49,11 +50,11 @@ export class GameMap {
   public async init(): Promise<void> {
     const types = [...itemsInSet.keys()];
     this.setsByKey = [];
-    types.forEach((type) => {
+    types.forEach(type => {
       const sets = this.findItemSets(type);
       this.setsByKey.push({
         type,
-        sets,
+        sets
       });
       this.initMovingItems(type, sets);
     });
@@ -106,9 +107,7 @@ export class GameMap {
   }
 
   private findItemSets(type: MapItemType): ItemSet[] {
-    const keyStr = [...mapItemTypeKeys.entries()].find(
-      (x) => x[1] === type
-    )?.[0];
+    const keyStr = [...mapItemTypeKeys.entries()].find(x => x[1] === type)?.[0];
 
     if (!keyStr) return [];
 
@@ -126,7 +125,7 @@ export class GameMap {
           const item = itemGenerator(set.length, c, r);
           res.push({
             set: set,
-            mapItem: item,
+            mapItem: item
           });
         }
       }
@@ -139,7 +138,7 @@ export class GameMap {
     const props = movingTypes.get(type);
     if (!props) return;
 
-    sets.forEach((s) => {
+    sets.forEach(s => {
       this.movingItems.push(props.initMovingItem(s, props));
     });
   }

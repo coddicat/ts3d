@@ -1,8 +1,9 @@
-import { GameMap } from '../gameMap/gameMap';
-import Ray from '../ray/ray';
-import { CellHandler } from '../ray/rayHandler';
-import { Position, RayAction } from '../types';
-import PlayerState from './playerState';
+import type { GameMap } from '../gameMap/gameMap';
+import type Ray from '../ray/ray';
+import type { CellHandler } from '../ray/rayHandler';
+import type { Position2D } from '../types';
+import { RayAction } from '../types';
+import type PlayerState from './playerState';
 
 export default class CollisionHandler implements CellHandler {
   private state: PlayerState;
@@ -13,21 +14,19 @@ export default class CollisionHandler implements CellHandler {
     this.gameMap = gameMap;
   }
 
-  private checkMoveCollision(cellPos: Position): RayAction {
+  private checkMoveCollision(cellPos: Position2D): RayAction {
     const item = this.gameMap.check(cellPos);
     if (!item || !item.walls.length) return RayAction.continue;
     const top = this.state.position.z + this.state.height;
     const bottom = this.state.position.z;
-    const collisions = item.walls.filter(
-      (x) => top > x.bottom && bottom < x.top
-    );
+    const collisions = item.walls.filter(x => top > x.bottom && bottom < x.top);
 
     if (collisions.length > 0) {
-      const max = Math.max(...collisions.map((x) => x.top));
+      const max = Math.max(...collisions.map(x => x.top));
       if (max <= bottom + 0.301) {
-        // this.state.position.z = max;
-        // this.state.lookZ = max + this.state.lookHeight;
-        // this.state.top = max + this.state.height;
+        this.state.position.z = max;
+        this.state.lookZ = max + this.state.lookHeight;
+        this.state.top = max + this.state.height;
         return RayAction.continue;
       }
     }

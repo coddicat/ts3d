@@ -1,5 +1,5 @@
 import Texture from '../../texture/texture';
-import { Level, Wall } from '../../types';
+import type { Level, Wall } from '../../types';
 import { floor, ceil } from './basic';
 import { TextureType } from '../../texture/textureStore';
 
@@ -8,13 +8,13 @@ function shelfLevels(bottom: number): Level[] {
     {
       color: 0xc8c8dc,
       bottom,
-      texture: new Texture(TextureType.FloorMetal, 1),
+      texture: new Texture(TextureType.FloorMetal, 1)
     },
     {
       color: 0xc8c8dc,
       bottom: bottom - 0.2,
-      texture: new Texture(TextureType.FloorMetal, 1),
-    },
+      texture: new Texture(TextureType.FloorMetal, 1)
+    }
   ];
 }
 
@@ -24,7 +24,7 @@ function shelfWall(bottom: number): Wall {
     top: bottom,
     bottom: bottom - 0.2,
     render: true,
-    texture: new Texture(TextureType.WallWood, 1),
+    texture: new Texture(TextureType.WallWood, 1)
   };
 }
 
@@ -37,6 +37,6 @@ export default {
     ...shelfLevels(0.6),
     ...shelfLevels(1.2),
     ...shelfLevels(1.8),
-    ...shelfLevels(2.4),
-  ],
+    ...shelfLevels(2.4)
+  ]
 };

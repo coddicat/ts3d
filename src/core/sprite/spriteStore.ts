@@ -1,4 +1,4 @@
-import PlayerState from '../player/playerState';
+import type PlayerState from '../player/playerState';
 import SpriteObject from './spriteObject';
 import textureStore, { TextureType } from '../texture/textureStore';
 
@@ -8,11 +8,11 @@ function getBanan(x: number, y: number, z: number): SpriteObject {
       x,
       y,
       z,
-      angle: 0,
+      angle: 0
     },
     {
       height: 0.5,
-      width: 0.5,
+      width: 0.5
     },
     [TextureType.Banan],
     1
@@ -25,19 +25,19 @@ const sprites = [
       x: 25,
       y: 36.5,
       z: 0,
-      angle: 0,
+      angle: 0
     },
     {
       height: 1.8,
-      width: 1.34,
+      width: 1.34
     },
     [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
     1
-  ),  
+  ),
   getBanan(21.5, 8.5, 0.6),
   getBanan(21.5, 8.5, 1.2),
   getBanan(21.5, 8.5, 1.8),
-  getBanan(21.5, 8.5, 2.4),
+  getBanan(21.5, 8.5, 2.4)
 ];
 
 export default class SpriteStore {
@@ -48,8 +48,8 @@ export default class SpriteStore {
   public async init(): Promise<void> {
     this.spriteObjects = [this.playerState, ...sprites];
 
-    this.spriteObjects.forEach((sprite) => {
-      sprite.textures.forEach((texture) => {
+    this.spriteObjects.forEach(sprite => {
+      sprite.textures.forEach(texture => {
         const data = textureStore.getTextureData(texture.type);
         if (data) {
           texture.setData(data);

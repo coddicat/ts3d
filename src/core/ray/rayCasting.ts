@@ -1,10 +1,10 @@
 import settings from '../settings';
-import { GameMap } from '../gameMap/gameMap';
-import PlayerState from '../player/playerState';
+import type { GameMap } from '../gameMap/gameMap';
+import type PlayerState from '../player/playerState';
 import Ray from './ray';
 import { RayAngle } from './rayAngle';
 import RayHandler from './rayHandler';
-import SpriteObject from '../sprite/spriteObject';
+import type SpriteObject from '../sprite/spriteObject';
 
 class RayCasting {
   private imageData: ImageData;
@@ -39,7 +39,6 @@ class RayCasting {
     settings.data.fill(0);
   }
 
-  
   private handleAngle(): void {
     this.ray.init();
     this.ray.send(settings.lookLength / this.rayAngle.fixDistance);
@@ -49,9 +48,12 @@ class RayCasting {
     this.displayX = 0;
     let angle = this.playerState.position.angle - settings.halfLookAngle;
     do {
-      this.rayAngle.setAngle(angle, Math.cos((this.playerState.position.angle - angle) * settings.fixFact));
+      const fixDistance = Math.cos(
+        (this.playerState.position.angle - angle) * settings.fixFact
+      );
+      this.rayAngle.setAngle(angle, fixDistance);
 
-      this.handleAngle();      
+      this.handleAngle();
 
       this.displayX++;
       angle += settings.angleStep;

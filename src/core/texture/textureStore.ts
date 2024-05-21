@@ -17,7 +17,7 @@ export enum TextureType {
   Ceil,
   Window,
   Aim,
-  Sky,
+  Sky
 }
 
 const href = (path: string): string => new URL(path, import.meta.url).href;
@@ -39,11 +39,11 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.Sand, href('../../assets/sand.png')],
   [TextureType.Window, href('../../assets/window.png')],
   [TextureType.Aim, href('../../assets/aim.png')],
-  [TextureType.Sky, href('../../assets/sky.png')],
+  [TextureType.Sky, href('../../assets/sky.png')]
 ]);
 
 const store = {
-  map: null as null | Map<TextureType, TextureData>,
+  map: null as null | Map<TextureType, TextureData>
 };
 
 async function loadTexture(url: string): Promise<TextureData> {
@@ -51,9 +51,9 @@ async function loadTexture(url: string): Promise<TextureData> {
   const img = new Image();
   img.src = url;
   return new Promise<TextureData>((resolve, reject) => {
-    img.onerror = function(e: Event | string) {
+    img.onerror = function (e: Event | string) {
       reject(e);
-    }
+    };
     img.onload = function () {
       canvas.width = img.width;
       canvas.height = img.height;
@@ -72,12 +72,12 @@ async function loadTexture(url: string): Promise<TextureData> {
 
 async function loadTextures(): Promise<Map<TextureType, TextureData>> {
   const items = [...textureFiles.entries()];
-  const promises = items.map(async (x) => {
+  const promises = items.map(async x => {
     const data = await loadTexture(x[1]);
     return { type: x[0], data };
   });
   const res = await Promise.all(promises);
-  return new Map<TextureType, TextureData>(res.map((x) => [x.type, x.data]));
+  return new Map<TextureType, TextureData>(res.map(x => [x.type, x.data]));
 }
 
 export default {
@@ -86,5 +86,5 @@ export default {
   },
   getTextureData(type: TextureType): TextureData | null {
     return store.map?.get(type) ?? null;
-  },
+  }
 };

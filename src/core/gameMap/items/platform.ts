@@ -1,9 +1,9 @@
-import {
+import type {
   ItemSet,
   Level,
   MapItem,
   MovingItem,
-  MovingItemProps,
+  MovingItemProps
 } from '../../types';
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
@@ -11,20 +11,20 @@ import { TextureType } from '../../texture/textureStore';
 const getLevelTop = (): Level => ({
   color: 0x02f00,
   bottom: 0.3,
-  texture: new Texture(TextureType.FloorMetal, 1),
+  texture: new Texture(TextureType.FloorMetal, 1)
 });
 
 const getLevelBottom = (): Level => ({
   color: 0x002f00,
   bottom: 0,
-  texture: new Texture(TextureType.FloorMetal, 1),
+  texture: new Texture(TextureType.FloorMetal, 1)
 });
 
 const getLevelFloor = (): Level => ({
   color: 0,
   bottom: 0,
   texture: new Texture(TextureType.Ground, 1),
-  name: 'floor',
+  name: 'floor'
 });
 
 export default (): MapItem => ({
@@ -34,18 +34,18 @@ export default (): MapItem => ({
       top: 0.3,
       bottom: 0,
       render: true,
-      texture: new Texture(TextureType.FloorMetal, 1),
-    },
+      texture: new Texture(TextureType.FloorMetal, 1)
+    }
   ],
   levels: [getLevelBottom(), getLevelTop(), getLevelFloor()],
-  stopRay: false,
+  stopRay: false
 });
 
 const initMovingItem = (set: ItemSet, props: MovingItemProps): MovingItem => ({
   props,
   set,
   timestamp: 0,
-  state: false,
+  state: false
 });
 
 const height = 6;
@@ -64,7 +64,7 @@ export const platformMovingItemProps: MovingItemProps = {
 
     const mapItem = item.set.mapItem;
     const wall = mapItem.walls[0];
-    const notFloor = mapItem.levels.filter((x) => !x.name);
+    const notFloor = mapItem.levels.filter(x => !x.name);
     const topLevel = notFloor[0];
     const bottomLevel = notFloor[1];
 
@@ -73,9 +73,9 @@ export const platformMovingItemProps: MovingItemProps = {
     topLevel.speed = bottomLevel.speed = finish
       ? 0
       : item.state
-      ? -speed
-      : speed;
+        ? -speed
+        : speed;
 
     return finish;
-  },
+  }
 };

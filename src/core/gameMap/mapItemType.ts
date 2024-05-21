@@ -34,7 +34,7 @@ export enum MapItemType {
   TowerWindow1,
   TowerWindow2,
   Window1,
-  Window2,
+  Window2
 }
 
 //export const movingItemTypes = [MapItemType.Door, MapItemType.Platform];
@@ -77,5 +77,5 @@ export const mapItemTypeKeys = new Map<string, MapItemType>([
   ['t', MapItemType.TowerWindow1],
   ['w', MapItemType.TowerWindow2],
   ['O', MapItemType.Window1],
-  ['o', MapItemType.Window2],
+  ['o', MapItemType.Window2]
 ]);

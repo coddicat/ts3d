@@ -52,7 +52,7 @@ const playerState = new PlayerState(
     x: 3,
     y: 3,
     z: 0,
-    angle: 0,
+    angle: 0
   },
   { width: settings.playerWidth, height: settings.playerWidth },
   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
@@ -65,7 +65,6 @@ const currentKey = ref(keyMap);
 
 const fpsDisplay = ref(0);
 
-
 let prevTimestamp = 0;
 const stopped = ref(false);
 const gameMap = new GameMap();
@@ -74,13 +73,13 @@ const main3D = new Main3D(playerState, gameMap, spriteStore);
 const player = new Player(playerState, gameMap);
 
 function keyHandler(timestamp: number): void {
-  const up =
-    currentKey.value.get('ArrowUp') || currentKey.value.get('KeyW');
+  const up = currentKey.value.get('ArrowUp') || currentKey.value.get('KeyW');
   const down =
     currentKey.value.get('ArrowDown') || currentKey.value.get('KeyS');
   const moveLeft = currentKey.value.get('KeyA');
   const moveRight = currentKey.value.get('KeyD');
-  const enter = currentKey.value.get('Enter') || currentKey.value.get('NumpadEnter');  
+  const enter =
+    currentKey.value.get('Enter') || currentKey.value.get('NumpadEnter');
 
   if (enter) {
     const item = player.checkMovingItem();
@@ -95,16 +94,11 @@ function keyHandler(timestamp: number): void {
 
   const left = currentKey.value.get('ArrowLeft');
   const right = currentKey.value.get('ArrowRight');
-  player.turn(
-    (left || right) ?? false,
-    timestamp,
-    right ? 1 : left ? -1 : 0
-  );
+  player.turn((left || right) ?? false, timestamp, right ? 1 : left ? -1 : 0);
 
   if (currentKey.value.get('Space')) {
     player.jump(timestamp);
   }
-  
 }
 
 let animationFrame = 0;
@@ -112,19 +106,21 @@ let animationFrame = 0;
 async function tick(timestamp: number) {
   if (stopped.value) return;
 
-  if (mod(timestamp | 0, 4) === 0) {    
+  if (mod(timestamp | 0, 4) === 0) {
     fpsDisplay.value = (1000 / (timestamp - prevTimestamp)) | 0;
   }
 
   keyHandler(timestamp);
-  gameMap.tickMovingItem(timestamp);  
+  gameMap.tickMovingItem(timestamp);
   player.tick(timestamp);
   main3D.renderMain();
   prevTimestamp = timestamp;
   animationFrame = window.requestAnimationFrame(tick);
 }
 
-const resolution = ref(`${settings.resolution.width},${settings.resolution.height}`);
+const resolution = ref(
+  `${settings.resolution.width},${settings.resolution.height}`
+);
 const levelTexture = ref(true);
 const wallTexture = ref(true);
 const fixFact = ref(settings.fixFact);
@@ -146,7 +142,6 @@ function fullscreen() {
   canvas.requestFullscreen();
 }
 onMounted(async () => {
-  
   window.onkeydown = (e: KeyboardEvent) => {
     currentKey.value.set(e.code, true);
   };
@@ -174,7 +169,7 @@ onMounted(async () => {
     }
     playerState.halfLookVertical =
       settings.halfHeight + playerState.lookVertical;
-  };  
+  };
 
   await textureStore.init();
   await gameMap.init();
@@ -195,26 +190,23 @@ watch(resolution, () => {
   const width = parseInt(dims[0]);
   const height = parseInt(dims[1]);
   setResolution(width, height);
-  playerState.halfLookVertical =
-    settings.halfHeight + playerState.lookVertical;
+  playerState.halfLookVertical = settings.halfHeight + playerState.lookVertical;
 
   if (!mainCanvas.value) throw 'no canvas';
   main3D.init(mainCanvas.value);
 });
 watch(wallTexture, () => {
   settings.wallTexture = wallTexture.value;
-})
+});
 watch(levelTexture, () => {
   settings.levelTexture = levelTexture.value;
-})
+});
 watch(fixFact, () => {
   settings.fixFact = fixFact.value;
-})
+});
 watch(lookLength, () => {
-  setLookLength(lookLength.value)
-})
-
- 
+  setLookLength(lookLength.value);
+});
 </script>
 <style lang="scss">
 .home {
@@ -227,7 +219,7 @@ watch(lookLength, () => {
 }
 .canvas {
   border: 1px black solid;
-  background-color: #000;  
+  background-color: #000;
   flex: 0 0;
 }
 .resolution {

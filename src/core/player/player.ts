@@ -1,10 +1,10 @@
 import { sign } from '../exts';
-import { GameMap } from '../gameMap/gameMap';
-import PlayerState from '../player/playerState';
+import type { GameMap } from '../gameMap/gameMap';
+import type PlayerState from '../player/playerState';
 import Ray from '../ray/ray';
 import { RayAngle } from '../ray/rayAngle';
 import settings from '../settings';
-import { MovingItem, Position } from '../types';
+import type { MovingItem, Position2D } from '../types';
 import CollisionHandler from './collisionHandler';
 import MovingItemRayHandler from './movingItemRayHandler';
 
@@ -104,7 +104,7 @@ export default class Player {
     this.state.movingTimestamp = timestamp;
   }
 
-  private checkFloor(pos: Position, timestamp: number): void {
+  private checkFloor(pos: Position2D, timestamp: number): void {
     const newPos = { x: pos.x | 0, y: pos.y | 0 };
 
     const item = this.gameMap.check(newPos);
@@ -114,13 +114,13 @@ export default class Player {
     }
     const levels = item.levels
       .filter(
-        (level) =>
+        level =>
           level.bottom >= this.state.position.z && level.bottom < this.state.top
       )
-      .map((x) => x.bottom);
+      .map(x => x.bottom);
     const level = levels.length > 0 ? Math.max(...levels) : null;
     const cl = item.levels.find(
-      (level) =>
+      level =>
         level.bottom < this.state.top &&
         level.bottom > this.state.position.z + this.state.halfHeight
     );
@@ -185,7 +185,7 @@ export default class Player {
 
     const newPos = {
       x: this.state.position.x | 0,
-      y: this.state.position.y | 0,
+      y: this.state.position.y | 0
     };
 
     const t = timestamp - this.state.jumpingTimestamp;
@@ -199,10 +199,9 @@ export default class Player {
 
     const topLevels = levels
       .filter(
-        (x) =>
-          this.state.top <= x.bottom && newZ + this.state.height >= x.bottom
+        x => this.state.top <= x.bottom && newZ + this.state.height >= x.bottom
       )
-      .map((x) => x.bottom);
+      .map(x => x.bottom);
 
     const topLevel = Math.min(...topLevels);
 
@@ -213,14 +212,14 @@ export default class Player {
     }
 
     const bottom = levels.filter(
-      (x) => this.state.position.z >= x.bottom && newZ < x.bottom
+      x => this.state.position.z >= x.bottom && newZ < x.bottom
     );
-    const bottomLevels = bottom.map((x) => x.bottom);
+    const bottomLevels = bottom.map(x => x.bottom);
     const bottomLevel = Math.max(...bottomLevels);
 
     if (bottomLevels.length > 0) {
       this.state.jumpingSpeed =
-        bottom.find((x) => x.bottom === bottomLevel)?.speed ?? 0;
+        bottom.find(x => x.bottom === bottomLevel)?.speed ?? 0;
       if (this.state.jumpingSpeed === 0) {
         this.state.jumpingTimestamp = null;
       }

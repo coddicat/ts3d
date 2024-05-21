@@ -4,7 +4,7 @@ const lookAngleDegrees = 60;
 const settings = {
   resolution: {
     width: 640,
-    height: 480,
+    height: 480
   },
   moveSpeed: 0.015,
   turnSpeed: 0.002,
@@ -24,7 +24,7 @@ const settings = {
   halfLookAngle: 0,
   buf8: new Uint8ClampedArray(),
   data: new Uint32Array(),
-  angleStep: 0,
+  angleStep: 0
 };
 
 export function setLookLength(length: number): void {
