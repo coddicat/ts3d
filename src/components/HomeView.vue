@@ -47,12 +47,13 @@ import SpriteStore from '../core/sprite/spriteStore';
 import { GameMap } from '../core/gameMap/gameMap';
 import settings, { setLookLength, setResolution } from '../core/settings';
 
+const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
-    x: 3,
+    x: 44,
     y: 3,
     z: 0,
-    angle: 0
+    angle: rad90
   },
   { width: settings.playerWidth, height: settings.playerWidth },
   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],

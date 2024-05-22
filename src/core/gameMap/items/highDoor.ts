@@ -28,7 +28,7 @@ const getDoorWallTop = (
   top: _top,
   bottom: _middle,
   render: true,
-  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, true)
+  texture: new TextureSet(TextureType.DoorTop, 2, startX, startY, repeatX, true)
 });
 const getDoorWallBottom = (
   repeatX: number,
@@ -39,7 +39,14 @@ const getDoorWallBottom = (
   top: _middle,
   bottom: _bottom,
   render: true,
-  texture: new TextureSet(TextureType.Door, 2, startX, startY, repeatX, false)
+  texture: new TextureSet(
+    TextureType.DoorBottom,
+    2,
+    startX,
+    startY,
+    repeatX,
+    false
+  )
 });
 
 const initMovingItem = (set: ItemSet, props: MovingItemProps): MovingItem => ({

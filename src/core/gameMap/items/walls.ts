@@ -195,22 +195,15 @@ export default new Map<MapItemType, MapItem>([
     }
   ],
   [
-    MapItemType.WallWood,
+    MapItemType.WallMetal,
     {
       walls: [
         {
           color: 0xdcc8c8,
-          top: 5,
+          top: 4,
           bottom: 0,
           render: true,
-          texture: new Texture(TextureType.WallWood, 1)
-        },
-        {
-          color: 0xdcc8c8,
-          top: 6,
-          bottom: 5,
-          render: true,
-          texture: new Texture(TextureType.WallBriks, 1)
+          texture: new Texture(TextureType.WallMetal, 2)
         }
       ],
       levels: [],

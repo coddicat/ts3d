@@ -4,7 +4,7 @@ import type { Level, MapItem } from '../../types';
 
 export const ceil: Level = {
   color: 0xdcb9ac,
-  bottom: 5,
+  bottom: 4,
   texture: new Texture(TextureType.Ceil, 1)
 };
 

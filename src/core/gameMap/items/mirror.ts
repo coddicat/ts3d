@@ -6,17 +6,17 @@ export default {
   walls: [
     {
       color: 0xffffff,
-      top: 5,
-      bottom: 4,
+      top: 4,
+      bottom: 2.5,
       render: true,
-      texture: new Texture(TextureType.WallWood, 1)
+      texture: new Texture(TextureType.WallMetal, 2)
     },
     {
       color: 0xffffff,
       top: 0.25,
       bottom: 0,
       render: true,
-      texture: new Texture(TextureType.WallWood, 1)
+      texture: new Texture(TextureType.WallMetal, 2)
     },
     //for collision
     {
