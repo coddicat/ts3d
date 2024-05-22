@@ -9,14 +9,14 @@ export default {
       top: 4,
       bottom: 2.5,
       render: true,
-      texture: new Texture(TextureType.WallMetal, 2)
+      texture: new Texture(TextureType.WallMetal, 1)
     },
     {
       color: 0xffffff,
       top: 0.25,
       bottom: 0,
       render: true,
-      texture: new Texture(TextureType.WallMetal, 2)
+      texture: new Texture(TextureType.WallMetal, 1)
     },
     //for collision
     {

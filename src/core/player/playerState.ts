@@ -10,8 +10,8 @@ export default class PlayerState extends SpriteObject {
   public width: number = settings.playerWidth;
   public height: number = settings.playerHeight;
   public halfHeight: number = settings.playerHeight / 2;
-  public lookHeight: number = settings.playerHeight * 0.9;
-  public lookZ = settings.playerHeight * 0.9;
+  public lookHeight: number = settings.playerHeight * 0.8;
+  public lookZ = settings.playerHeight * 0.8;
   public top = settings.playerHeight;
 
   constructor(

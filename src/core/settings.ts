@@ -6,7 +6,7 @@ const settings = {
     width: 640,
     height: 480
   },
-  moveSpeed: 0.015,
+  moveSpeed: 0.01,
   turnSpeed: 0.002,
   playerHeight: 1.8,
   playerWidth: 1.34,

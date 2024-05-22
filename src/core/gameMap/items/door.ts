@@ -145,7 +145,7 @@ export default (repeatX: number, startX: number, startY: number): MapItem => ({
       top: 4,
       bottom: hight + dy,
       render: true,
-      texture: new Texture(TextureType.WallMetal, 2)
+      texture: new Texture(TextureType.WallMetal, 1)
     }
   ],
   levels: [getDoorLevelTop(), getDoorLevelBottom()],

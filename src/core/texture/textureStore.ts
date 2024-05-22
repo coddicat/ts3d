@@ -1,51 +1,57 @@
 import { TextureData } from './textureData';
 
 export enum TextureType {
+  CoridorCeil,
+  WallCoridor,
+  LowWallCoridor,
   FloorMetal,
-  FloorNumber,
-  WallBriks,
+  Numbers,
+  //WallBriks,
   DukeFront,
   DukeBack,
   DukeSide,
-  Banan,
-  WallWood,
+  //Banan,
+  //WallWood,
   WallMetal,
-  Parquet,
-  Ground,
-  Sand,
+  //Parquet,
+  //Ground,
+  //Sand,
   DoorAbove,
   DoorTop,
   DoorBottom,
   WelcomeWall,
   Ceil,
   Window,
-  Aim,
-  Sky
+  Aim
+  //Sky
 }
 
 const href = (path: string): string => new URL(path, import.meta.url).href;
 
 const textureFiles = new Map<TextureType, string>([
-  [TextureType.FloorMetal, href('../../assets/floor2.png')],
+  [TextureType.CoridorCeil, href('../../assets/ceil_coridor.png')],
+  [TextureType.WallCoridor, href('../../assets/coridor.png')],
+  [TextureType.LowWallCoridor, href('../../assets/low_coridor.png')],
+  [TextureType.FloorMetal, href('../../assets/floor_metal.png')],
   [TextureType.DukeFront, href('../../assets/duke_front.png')],
   [TextureType.DukeBack, href('../../assets/duke_back.png')],
   [TextureType.DukeSide, href('../../assets/duke_side.png')],
-  [TextureType.WallBriks, href('../../assets/wall_briks.png')],
-  [TextureType.WallWood, href('../../assets/wall_wood.png')],
+  // [TextureType.WallBriks, href('../../assets/wall_briks.png')],
+  // [TextureType.WallWood, href('../../assets/wall_wood.png')],
   [TextureType.WallMetal, href('../../assets/wall_metal.png')],
-  [TextureType.FloorNumber, href('../../assets/floor1.png')],
-  [TextureType.Banan, href('../../assets/banan.png')],
-  [TextureType.Parquet, href('../../assets/parquet.png')],
-  [TextureType.Ground, href('../../assets/ground.png')],
+  [TextureType.Numbers, href('../../assets/numbers.png')],
+  // [TextureType.Banan, href('../../assets/banan.png')],
+  // [TextureType.Parquet, href('../../assets/parquet.png')],
+  // [TextureType.Ground, href('../../assets/ground.png')],
   [TextureType.DoorAbove, href('../../assets/door_above.png')],
   [TextureType.DoorTop, href('../../assets/door_top.png')],
   [TextureType.DoorBottom, href('../../assets/door_bottom.png')],
   [TextureType.WelcomeWall, href('../../assets/welcome_wall.png')],
   [TextureType.Ceil, href('../../assets/ceil.png')],
-  [TextureType.Sand, href('../../assets/sand.png')],
+  // [TextureType.Sand, href('../../assets/sand.png')],
   [TextureType.Window, href('../../assets/window.png')],
-  [TextureType.Aim, href('../../assets/aim.png')],
-  [TextureType.Sky, href('../../assets/sky.png')]
+  [TextureType.Aim, href('../../assets/aim.png')]
+  // [TextureType.Sky, href('../../assets/sky.png')]
 ]);
 
 const store = {

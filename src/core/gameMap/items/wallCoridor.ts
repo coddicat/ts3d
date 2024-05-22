@@ -5,15 +5,15 @@ export default (repeatX: number, startX: number, startY: number) => ({
   walls: [
     {
       color: 0xc8c8dc,
-      top: 4,
+      top: 2.8,
       bottom: 0,
       render: true,
       texture: new TextureSet(
-        TextureType.WelcomeWall,
-        4,
+        TextureType.WallCoridor,
+        1.3,
         startX,
         startY,
-        repeatX,
+        5,
         false
       )
     }

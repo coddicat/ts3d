@@ -50,8 +50,8 @@ import settings, { setLookLength, setResolution } from '../core/settings';
 const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
-    x: 44,
-    y: 3,
+    x: 56,
+    y: 17,
     z: 0,
     angle: rad90
   },

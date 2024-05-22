@@ -17,7 +17,14 @@ export default class Ray {
   public fixedDistance!: number;
   public mirrorDistance!: number;
   public side!: Axis;
-  public offset!: number;
+
+  private _offset?: number;
+  public get offset(): number {
+    if (this._offset === undefined) {
+      this._offset = this.getOffset();
+    }
+    return this._offset;
+  }
   public rayAngle: RayAngle;
 
   public spriteIndexGetter!: (
@@ -55,18 +62,17 @@ export default class Ray {
       x: this.axisX.from,
       y: this.axisY.from
     };
-    this.setOffset();
+    this._offset = undefined;
   }
 
-  private setOffset(): void {
-    this.offset =
+  private getOffset(): number {
+    const dif = this.distance - this.mirrorDistance;
+    const offset =
       this.side === Axis.x
-        ? this.rayAngle.cos * (this.distance - this.mirrorDistance) +
-          this.fromPosition.x
-        : this.rayAngle.sin * (this.distance - this.mirrorDistance) +
-          this.fromPosition.y;
+        ? this.rayAngle.cos * dif + this.fromPosition.x
+        : this.rayAngle.sin * dif + this.fromPosition.y;
 
-    this.offset -= this.offset | 0;
+    return offset - (offset | 0);
   }
 
   private handleStep(last: boolean): boolean {
@@ -112,7 +118,7 @@ export default class Ray {
     }
 
     this.fixedDistance = this.distance * this.rayAngle.fixDistance;
-    this.setOffset();
+    this._offset = undefined;
 
     return false;
   }
