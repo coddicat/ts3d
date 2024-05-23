@@ -1,5 +1,5 @@
 const rad = Math.PI / 180;
-const lookAngleDegrees = 60;
+//const lookAngleDegrees = 60;
 
 const settings = {
   resolution: {
@@ -15,7 +15,7 @@ const settings = {
   fixFact: 1,
 
   lookLength: 0,
-  lookAngleDegrees: 0,
+  //lookAngleDegrees: 0,
   lookAngle: 0,
   lookMapStep: 0,
   halfHeight: 0,
@@ -44,9 +44,9 @@ export function setResolution(width: number, height: number): void {
 }
 
 export function setLookAngle(degrees: number): void {
-  settings.lookAngleDegrees = degrees;
-  settings.lookAngle = lookAngleDegrees * rad;
-  settings.lookMapStep = (lookAngleDegrees * rad) / 20;
+  //const lookAngleDegrees = 0; // degrees;
+  settings.lookAngle = degrees * rad;
+  settings.lookMapStep = (degrees * rad) / 20;
   settings.halfLookAngle = settings.lookAngle / 2;
   settings.angleStep = settings.lookAngle / settings.resolution.width;
 }

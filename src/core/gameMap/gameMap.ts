@@ -10,7 +10,7 @@ import type {
 import gridMap from './grid';
 import type { MapItemType } from './mapItemType';
 import { mapItemTypeKeys } from './mapItemType';
-import { emptyItem } from './items/basic';
+import { outmapItem, emptyItem } from './items/basic';
 import { singleItems, itemsInSet, movingTypes } from './items';
 
 export class GameMap {
@@ -66,10 +66,10 @@ export class GameMap {
 
   public check(cellPos: { x: number; y: number }): MapItem {
     if (cellPos.y < 0 || cellPos.y >= this.mapData.length || cellPos.x < 0) {
-      return emptyItem;
+      return outmapItem;
     }
     if (cellPos.x >= this.mapData[cellPos.y].length) {
-      return emptyItem;
+      return outmapItem;
     }
     return this.mapData[cellPos.y][cellPos.x];
   }

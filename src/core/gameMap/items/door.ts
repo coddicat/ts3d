@@ -136,16 +136,22 @@ export const doorMovingItemProps: MovingItemProps = {
 
 export default (repeatX: number, startX: number, startY: number): MapItem => ({
   walls: [
-    getDoorWallTop(repeatX, startX, startY),
-    getDoorWallBottom(repeatX, startX, startY),
-
-    getDoorWallAbove(repeatX, startX, startY),
     {
       color: 0xcccccc,
       top: 4,
       bottom: hight + dy,
       render: true,
       texture: new Texture(TextureType.WallMetal, 1)
+    },
+    getDoorWallAbove(repeatX, startX, startY),
+    getDoorWallTop(repeatX, startX, startY),
+    getDoorWallBottom(repeatX, startX, startY),
+    {
+      color: 0xdcc8c8,
+      top: 0,
+      bottom: -2.4,
+      render: true,
+      texture: new Texture(TextureType.WallBasement, 2.4, false, true)
     }
   ],
   levels: [getDoorLevelTop(), getDoorLevelBottom()],

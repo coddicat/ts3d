@@ -50,10 +50,10 @@ import settings, { setLookLength, setResolution } from '../core/settings';
 const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
-    x: 56,
-    y: 17,
+    x: 35,
+    y: 69,
     z: 0,
-    angle: rad90
+    angle: rad90 * 4
   },
   { width: settings.playerWidth, height: settings.playerWidth },
   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],

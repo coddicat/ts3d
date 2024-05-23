@@ -20,9 +20,15 @@ export const lowCoridorCeil: Level = {
   texture: new Texture(TextureType.CoridorCeil, 1)
 };
 
+export const basementFloor: Level = {
+  color: 0xc8c8dc,
+  bottom: -2.4,
+  texture: new Texture(TextureType.FloorBasement, 1)
+};
+
 export const coridorFloor: Level = {
   color: 0xc8c8dc,
-  bottom: 0.2,
+  bottom: 0,
   texture: new Texture(TextureType.FloorMetal, 1)
 };
 
@@ -30,6 +36,17 @@ export const floor: Level = {
   color: 0xc8c8dc,
   bottom: 0,
   texture: new Texture(TextureType.FloorMetal, 1)
+};
+
+export const woodFloorTop: Level = {
+  color: 0xc8c8dc,
+  bottom: 0,
+  texture: new Texture(TextureType.Wood, 1)
+};
+export const woodFloorBottom: Level = {
+  color: 0xc8c8dc,
+  bottom: -0.3,
+  texture: new Texture(TextureType.Wood, 1)
 };
 
 // export const towerFloor: Level = {
@@ -67,6 +84,12 @@ export const emptyItem: MapItem = {
   stopRay: false
 };
 
+export const outmapItem: MapItem = {
+  walls: [],
+  levels: [],
+  stopRay: true
+};
+
 export const numberItem: MapItem = {
   walls: [],
   levels: [floorNumber, ceilNumber],
@@ -79,6 +102,20 @@ export const roomItem: MapItem = {
   stopRay: false
 };
 
+export const bridgeItem: MapItem = {
+  walls: [
+    {
+      color: 0xffffff,
+      top: 0,
+      bottom: -0.3,
+      render: true,
+      texture: new Texture(TextureType.Wood, 1)
+    }
+  ],
+  levels: [basementFloor, woodFloorBottom, woodFloorTop, roomCeil],
+  stopRay: false
+};
+
 export const coridor: MapItem = {
   walls: [
     {
@@ -87,9 +124,22 @@ export const coridor: MapItem = {
       bottom: 2.8,
       render: true,
       texture: new Texture(TextureType.WallMetal, 1)
+    },
+    {
+      color: 0xdcc8c8,
+      top: 0,
+      bottom: -2.4,
+      render: true,
+      texture: new Texture(TextureType.WallBasement, 2.4)
     }
   ],
   levels: [floor, coridorCeil],
+  stopRay: false
+};
+
+export const basementSpace: MapItem = {
+  walls: [],
+  levels: [basementFloor, roomCeil],
   stopRay: false
 };
 
@@ -101,13 +151,6 @@ export const lowCoridor: MapItem = {
       bottom: 2.5,
       render: true,
       texture: new Texture(TextureType.WallMetal, 1)
-    },
-    {
-      color: 0xffffff,
-      top: 0.2,
-      bottom: 0,
-      render: true,
-      texture: new Texture(TextureType.FloorMetal, 1)
     }
   ],
   levels: [coridorFloor, lowCoridorCeil],
