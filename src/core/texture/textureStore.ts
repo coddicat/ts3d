@@ -3,6 +3,7 @@ import { TextureData } from './textureData';
 export enum TextureType {
   CoridorCeil,
   WallCoridor,
+  WallMain,
   LowWallCoridor,
   FloorMetal,
   FloorBasement,
@@ -16,8 +17,8 @@ export enum TextureType {
   WallMetal,
   WallBasement,
   Parquet,
-  //Ground,
-  //Sand,
+  Ground,
+  Sand,
   DoorAbove,
   DoorTop,
   DoorBottom,
@@ -33,7 +34,8 @@ const href = (path: string): string => new URL(path, import.meta.url).href;
 const textureFiles = new Map<TextureType, string>([
   [TextureType.FloorBasement, href('../../assets/floor_basement.png')],
   [TextureType.CoridorCeil, href('../../assets/ceil_coridor.png')],
-  [TextureType.WallCoridor, href('../../assets/coridor.png')],
+  [TextureType.WallMain, href('../../assets/wall_main.png')],
+  [TextureType.WallCoridor, href('../../assets/wall1.png')],
   [TextureType.LowWallCoridor, href('../../assets/low_coridor.png')],
   [TextureType.FloorMetal, href('../../assets/floor_metal.png')],
   [TextureType.DukeFront, href('../../assets/duke_front.png')],
@@ -47,13 +49,16 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.Numbers, href('../../assets/numbers.png')],
   // [TextureType.Banan, href('../../assets/banan.png')],
   [TextureType.Parquet, href('../../assets/parquet.png')],
-  // [TextureType.Ground, href('../../assets/ground.png')],
+
+  [TextureType.Ground, href('../../assets/ground.png')],
+  [TextureType.Sand, href('../../assets/sand.png')],
+
   [TextureType.DoorAbove, href('../../assets/door_above.png')],
   [TextureType.DoorTop, href('../../assets/door_top.png')],
   [TextureType.DoorBottom, href('../../assets/door_bottom.png')],
   [TextureType.WelcomeWall, href('../../assets/welcome_wall.png')],
   [TextureType.Ceil, href('../../assets/ceil.png')],
-  // [TextureType.Sand, href('../../assets/sand.png')],
+
   [TextureType.Window, href('../../assets/window.png')],
   [TextureType.Aim, href('../../assets/aim.png')]
   // [TextureType.Sky, href('../../assets/sky.png')]

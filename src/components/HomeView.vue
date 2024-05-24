@@ -5,11 +5,12 @@
         <span>fps: {{ fpsDisplay }}</span>
       </label>
       <select class="resolution" v-model="resolution">
-        <option value="2048,1536">2048x1536</option>
-        <option value="1024,768">1024x768</option>
-        <option value="800,600">800x600</option>
-        <option value="640,480">640x480</option>
-        <option value="320,240">320x240</option>
+        <option value="1920,1080">1920x1080</option>
+        <option value="1280,720">1280x720</option>
+        <option value="1024,576">1024x576</option>
+        <option value="960,540">960x540</option>
+        <option value="854,480">854x480</option>
+        <option value="640,360">640x360</option>
       </select>
       <label
         ><span>Level texture</span
@@ -20,17 +21,13 @@
         ><input type="checkbox" v-model="wallTexture" />
       </label>
       <label>
-        <span>Fish eye</span>
-        <input v-model="fixFact" type="range" min="0" max="1.5" step="0.1" />
-      </label>
-      <label>
         <span>Distance</span>
         <input v-model="lookLength" type="range" min="20" max="80" step="5" />
       </label>
       <button @click="fullscreen">fullscreen</button>
     </div>
     <div class="main">
-      <canvas width="800" height="600" class="canvas" ref="mainCanvas"></canvas>
+      <canvas width="854" height="480" class="canvas" ref="mainCanvas"></canvas>
     </div>
     <div></div>
   </div>
@@ -50,10 +47,10 @@ import settings, { setLookLength, setResolution } from '../core/settings';
 const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
-    x: 35,
-    y: 69,
+    x: 30,
+    y: 5,
     z: 0,
-    angle: rad90 * 4
+    angle: rad90
   },
   { width: settings.playerWidth, height: settings.playerWidth },
   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
@@ -124,7 +121,6 @@ const resolution = ref(
 );
 const levelTexture = ref(true);
 const wallTexture = ref(true);
-const fixFact = ref(settings.fixFact);
 const lookLength = ref(settings.lookLength);
 
 function start() {
@@ -142,6 +138,21 @@ function fullscreen() {
   const canvas = mainCanvas.value;
   canvas.requestFullscreen();
 }
+function onFullscreenChange() {
+  if (!mainCanvas.value) throw 'no canvas';
+  const canvas = mainCanvas.value;
+  canvas.width = settings.resolution.width;
+  canvas.height = settings.resolution.height;
+
+  if (!document.fullscreenElement) {
+    canvas.width = 854;
+    canvas.height = 480;
+  } else {
+    canvas.width = settings.resolution.width;
+    canvas.height = settings.resolution.height;
+  }
+}
+
 onMounted(async () => {
   window.onkeydown = (e: KeyboardEvent) => {
     currentKey.value.set(e.code, true);
@@ -159,7 +170,10 @@ onMounted(async () => {
   canvas.onmousemove = (ev: MouseEvent) => {
     if (document.pointerLockElement !== canvas) return;
 
-    playerState.position.angle += settings.turnSpeed * ev.movementX;
+    playerState.setAngle(
+      playerState.position.angle + settings.turnSpeed * ev.movementX
+    );
+
     playerState.lookVertical -= ev.movementY;
     const max = settings.resolution.height * 0.625;
     if (playerState.lookVertical > max) {
@@ -171,6 +185,7 @@ onMounted(async () => {
     playerState.halfLookVertical =
       settings.halfHeight + playerState.lookVertical;
   };
+  document.addEventListener('fullscreenchange', onFullscreenChange);
 
   await textureStore.init();
   await gameMap.init();
@@ -183,6 +198,7 @@ onMounted(async () => {
 onUnmounted(() => {
   window.onkeydown = null;
   window.onkeyup = null;
+  document.removeEventListener('fullscreenchange', onFullscreenChange);
   stop();
 });
 
@@ -201,9 +217,6 @@ watch(wallTexture, () => {
 });
 watch(levelTexture, () => {
   settings.levelTexture = levelTexture.value;
-});
-watch(fixFact, () => {
-  settings.fixFact = fixFact.value;
 });
 watch(lookLength, () => {
   setLookLength(lookLength.value);

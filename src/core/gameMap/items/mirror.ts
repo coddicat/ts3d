@@ -6,7 +6,7 @@ export default {
   walls: [
     {
       color: 0xffffff,
-      top: 4,
+      top: 3.5,
       bottom: 2.5,
       render: true,
       texture: new Texture(TextureType.WallMetal, 1)
@@ -21,7 +21,7 @@ export default {
     //for collision
     {
       color: 0,
-      top: 4,
+      top: 3.5,
       bottom: 0,
       render: false,
       texture: null

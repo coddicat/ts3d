@@ -10,6 +10,7 @@ import type {
   MovingItemProps,
   Wall
 } from '../../types';
+import { basementWall } from './wallMain';
 
 const hight = 2.5;
 const middle = 1.5;
@@ -136,23 +137,10 @@ export const doorMovingItemProps: MovingItemProps = {
 
 export default (repeatX: number, startX: number, startY: number): MapItem => ({
   walls: [
-    {
-      color: 0xcccccc,
-      top: 4,
-      bottom: hight + dy,
-      render: true,
-      texture: new Texture(TextureType.WallMetal, 1)
-    },
     getDoorWallAbove(repeatX, startX, startY),
     getDoorWallTop(repeatX, startX, startY),
     getDoorWallBottom(repeatX, startX, startY),
-    {
-      color: 0xdcc8c8,
-      top: 0,
-      bottom: -2.4,
-      render: true,
-      texture: new Texture(TextureType.WallBasement, 2.4, false, true)
-    }
+    basementWall
   ],
   levels: [getDoorLevelTop(), getDoorLevelBottom()],
   stopRay: false

@@ -1,4 +1,5 @@
 import { sign } from '../exts';
+import type PlayerState from '../player/playerState';
 
 const rad90 = Math.PI / 2;
 
@@ -26,14 +27,16 @@ export class RayAngle {
   public fixDistance!: number;
   public timestamp: number;
 
-  constructor(angle?: number) {
+  private playerState?: PlayerState;
+
+  constructor(angle: number, playerState?: PlayerState) {
+    this.playerState = playerState;
     this.timestamp = 0;
-    this.setAngle(angle ?? 0, 1);
+    this.setAngle(angle);
   }
 
-  public setAngle(angle: number, fixDistance: number | undefined): void {
+  public setAngle(angle: number): void {
     this.angle = angle;
-    this.fixDistance = fixDistance ?? 1;
     this.setAngleProps();
   }
 
@@ -54,6 +57,13 @@ export class RayAngle {
     this.revertSinAbs = this.revertSin * this.sinSign;
 
     this.spriteFact = this.sin - this.cos * this.tan90;
+
+    if (this.playerState != undefined) {
+      this.fixDistance =
+        this.cos * this.playerState.cos + this.sin * this.playerState.sin;
+    } else {
+      this.fixDistance = 1;
+    }
 
     this.fixCosAbs = this.cosAbs / this.fixDistance;
     this.fixSinAbs = this.sinAbs / this.fixDistance;

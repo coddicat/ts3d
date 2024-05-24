@@ -50,15 +50,4 @@ export default new Map<MapItemType, MapItem>([
   [MapItemType.Stair5, stair(-1.5)],
   [MapItemType.Stair6, stair(-1.8)],
   [MapItemType.Stair7, stair(-2.1)]
-
-  //   [MapItemType.Stair7, stair(3)],
-  //   [MapItemType.Stair8, stair(2.4)],
-  //   [MapItemType.Stair9, stair(2.7)],
-  //   [MapItemType.Stair10, stair(3)],
-  //   [MapItemType.Stair11, stair(3.3)],
-  //   [MapItemType.Stair12, stair(3.6)],
-  //   [MapItemType.Stair13, stair(3.9)],
-  //   [MapItemType.Stair14, stair(4.2)],
-  //   [MapItemType.Stair15, stair(4.5)],
-  //   [MapItemType.Stair16, stair(4.8)]
 ]);

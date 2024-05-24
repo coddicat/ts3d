@@ -8,12 +8,14 @@ export default class TextureSet extends Texture {
     startX: number,
     startY: number,
     repeatX: number,
-    revert: boolean
+    revert: boolean = false,
+    transparent: boolean = false
   ) {
     super(type, repeat);
     this.startX = startX;
     this.startY = startY;
     this.repeatX = repeatX;
     this.revert = revert;
+    this.transparent = transparent;
   }
 }

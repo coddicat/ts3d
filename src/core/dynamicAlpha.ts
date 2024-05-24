@@ -13,7 +13,7 @@ export default class DynamicAlpha {
 
   public init(bottom: number): void {
     this.distanceRate =
-      settings.resolution.width * (this.playerState.lookZ - bottom);
+      settings.resolution.height * (this.playerState.lookZ - bottom);
   }
 
   public distanceRate = 0;

@@ -24,7 +24,7 @@ class RayCasting {
     this.imageData = imageData;
     this.playerState = playerState;
 
-    this.rayAngle = new RayAngle();
+    this.rayAngle = new RayAngle(0, playerState);
     settings.data.fill(0);
     this.rayHandler = new RayHandler(playerState, spriteObjects, this, gameMap);
 
@@ -46,17 +46,16 @@ class RayCasting {
 
   public draw3D(): void {
     this.displayX = 0;
-    let angle = this.playerState.position.angle - settings.halfLookAngle;
+
     do {
-      const fixDistance = Math.cos(
-        (this.playerState.position.angle - angle) * settings.fixFact
-      );
-      this.rayAngle.setAngle(angle, fixDistance);
+      const angle =
+        settings.angles[this.displayX] + this.playerState.position.angle;
+
+      this.rayAngle.setAngle(angle);
 
       this.handleAngle();
 
       this.displayX++;
-      angle += settings.angleStep;
       this.rayHandler.reset();
     } while (this.displayX < settings.resolution.width);
 

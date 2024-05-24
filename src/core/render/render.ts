@@ -34,7 +34,7 @@ class Render {
   }
 
   private drawWall(rayState: Ray, light: number, wall: Wall): void {
-    const fact = settings.resolution.width / this.rayHandlerState.newDistance;
+    const fact = settings.resolution.height / this.rayHandlerState.newDistance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const repeatX = wall.texture?.repeatX ?? 1;
     const startY = wall.texture?.startY ?? 0;

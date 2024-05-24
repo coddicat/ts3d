@@ -1,8 +1,10 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
+import { basementWall } from './wallMain';
 
-export default (repeatX: number, startX: number, startY: number) => ({
+export default (_: number, startX: number, startY: number) => ({
   walls: [
+    basementWall,
     {
       color: 0xc8c8dc,
       top: 2.8,
@@ -10,7 +12,7 @@ export default (repeatX: number, startX: number, startY: number) => ({
       render: true,
       texture: new TextureSet(
         TextureType.WallCoridor,
-        1.3,
+        2.8,
         startX,
         startY,
         5,

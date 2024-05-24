@@ -13,6 +13,8 @@ export default class PlayerState extends SpriteObject {
   public lookHeight: number = settings.playerHeight * 0.8;
   public lookZ = settings.playerHeight * 0.8;
   public top = settings.playerHeight;
+  public cos = 0;
+  public sin = 0;
 
   constructor(
     position: Vector3D,
@@ -21,6 +23,7 @@ export default class PlayerState extends SpriteObject {
     repeat: number
   ) {
     super(position, size, textureTypes, repeat);
+    this.setAngle(position.angle);
   }
 
   public lookVertical = 0;
@@ -41,5 +44,11 @@ export default class PlayerState extends SpriteObject {
     if (jump) {
       this.jumpingFloor = this.position.z;
     }
+  }
+
+  public setAngle(value: number): void {
+    this.position.angle = value;
+    this.cos = Math.cos(value);
+    this.sin = Math.sin(value);
   }
 }

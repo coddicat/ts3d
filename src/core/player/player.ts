@@ -1,3 +1,4 @@
+//import { sign } from '../exts';
 import { sign } from '../exts';
 import type { GameMap } from '../gameMap/gameMap';
 import type PlayerState from '../player/playerState';
@@ -9,11 +10,16 @@ import CollisionHandler from './collisionHandler';
 import MovingItemRayHandler from './movingItemRayHandler';
 
 const collisionDistance = 0.6;
-const quartPi = Math.PI / 4;
-const Pi_34 = (Math.PI / 4) * 3;
-const halfPi = Math.PI / 2;
+const quartPi = Math.PI / 4; //45deg
+const halfPi = Math.PI / 2; //90deg
+const Pi_34 = (Math.PI / 4) * 3; //135/deg
 const Pi1_5 = Math.PI * 1.5;
 const acc = 0.0001;
+
+const cos45 = Math.cos(quartPi);
+const cos135 = Math.cos(Pi_34);
+const sin45 = Math.sin(quartPi);
+const sin135 = Math.sin(Pi_34);
 
 export default class Player {
   private state: PlayerState;
@@ -40,15 +46,48 @@ export default class Player {
       const t = timestamp - this.state.movingTimestamp;
       let userAngle = this.state.position.angle;
 
-      if (right > 0 && forward > 0) userAngle += quartPi;
-      else if (right < 0 && forward > 0) userAngle -= quartPi;
-      else if (right > 0 && forward < 0) userAngle += Pi_34;
-      else if (right < 0 && forward < 0) userAngle -= Pi_34;
-      else if (right != 0) userAngle += halfPi * right;
-      else if (forward < 0) userAngle += Math.PI;
+      let cos = this.state.cos;
+      let sin = this.state.sin;
 
-      const cos = Math.cos(userAngle);
-      const sin = Math.sin(userAngle);
+      //45
+      if (right > 0 && forward > 0) {
+        cos = this.state.cos * cos45 - this.state.sin * sin45;
+        sin = this.state.sin * cos45 + this.state.cos * sin45;
+        userAngle += quartPi;
+      }
+      //-45
+      if (right < 0 && forward > 0) {
+        cos = this.state.cos * cos45 + this.state.sin * sin45;
+        sin = this.state.sin * cos45 - this.state.cos * sin45;
+        userAngle -= quartPi;
+      }
+
+      //135
+      if (right > 0 && forward < 0) {
+        cos = this.state.cos * cos135 - this.state.sin * sin135;
+        sin = this.state.sin * cos135 + this.state.cos * sin135;
+        userAngle += Pi_34;
+      }
+      //-135
+      if (right < 0 && forward < 0) {
+        cos = this.state.cos * cos135 + this.state.sin * sin135;
+        sin = this.state.sin * cos135 - this.state.cos * sin135;
+        userAngle -= Pi_34;
+      }
+
+      //180
+      if (right == 0 && forward < 0) {
+        cos = -this.state.cos;
+        sin = -this.state.sin;
+        userAngle += Math.PI;
+      }
+      //-90
+      if (right != 0 && forward == 0) {
+        cos = -this.state.sin * right;
+        sin = this.state.cos * right;
+        userAngle += halfPi * right;
+      }
+
       const distance = settings.moveSpeed * t;
       const xDistance = cos * distance;
       const yDistance = sin * distance;
@@ -152,7 +191,8 @@ export default class Player {
     }
     if (this.state.turningTimestamp) {
       const t = timestamp - this.state.turningTimestamp;
-      this.state.position.angle += settings.turnSpeed * t * direction;
+      const angle = this.state.position.angle;
+      this.state.setAngle(angle + settings.turnSpeed * t * direction);
     }
     this.state.turningTimestamp = timestamp;
   }
