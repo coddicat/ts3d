@@ -96,7 +96,7 @@ class Render {
     light: number,
     textureData: TextureData
   ): void {
-    const fact = settings.resolution.width / distance;
+    const fact = settings.resolution.height / distance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const y0 = a - top * fact;
     const y1 = a - bottom * fact;
