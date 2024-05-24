@@ -37,10 +37,10 @@ export class RayAngle {
 
   public setAngle(angle: number): void {
     this.angle = angle;
-    this.setAngleProps();
+    this.setAngleProps(true);
   }
 
-  private setAngleProps(): void {
+  private setAngleProps(calcFixDistance: boolean): void {
     this.cos = Math.cos(this.angle);
     this.sin = Math.sin(this.angle);
 
@@ -58,10 +58,10 @@ export class RayAngle {
 
     this.spriteFact = this.sin - this.cos * this.tan90;
 
-    if (this.playerState != undefined) {
+    if (calcFixDistance && this.playerState != undefined) {
       this.fixDistance =
         this.cos * this.playerState.cos + this.sin * this.playerState.sin;
-    } else {
+    } else if (calcFixDistance) {
       this.fixDistance = 1;
     }
 
@@ -75,11 +75,11 @@ export class RayAngle {
 
   public mirrorX() {
     this.angle *= -1;
-    this.setAngleProps();
+    this.setAngleProps(false);
   }
 
   public mirrorY() {
     this.angle = Math.PI - this.angle;
-    this.setAngleProps();
+    this.setAngleProps(false);
   }
 }

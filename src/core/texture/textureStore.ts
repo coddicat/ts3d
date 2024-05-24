@@ -12,7 +12,7 @@ export enum TextureType {
   DukeFront,
   DukeBack,
   DukeSide,
-  //Banan,
+  Banan,
   Wood,
   WallMetal,
   WallBasement,
@@ -47,7 +47,7 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.Wood, href('../../assets/wall_wood.png')],
   [TextureType.WallMetal, href('../../assets/wall_metal.png')],
   [TextureType.Numbers, href('../../assets/numbers.png')],
-  // [TextureType.Banan, href('../../assets/banan.png')],
+  [TextureType.Banan, href('../../assets/banan.png')],
   [TextureType.Parquet, href('../../assets/parquet.png')],
 
   [TextureType.Ground, href('../../assets/ground.png')],
