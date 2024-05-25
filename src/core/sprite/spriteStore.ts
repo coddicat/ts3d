@@ -20,20 +20,34 @@ function getBanan(x: number, y: number, z: number): SpriteObject {
 }
 
 const sprites = [
-  new SpriteObject(
-    {
-      x: 30,
-      y: 5,
-      z: 0,
-      angle: 0
-    },
-    {
-      height: 1.8,
-      width: 1.34
-    },
-    [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
-    1
-  ),
+  // new SpriteObject(
+  //   {
+  //     x: 0,
+  //     y: 84,
+  //     z: 0,
+  //     angle: 0
+  //   },
+  //   {
+  //     height: 1080,
+  //     width: 1920
+  //   },
+  //   [TextureType.Sky],
+  //   1
+  // ),
+  // new SpriteObject(
+  //   {
+  //     x: 30,
+  //     y: 5,
+  //     z: 0,
+  //     angle: 0
+  //   },
+  //   {
+  //     height: 1.8,
+  //     width: 1.34
+  //   },
+  //   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
+  //   1
+  // ),
   getBanan(29.5, 73.5, -0.6),
   getBanan(29.5, 73.5, -1.2),
   getBanan(29.5, 73.5, -1.8)

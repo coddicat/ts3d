@@ -3,7 +3,7 @@ import { TextureType } from '../../texture/textureStore';
 import type { MapItem } from '../../types';
 import { floor, roomCeil } from './basic';
 
-const height = 0.7;
+const height = 0.6;
 const wall = {
   bottom: height - 0.25,
   top: height,

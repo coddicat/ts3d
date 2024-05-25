@@ -32,8 +32,8 @@ export enum TextureType {
   Console13,
   Console21,
   Console22,
-  Console23
-  //Sky
+  Console23,
+  Sky
 }
 
 const href = (path: string): string => new URL(path, import.meta.url).href;
@@ -75,9 +75,9 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.Console13, href('../../assets/console_13.png')],
   [TextureType.Console21, href('../../assets/console_21.png')],
   [TextureType.Console22, href('../../assets/console_22.png')],
-  [TextureType.Console23, href('../../assets/console_23.png')]
+  [TextureType.Console23, href('../../assets/console_23.png')],
 
-  // [TextureType.Sky, href('../../assets/sky.png')]
+  [TextureType.Sky, href('../../assets/sky.png')]
 ]);
 
 const store = {

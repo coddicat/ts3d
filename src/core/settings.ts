@@ -10,6 +10,7 @@ const settings = {
   turnSpeed: 0.001,
   playerHeight: 1.8,
   playerWidth: 1.34,
+  maxLookVertical: 0,
   levelTexture: true,
   wallTexture: true,
 
@@ -45,7 +46,7 @@ export function setResolution(width: number, height: number): void {
   settings.angleStep = settings.lookAngle / width;
   settings.planeDistance =
     settings.halfWidth / Math.tan(settings.halfLookAngle);
-
+  settings.maxLookVertical = settings.resolution.height * 0.625;
   calculateAngles();
 }
 

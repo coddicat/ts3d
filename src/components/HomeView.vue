@@ -174,14 +174,11 @@ onMounted(async () => {
       playerState.position.angle + settings.turnSpeed * ev.movementX
     );
 
-    playerState.lookVertical -= ev.movementY;
-    const max = settings.resolution.height * 0.625;
-    if (playerState.lookVertical > max) {
-      playerState.lookVertical = max;
-    }
-    if (playerState.lookVertical < -max) {
-      playerState.lookVertical = -max;
-    }
+    const max = settings.maxLookVertical;
+    const newLookVertical = playerState.lookVertical - ev.movementY;
+
+    playerState.lookVertical = Math.max(-max, Math.min(max, newLookVertical));
+
     playerState.halfLookVertical =
       settings.halfHeight + playerState.lookVertical;
   };
