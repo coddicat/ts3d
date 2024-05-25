@@ -1,24 +1,11 @@
-import Texture from '../../texture/texture';
-import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import { basementWall, getWall as getMainWall } from './wallMain';
 
-export default {
+export default (_: number, startX: number, startY: number) => ({
   walls: [
-    {
-      color: 0xffffff,
-      top: 3.5,
-      bottom: 2.5,
-      render: true,
-      texture: new Texture(TextureType.WallMetal, 1)
-    },
-    {
-      color: 0xffffff,
-      top: 0.25,
-      bottom: 0,
-      render: true,
-      texture: new Texture(TextureType.WallMetal, 1)
-    },
-    //for collision
+    getMainWall(startX, startY, 3.5, 2.8, false),
+    getMainWall(startX, startY, 0.5, 0, true),
+    basementWall,
+    //collision
     {
       color: 0,
       top: 3.5,
@@ -28,6 +15,6 @@ export default {
     }
   ],
   levels: [],
-  stopRay: false,
+  stopRay: true,
   mirror: true
-} as MapItem;
+});

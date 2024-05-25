@@ -141,7 +141,6 @@ class RayHandler implements CellHandler {
     }
 
     for (const level of this.prevItem.aboveLevels!) {
-      this.render.handleLevel(ray, level);
       if (!this.pixelsCounter.empty) return;
 
       for (const obj of this.refs.aboveObjects) {
@@ -149,12 +148,14 @@ class RayHandler implements CellHandler {
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }
+
+      this.render.handleLevel(ray, level);
     }
 
-    for (const obj of this.spriteObjects) {
-      this.handleSprite(ray, obj);
-      if (!this.pixelsCounter.empty) return;
-    }
+    // for (const obj of this.spriteObjects) {
+    //   this.handleSprite(ray, obj);
+    //   if (!this.pixelsCounter.empty) return;
+    // }
   }
 
   private handleSprite(ray: Ray, sprite: SpriteObject): void {

@@ -65,7 +65,7 @@ function calculateAngles(): void {
 }
 
 setLookLength(80);
-setLookAngle(90.4);
+setLookAngle(83);
 setResolution(640, 360);
 
 export default settings;

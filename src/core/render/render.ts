@@ -51,7 +51,7 @@ class Render {
     const y1 = a - wall.bottom * fact;
 
     const top = Math.max(0, Math.min(y0, y1) | 0);
-    const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
+    const bottom = Math.min((Math.max(y0, y1) + 1) | 0, settings.maxBottom);
     const dataIndex =
       Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
 
@@ -143,7 +143,7 @@ class Render {
       this.dynamicAlpha.distanceRate / this.rayHandlerState.prevDistance;
 
     const top = Math.max(0, Math.min(y0, y1) | 0);
-    const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
+    const bottom = Math.min((Math.max(y0, y1) + 1) | 0, settings.maxBottom);
     const dataIndex =
       Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
 

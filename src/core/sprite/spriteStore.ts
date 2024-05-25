@@ -23,7 +23,7 @@ const sprites = [
   new SpriteObject(
     {
       x: 30,
-      y: 50,
+      y: 5,
       z: 0,
       angle: 0
     },
@@ -34,10 +34,9 @@ const sprites = [
     [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
     1
   ),
-  getBanan(21.5, 8.5, 0.6),
-  getBanan(21.5, 8.5, 1.2),
-  getBanan(21.5, 8.5, 1.8),
-  getBanan(21.5, 8.5, 2.4)
+  getBanan(29.5, 73.5, -0.6),
+  getBanan(29.5, 73.5, -1.2),
+  getBanan(29.5, 73.5, -1.8)
 ];
 
 export default class SpriteStore {

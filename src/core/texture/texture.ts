@@ -4,7 +4,7 @@ import type { TextureType } from './textureStore';
 export default class Texture {
   constructor(
     type: TextureType,
-    repeat: number,
+    repeat: number = 1,
     transparent = false,
     revert = false
   ) {

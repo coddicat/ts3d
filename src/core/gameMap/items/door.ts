@@ -21,14 +21,14 @@ const getDoorLevelTop = (): Level => ({
   name: 'top',
   color: 0x02f00,
   bottom: middle,
-  texture: new Texture(TextureType.FloorMetal, 1)
+  texture: new Texture(TextureType.DoorLevel, 1)
 });
 
 const getDoorLevelBottom = (): Level => ({
   name: 'bottom',
   color: 0x002f00,
   bottom: middle,
-  texture: new Texture(TextureType.FloorMetal, 1)
+  texture: new Texture(TextureType.DoorLevel, 1)
 });
 
 const getDoorWallTop = (

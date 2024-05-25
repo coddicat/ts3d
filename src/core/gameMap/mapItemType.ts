@@ -20,7 +20,16 @@ export enum MapItemType {
   Mirror,
   Door,
   Number,
-  Window
+  Window,
+  Panorama,
+  Shelfs,
+  Box,
+  Console11,
+  Console12,
+  Console13,
+  Console21,
+  Console22,
+  Console23
 }
 
 //export const movingItemTypes = [MapItemType.Door, MapItemType.Platform];
@@ -46,5 +55,15 @@ export const mapItemTypeKeys = new Map<string, MapItemType>([
   ['D', MapItemType.Door],
   ['W', MapItemType.WelcomeWall],
   ['N', MapItemType.Number],
-  ['O', MapItemType.Window]
+  ['O', MapItemType.Window],
+  ['P', MapItemType.Panorama],
+  ['S', MapItemType.Shelfs],
+  ['B', MapItemType.Box],
+
+  ['╔', MapItemType.Console11], //201
+  ['╩', MapItemType.Console12], //202
+  ['╦', MapItemType.Console13], //203
+  ['╠', MapItemType.Console21], //204
+  ['═', MapItemType.Console22], //205
+  ['╬', MapItemType.Console23] //206
 ]);

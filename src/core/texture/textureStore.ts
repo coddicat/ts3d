@@ -7,6 +7,7 @@ export enum TextureType {
   LowWallCoridor,
   FloorMetal,
   FloorBasement,
+  DoorLevel,
   Numbers,
   //WallBriks,
   DukeFront,
@@ -14,10 +15,10 @@ export enum TextureType {
   DukeSide,
   Banan,
   Wood,
-  WallMetal,
+  //WallMetal,
   WallBasement,
   Parquet,
-  Ground,
+  //Ground,
   Sand,
   DoorAbove,
   DoorTop,
@@ -25,7 +26,13 @@ export enum TextureType {
   WelcomeWall,
   Ceil,
   Window,
-  Aim
+  Aim,
+  Console11,
+  Console12,
+  Console13,
+  Console21,
+  Console22,
+  Console23
   //Sky
 }
 
@@ -45,22 +52,31 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.WallBasement, href('../../assets/wall_basement.png')],
   // [TextureType.WallBriks, href('../../assets/wall_briks.png')],
   [TextureType.Wood, href('../../assets/wall_wood.png')],
-  [TextureType.WallMetal, href('../../assets/wall_metal.png')],
+  //[TextureType.WallMetal, href('../../assets/wall_metal.png')],
   [TextureType.Numbers, href('../../assets/numbers.png')],
   [TextureType.Banan, href('../../assets/banan.png')],
   [TextureType.Parquet, href('../../assets/parquet.png')],
 
-  [TextureType.Ground, href('../../assets/ground.png')],
+  //[TextureType.Ground, href('../../assets/ground.png')],
   [TextureType.Sand, href('../../assets/sand.png')],
 
   [TextureType.DoorAbove, href('../../assets/door_above.png')],
   [TextureType.DoorTop, href('../../assets/door_top.png')],
   [TextureType.DoorBottom, href('../../assets/door_bottom.png')],
+  [TextureType.DoorLevel, href('../../assets/door_level.png')],
+
   [TextureType.WelcomeWall, href('../../assets/welcome_wall.png')],
   [TextureType.Ceil, href('../../assets/ceil.png')],
 
   [TextureType.Window, href('../../assets/window.png')],
-  [TextureType.Aim, href('../../assets/aim.png')]
+  [TextureType.Aim, href('../../assets/aim.png')],
+  [TextureType.Console11, href('../../assets/console_11.png')],
+  [TextureType.Console12, href('../../assets/console_12.png')],
+  [TextureType.Console13, href('../../assets/console_13.png')],
+  [TextureType.Console21, href('../../assets/console_21.png')],
+  [TextureType.Console22, href('../../assets/console_22.png')],
+  [TextureType.Console23, href('../../assets/console_23.png')]
+
   // [TextureType.Sky, href('../../assets/sky.png')]
 ]);
 

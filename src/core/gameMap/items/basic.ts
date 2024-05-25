@@ -65,7 +65,7 @@ export const woodFloorBottom: Level = {
 export const floorNumber: Level = {
   color: 0xa8ff00,
   bottom: 0,
-  texture: new Texture(TextureType.Numbers, 1)
+  texture: new Texture(TextureType.Numbers)
 };
 export const ceilNumber: Level = {
   color: 0xa8ff00,
