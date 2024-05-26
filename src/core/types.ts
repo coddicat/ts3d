@@ -39,6 +39,7 @@ export type MapItem = {
   levels: Level[];
   stopRay: boolean;
   mirror?: boolean;
+  transparent?: number;
 
   //runtime
   aboveLevels?: Level[];

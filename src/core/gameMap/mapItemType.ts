@@ -29,7 +29,8 @@ export enum MapItemType {
   Console13,
   Console21,
   Console22,
-  Console23
+  Console23,
+  Tech
 }
 
 //export const movingItemTypes = [MapItemType.Door, MapItemType.Platform];
@@ -65,5 +66,7 @@ export const mapItemTypeKeys = new Map<string, MapItemType>([
   ['╦', MapItemType.Console13], //203
   ['╠', MapItemType.Console21], //204
   ['═', MapItemType.Console22], //205
-  ['╬', MapItemType.Console23] //206
+  ['╬', MapItemType.Console23], //206
+
+  ['T', MapItemType.Tech]
 ]);

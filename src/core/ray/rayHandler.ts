@@ -22,7 +22,6 @@ class RayHandler implements CellHandler {
   public newItem: MapItem | null;
   public prevDistance: number;
   public newDistance: number;
-  public mirrorFact: number;
   public alphaMaxLightFact: number;
   public gameMap: GameMap;
 
@@ -46,7 +45,6 @@ class RayHandler implements CellHandler {
     this.newItem = null;
     this.prevDistance = 0.2;
     this.newDistance = 0.2;
-    this.mirrorFact = 1;
     this.alphaMaxLightFact = settings.maxLightFact;
     this.pixelsCounter = new PixelCounter();
     this.playerState = playerState;
@@ -71,7 +69,6 @@ class RayHandler implements CellHandler {
     this.prevDistance = 0.2;
     this.newDistance = 0.2;
     this.alphaMaxLightFact = settings.maxLightFact;
-    this.mirrorFact = 1;
     this.pixelsCounter.reset();
     this.spriteState.lastDistance = 0.6;
   }
@@ -79,6 +76,14 @@ class RayHandler implements CellHandler {
   public handle(ray: Ray, last: boolean): RayAction {
     this.newItem = this.gameMap.check(ray.cellPosition);
     this.newDistance = ray.distance * this.rayCastingState.rayAngle.fixDistance;
+
+    if (
+      this.prevItem &&
+      this.newItem != this.prevItem &&
+      this.prevItem.transparent
+    ) {
+      this.alphaMaxLightFact *= this.prevItem.transparent;
+    }
 
     if (this.newItem !== this.prevItem || last) {
       this.handleLevels(ray);
@@ -90,8 +95,6 @@ class RayHandler implements CellHandler {
     }
 
     if (this.newItem && this.newItem.mirror) {
-      this.mirrorFact *= 0.75;
-      this.alphaMaxLightFact = settings.maxLightFact * this.mirrorFact;
       return RayAction.mirror;
     }
 

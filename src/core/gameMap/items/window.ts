@@ -36,5 +36,6 @@ export default (_: number, startX: number, startY: number) => ({
       texture: new Texture(TextureType.FloorMetal, 1)
     }
   ],
-  stopRay: false
+  stopRay: false,
+  transparent: 0.6
 });

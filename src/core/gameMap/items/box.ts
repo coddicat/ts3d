@@ -5,11 +5,16 @@ import type { MapItem } from '../../types';
 export default {
   walls: [
     {
-      top: 2,
-      bottom: 1,
+      top: -1,
+      bottom: -2,
       texture: new Texture(TextureType.FloorMetal, 1)
     }
   ],
-  levels: [],
+  levels: [
+    {
+      bottom: -1,
+      texture: new Texture(TextureType.FloorMetal, 1)
+    }
+  ],
   stopRay: false
 } as MapItem;

@@ -24,5 +24,6 @@ export default (_: number, startX: number, startY: number) => ({
     basementWall
   ],
   levels: [],
-  stopRay: false
+  stopRay: false,
+  transparent: 0.6
 });

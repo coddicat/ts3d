@@ -14,5 +14,6 @@ export default (_: number, startX: number, startY: number): MapItem => ({
   ],
   levels: [],
   stopRay: true,
-  mirror: true
+  mirror: true,
+  transparent: 0.75
 });

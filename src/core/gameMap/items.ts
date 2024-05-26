@@ -6,6 +6,7 @@ import CoridorWall from './items/wallCoridor';
 import CoridorSpace from './items/spaceCoridor';
 import LowCoridorSpace from './items/spaceLowCoridor';
 import MainWall from './items/wallMain';
+import TechWall from './items/wallTech';
 import Window from './items/window';
 // import Platform, { platformMovingItemProps } from './items/platform';
 import Stairs from './items/stairs';
@@ -64,6 +65,7 @@ export const itemsInSet = new Map<MapItemType, ItemSetGetter>([
   [MapItemType.LowCoridorSpace, LowCoridorSpace],
   [MapItemType.WallCoridor, CoridorWall],
   [MapItemType.WallMain, MainWall],
+  [MapItemType.Tech, TechWall],
   [MapItemType.Window, Window],
   [MapItemType.Panorama, Panorama],
   [MapItemType.Door, Door],
