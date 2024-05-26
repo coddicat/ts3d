@@ -212,7 +212,7 @@ class RayHandler implements CellHandler {
       distance,
 
       //spriteX:
-      ((side * sideDistance + sprite.halfWidth) * sprite.wRate) | 0,
+      ((side * sideDistance + sprite.halfWidth) * sprite.ratio) | 0,
 
       texture.data!
     );

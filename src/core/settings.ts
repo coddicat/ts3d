@@ -15,13 +15,12 @@ const settings = {
   wallTexture: true,
 
   lookLength: 0,
-  lookAngle: 0,
-  lookMapStep: 0,
+  HFOV: 0,
   halfHeight: 0,
   halfWidth: 0,
   maxLightFact: 0,
   maxBottom: 0,
-  halfLookAngle: 0,
+  halfHFOV: 0,
   buf8: new Uint8ClampedArray(),
   data: new Uint32Array(),
   angleStep: 0,
@@ -44,18 +43,16 @@ export function setResolution(width: number, height: number): void {
   const buf = new ArrayBuffer(height * width * 4);
   settings.buf8 = new Uint8ClampedArray(buf);
   settings.data = new Uint32Array(buf);
-  settings.angleStep = settings.lookAngle / width;
-  settings.planeDistance =
-    settings.halfWidth / Math.tan(settings.halfLookAngle);
+  settings.angleStep = settings.HFOV / width;
+  settings.planeDistance = settings.halfWidth / Math.tan(settings.halfHFOV);
   settings.maxLookVertical = settings.resolution.height * 0.625;
   settings.angleStep_pi2 = settings.angleStep / pi2;
   calculateAngles();
 }
 
-function setLookAngle(degrees: number): void {
-  settings.lookAngle = degrees * rad;
-  settings.lookMapStep = (degrees * rad) / 20;
-  settings.halfLookAngle = settings.lookAngle / 2;
+function setHFOV(degrees: number): void {
+  settings.HFOV = degrees * rad;
+  settings.halfHFOV = settings.HFOV / 2;
 }
 
 function calculateAngles(): void {
@@ -67,7 +64,7 @@ function calculateAngles(): void {
 }
 
 setLookLength(80);
-setLookAngle(83);
+setHFOV(83);
 setResolution(640, 360);
 
 export default settings;

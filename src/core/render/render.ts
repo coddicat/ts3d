@@ -142,10 +142,10 @@ class Render {
     this.dynamicAlpha.init(level.bottom);
     const y0 =
       this.playerState.halfLookVertical +
-      this.dynamicAlpha.distanceRate / this.rayHandlerState.newDistance;
+      this.dynamicAlpha.distanceRatio / this.rayHandlerState.newDistance;
     const y1 =
       this.playerState.halfLookVertical +
-      this.dynamicAlpha.distanceRate / this.rayHandlerState.prevDistance;
+      this.dynamicAlpha.distanceRatio / this.rayHandlerState.prevDistance;
 
     const top = Math.max(0, Math.min(y0, y1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);

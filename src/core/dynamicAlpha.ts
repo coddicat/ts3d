@@ -12,11 +12,11 @@ export default class DynamicAlpha {
   }
 
   public init(bottom: number): void {
-    this.distanceRate =
+    this.distanceRatio =
       settings.resolution.height * (this.playerState.lookZ - bottom);
   }
 
-  public distanceRate = 0;
+  public distanceRatio = 0;
   public alpha = 0;
   public distance = 0;
 
@@ -28,7 +28,7 @@ export default class DynamicAlpha {
       return;
     }
 
-    this.distance = this.distanceRate / shift;
+    this.distance = this.distanceRatio / shift;
     this.alpha =
       (settings.lookLength - this.distance) *
       this.rayHandlerState.alphaMaxLightFact;

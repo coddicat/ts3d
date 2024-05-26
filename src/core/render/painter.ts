@@ -32,24 +32,24 @@ class Painter {
     if (light < 1 || top === bottom) return;
     const alphaMask = 0x00ffffff | (light << 24);
     const diff = top - y0;
-    const hRate = repeatedHeight / (y1 - y0);
+    const ratio = repeatedHeight / (y1 - y0);
     let spriteY = revert
       ? diff +
         //todo
-        (textureData.height - mod(repeatedHeight, textureData.height)) / hRate
+        (textureData.height - mod(repeatedHeight, textureData.height)) / ratio
       : diff;
-
+    const width = settings.resolution.width;
     while (top <= bottom) {
       if (settings.data[dataIndex]) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += width;
         spriteY++;
         continue;
       }
 
       const index =
         Math.imul(
-          mod((spriteY * hRate) | 0, textureData.height),
+          mod((spriteY * ratio) | 0, textureData.height),
           textureData.width
         ) + spriteX;
 
@@ -57,7 +57,7 @@ class Painter {
 
       if (checkAlpha && !pixel) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += width;
         spriteY++;
         continue;
       }
@@ -67,7 +67,7 @@ class Painter {
       if (!this.pixelsCounter.increse()) return;
 
       top++;
-      dataIndex += settings.resolution.width;
+      dataIndex += width;
       spriteY++;
     }
   }

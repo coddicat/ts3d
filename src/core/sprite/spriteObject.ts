@@ -10,7 +10,7 @@ export default class SpriteObject {
   timestamp: number;
   top: number;
   halfWidth: number;
-  wRate!: number;
+  ratio!: number;
 
   constructor(
     position: Vector3D,
@@ -27,7 +27,7 @@ export default class SpriteObject {
     this.halfWidth = this.width / 2;
   }
 
-  public setWRate(type: TextureType, textureDataWidth: number): void {
-    this.wRate = textureDataWidth / this.width;
+  public setRatio(type: TextureType, textureDataWidth: number): void {
+    this.ratio = textureDataWidth / this.width;
   }
 }
