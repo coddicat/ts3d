@@ -5,10 +5,8 @@ import type { MapItem } from '../../types';
 export default {
   walls: [
     {
-      color: 0xffffff,
       top: 2,
       bottom: 0,
-      render: true,
       texture: new Texture(TextureType.FloorMetal, 1)
     }
   ],

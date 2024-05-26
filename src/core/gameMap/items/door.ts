@@ -1,4 +1,3 @@
-//import Texture from '../../texture/texture';
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
@@ -19,14 +18,12 @@ const dy = hight - middle;
 
 const getDoorLevelTop = (): Level => ({
   name: 'top',
-  color: 0x02f00,
   bottom: middle,
   texture: new Texture(TextureType.DoorLevel, 1)
 });
 
 const getDoorLevelBottom = (): Level => ({
   name: 'bottom',
-  color: 0x002f00,
   bottom: middle,
   texture: new Texture(TextureType.DoorLevel, 1)
 });
@@ -37,10 +34,9 @@ const getDoorWallTop = (
   startY: number
 ): Wall => ({
   name: 'top',
-  color: 0x0000ff,
   top: hight,
   bottom: middle,
-  render: true,
+
   texture: new TextureSet(
     TextureType.DoorTop,
     hight - middle,
@@ -57,10 +53,8 @@ const getDoorWallBottom = (
   startY: number
 ): Wall => ({
   name: 'bottom',
-  color: 0x0000ff,
   top: middle,
   bottom: 0,
-  render: true,
   texture: new TextureSet(
     TextureType.DoorBottom,
     middle,
@@ -77,10 +71,8 @@ const getDoorWallAbove = (
   startY: number
 ): Wall => ({
   name: 'above',
-  color: 0xcccccc,
   top: hight + dy,
   bottom: hight,
-  render: true,
   texture: new TextureSet(
     TextureType.DoorAbove,
     middle,

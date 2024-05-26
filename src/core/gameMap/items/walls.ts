@@ -9,10 +9,8 @@ export default new Map<MapItemType, MapItem>([
     {
       walls: [
         {
-          color: 0xdcc8c8,
           top: 2.5,
           bottom: 0,
-          render: true,
           texture: new Texture(TextureType.LowWallCoridor, 1.25)
         }
       ],

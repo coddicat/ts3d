@@ -19,7 +19,6 @@ const getItem = (texture: TextureType): MapItem => ({
     roomCeil,
     {
       name: 'top',
-      color: 0x02f00,
       bottom: height,
       texture: new Texture(texture)
     }

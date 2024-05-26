@@ -21,20 +21,17 @@ export enum Axis {
 }
 
 export type Level = {
-  color: number;
   bottom: number;
-  texture: null | Texture;
-  name?: string | undefined;
-  speed?: number | undefined;
+  texture?: Texture;
+  name?: string;
+  speed?: number;
 };
 
 export type Wall = {
-  color: number;
   top: number;
   bottom: number;
-  render: boolean;
-  texture: null | Texture;
-  name?: string | undefined;
+  texture?: Texture;
+  name?: string;
 };
 
 export type MapItem = {

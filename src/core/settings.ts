@@ -1,5 +1,5 @@
 const rad = Math.PI / 180;
-//const lookAngleDegrees = 60;
+const pi2 = Math.PI * 2;
 
 const settings = {
   resolution: {
@@ -26,7 +26,8 @@ const settings = {
   data: new Uint32Array(),
   angleStep: 0,
   planeDistance: 0,
-  angles: [] as number[]
+  angles: [] as number[],
+  angleStep_pi2: 0
 };
 
 export function setLookLength(length: number): void {
@@ -47,6 +48,7 @@ export function setResolution(width: number, height: number): void {
   settings.planeDistance =
     settings.halfWidth / Math.tan(settings.halfLookAngle);
   settings.maxLookVertical = settings.resolution.height * 0.625;
+  settings.angleStep_pi2 = settings.angleStep / pi2;
   calculateAngles();
 }
 
@@ -54,7 +56,6 @@ function setLookAngle(degrees: number): void {
   settings.lookAngle = degrees * rad;
   settings.lookMapStep = (degrees * rad) / 20;
   settings.halfLookAngle = settings.lookAngle / 2;
-  settings.angleStep = settings.lookAngle / settings.resolution.width;
 }
 
 function calculateAngles(): void {

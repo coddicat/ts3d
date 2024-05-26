@@ -15,61 +15,56 @@ class Painter {
     this.dynamicAlpha = dynamicAlpha;
   }
 
-  public drawLineStatic(
-    dataIndex: number,
-    top: number,
-    bottom: number,
-    color: number,
-    light: number
-  ): void {
-    if (light < 1) return;
-    const alphaMask = light << 24;
+  // public drawLineStatic(
+  //   dataIndex: number,
+  //   top: number,
+  //   bottom: number,
+  //   color: number,
+  //   light: number
+  // ): void {
+  //   if (light < 1) return;
+  //   const alphaMask = light << 24;
 
-    while (top <= bottom) {
-      if (settings.data[dataIndex]) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
+  //   while (top <= bottom) {
+  //     if (settings.data[dataIndex]) {
+  //       top++;
+  //       dataIndex += settings.resolution.width;
+  //       continue;
+  //     }
 
-      settings.data[dataIndex] = color | alphaMask;
+  //     settings.data[dataIndex] = color | alphaMask;
 
-      if (!this.pixelsCounter.increse()) return;
+  //     if (!this.pixelsCounter.increse()) return;
 
-      top++;
-      dataIndex += settings.resolution.width;
-    }
-  }
+  //     top++;
+  //     dataIndex += settings.resolution.width;
+  //   }
+  // }
 
-  public drawLineDynamic(
-    dataIndex: number,
-    top: number,
-    bottom: number,
-    color: number
-  ): void {
-    while (top <= bottom) {
-      if (settings.data[dataIndex]) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
+  // public drawLineDynamic(dataIndex: number, top: number, bottom: number): void {
+  //   while (top <= bottom) {
+  //     if (settings.data[dataIndex]) {
+  //       top++;
+  //       dataIndex += settings.resolution.width;
+  //       continue;
+  //     }
 
-      this.dynamicAlpha.setDistanceAlpha(top);
+  //     this.dynamicAlpha.setDistanceAlpha(top);
 
-      if (this.dynamicAlpha.alpha < 1) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
+  //     if (this.dynamicAlpha.alpha < 1) {
+  //       top++;
+  //       dataIndex += settings.resolution.width;
+  //       continue;
+  //     }
 
-      settings.data[dataIndex] = color | (this.dynamicAlpha.alpha << 24);
+  //     settings.data[dataIndex] = color | (this.dynamicAlpha.alpha << 24);
 
-      if (!this.pixelsCounter.increse()) return;
+  //     if (!this.pixelsCounter.increse()) return;
 
-      top++;
-      dataIndex += settings.resolution.width;
-    }
-  }
+  //     top++;
+  //     dataIndex += settings.resolution.width;
+  //   }
+  // }
 
   public drawSpriteLine(
     dataIndex: number,

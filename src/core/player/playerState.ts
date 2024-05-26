@@ -3,6 +3,7 @@ import SpriteObject from '../sprite/spriteObject';
 import type { TextureType } from '../texture/textureStore';
 import type { Vector3D } from '../types';
 
+const pi2 = Math.PI * 2;
 export default class PlayerState extends SpriteObject {
   //object props
   public timestamp = 0;
@@ -15,6 +16,7 @@ export default class PlayerState extends SpriteObject {
   public top = settings.playerHeight;
   public cos = 0;
   public sin = 0;
+  public angle_pi2 = 0;
 
   constructor(
     position: Vector3D,
@@ -50,5 +52,6 @@ export default class PlayerState extends SpriteObject {
     this.position.angle = value;
     this.cos = Math.cos(value);
     this.sin = Math.sin(value);
+    this.angle_pi2 = value / pi2;
   }
 }

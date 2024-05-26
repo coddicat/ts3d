@@ -7,8 +7,7 @@ import RayHandler from './rayHandler';
 import type SpriteObject from '../sprite/spriteObject';
 import { mod } from '../exts';
 import textureStore, { TextureType } from '../texture/textureStore';
-
-const PI2 = Math.PI * 2;
+import type { TextureData } from '../texture/textureData';
 
 class RayCasting {
   private imageData: ImageData;
@@ -51,6 +50,14 @@ class RayCasting {
   public draw3D(): void {
     this.displayX = 0;
 
+    //TODO extract and once calcualtion
+    const textureData = textureStore.getTextureData(TextureType.Sky)!;
+    const skyRatio = textureData.width * settings.angleStep_pi2;
+    const skyOffsetStep = settings.angleStep_pi2 * textureData.width;
+    const skyY = settings.maxLookVertical - this.playerState.lookVertical;
+
+    let skyOffset = this.playerState.angle_pi2 * textureData.width;
+
     do {
       const angle =
         settings.angles[this.displayX] + this.playerState.position.angle;
@@ -58,53 +65,50 @@ class RayCasting {
       this.rayAngle.setAngle(angle);
 
       this.handleAngle();
-      this.drawSky(this.displayX);
+      this.drawBackground(
+        this.displayX,
+        skyY,
+        skyOffset,
+        skyRatio,
+        textureData
+      );
 
       this.displayX++;
+      skyOffset += skyOffsetStep;
+
       this.rayHandler.reset();
     } while (this.displayX < settings.resolution.width);
 
     this.imageData.data.set(settings.buf8);
   }
 
-  private drawSky(displayX: number) {
-    const textureData = textureStore.getTextureData(TextureType.Sky)!;
-    const yRate =
-      textureData.width /
-      ((PI2 / settings.lookAngle) * settings.resolution.width);
-
-    const offset =
-      (this.playerState.position.angle +
-        displayX * (settings.lookAngle / settings.resolution.width)) /
-      PI2;
-
-    const spriteX = (offset * textureData.width) | 0;
-
-    let spriteY = settings.maxLookVertical - this.playerState.lookVertical;
+  private drawBackground(
+    x: number,
+    y: number,
+    offset: number,
+    ratio: number,
+    textureData: TextureData
+  ) {
+    const spriteX = offset | 0;
     let top = 0;
-    let dataIndex = Math.imul(top, settings.resolution.width) + displayX;
 
     while (top <= settings.resolution.height - 1) {
-      if (settings.data[dataIndex]) {
+      if (settings.data[x]) {
         top++;
-        dataIndex += settings.resolution.width;
-        spriteY++;
+        x += settings.resolution.width;
+        y++;
         continue;
       }
 
       const index =
-        Math.imul(
-          mod((spriteY * yRate) | 0, textureData.height),
-          textureData.width
-        ) + spriteX;
+        Math.imul(mod((y * ratio) | 0, textureData.height), textureData.width) +
+        spriteX;
 
-      const pixel = textureData.data[index];
-
-      settings.data[dataIndex] = pixel;
+      settings.data[x] = textureData.data[index];
 
       top++;
-      dataIndex += settings.resolution.width;
-      spriteY++;
+      x += settings.resolution.width;
+      y++;
     }
   }
 }
