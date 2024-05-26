@@ -66,7 +66,7 @@ export class PixelCounter {
     this.empty = true;
   }
   public increse(): boolean {
-    return (this.empty = ++this.count < settings.resolution.height);
+    return (this.empty = ++this.count < settings.resolutionHeight);
   }
 }
 

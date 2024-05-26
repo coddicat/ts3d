@@ -44,7 +44,7 @@ class Render {
       return;
     }
 
-    const fact = settings.resolution.height / this.rayHandlerState.newDistance;
+    const fact = settings.resolutionHeight / this.rayHandlerState.newDistance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const repeatX = texture.repeatX ?? 1;
     const startY = texture.startY ?? 0;
@@ -63,7 +63,7 @@ class Render {
     const top = Math.max(0, (Math.min(y0, y1) + 1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
+      Math.imul(top, settings.resolutionWidth) + this.rayCastingState.displayX;
 
     this.painter.drawSpriteLine(
       dataIndex,
@@ -96,7 +96,7 @@ class Render {
     light: number,
     textureData: TextureData
   ): void {
-    const fact = settings.resolution.height / distance;
+    const fact = settings.resolutionHeight / distance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const y0 = a - top * fact;
     const y1 = a - bottom * fact;
@@ -104,8 +104,7 @@ class Render {
     const top_ = Math.max(0, Math.min(y0, y1) | 0);
     const bottom_ = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top_, settings.resolution.width) +
-      this.rayCastingState.displayX;
+      Math.imul(top_, settings.resolutionWidth) + this.rayCastingState.displayX;
 
     this.painter.drawSpriteLine(
       dataIndex,
@@ -150,7 +149,7 @@ class Render {
     const top = Math.max(0, Math.min(y0, y1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
+      Math.imul(top, settings.resolutionWidth) + this.rayCastingState.displayX;
 
     this.painter.drawSpriteLineDynamic(
       dataIndex,

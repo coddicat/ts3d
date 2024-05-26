@@ -77,7 +77,7 @@ class RayCasting {
       skyOffset += skyOffsetStep;
 
       this.rayHandler.reset();
-    } while (this.displayX < settings.resolution.width);
+    } while (this.displayX < settings.resolutionWidth);
 
     this.imageData.data.set(settings.buf8);
   }
@@ -92,10 +92,10 @@ class RayCasting {
     const spriteX = offset | 0;
     let top = 0;
 
-    while (top <= settings.resolution.height - 1) {
+    while (top <= settings.resolutionHeight - 1) {
       if (settings.data[x]) {
         top++;
-        x += settings.resolution.width;
+        x += settings.resolutionWidth;
         y++;
         continue;
       }
@@ -107,7 +107,7 @@ class RayCasting {
       settings.data[x] = textureData.data[index];
 
       top++;
-      x += settings.resolution.width;
+      x += settings.resolutionWidth;
       y++;
     }
   }

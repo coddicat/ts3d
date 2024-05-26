@@ -2,10 +2,8 @@ const rad = Math.PI / 180;
 const pi2 = Math.PI * 2;
 
 const settings = {
-  resolution: {
-    width: 640,
-    height: 360
-  },
+  resolutionWidth: 640,
+  resolutionHeight: 360,
   moveSpeed: 0.006,
   turnSpeed: 0.001,
   playerHeight: 1.8,
@@ -35,8 +33,8 @@ export function setLookLength(length: number): void {
 }
 
 export function setResolution(width: number, height: number): void {
-  settings.resolution.width = width;
-  settings.resolution.height = height;
+  settings.resolutionWidth = width;
+  settings.resolutionHeight = height;
   settings.halfWidth = width / 2;
   settings.halfHeight = height / 2;
   settings.maxBottom = height - 1;
@@ -45,7 +43,7 @@ export function setResolution(width: number, height: number): void {
   settings.data = new Uint32Array(buf);
   settings.angleStep = settings.HFOV / width;
   settings.planeDistance = settings.halfWidth / Math.tan(settings.halfHFOV);
-  settings.maxLookVertical = settings.resolution.height * 0.625;
+  settings.maxLookVertical = height * 0.625;
   settings.angleStep_pi2 = settings.angleStep / pi2;
   calculateAngles();
 }
@@ -56,7 +54,7 @@ function setHFOV(degrees: number): void {
 }
 
 function calculateAngles(): void {
-  for (let x = 0; x < settings.resolution.width; x++) {
+  for (let x = 0; x < settings.resolutionWidth; x++) {
     const offset = x - settings.halfWidth;
     const angle = Math.atan(offset / settings.planeDistance);
     settings.angles[x] = angle;

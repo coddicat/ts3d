@@ -27,8 +27,8 @@ export class Main3D {
 
   public init(mainCanvas: HTMLCanvasElement): void {
     this.interCanvas = document.createElement('canvas') as HTMLCanvasElement;
-    this.interCanvas.width = settings.resolution.width;
-    this.interCanvas.height = settings.resolution.height;
+    this.interCanvas.width = settings.resolutionWidth;
+    this.interCanvas.height = settings.resolutionHeight;
     const interCtx = this.interCanvas.getContext('2d', {
       alpha: true,
       willReadFrequently: true
@@ -36,8 +36,8 @@ export class Main3D {
     if (!interCtx) throw 'Cannot get context';
     this.interCtx = interCtx;
     this.imageData = interCtx.createImageData(
-      settings.resolution.width,
-      settings.resolution.height
+      settings.resolutionWidth,
+      settings.resolutionHeight
     );
 
     const ctx = mainCanvas.getContext('2d', {
@@ -69,8 +69,8 @@ export class Main3D {
     );
     this.context.scale(
       //TODO onetime calculation
-      this.context.canvas.width / settings.resolution.width,
-      this.context.canvas.height / settings.resolution.height
+      this.context.canvas.width / settings.resolutionWidth,
+      this.context.canvas.height / settings.resolutionHeight
     );
     this.context.drawImage(this.interCanvas, 0, 0);
 
@@ -78,8 +78,8 @@ export class Main3D {
     const texture = textureStore.getTextureData(TextureType.Aim);
     this.context.drawImage(
       texture!.canvas,
-      settings.resolution.width / 2 - texture!.width / 2,
-      settings.resolution.height / 2 - texture!.height / 2
+      settings.halfWidth - texture!.width / 2,
+      settings.halfHeight - texture!.height / 2
     );
 
     this.context.restore();

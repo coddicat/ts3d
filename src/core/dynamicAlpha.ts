@@ -13,24 +13,23 @@ export default class DynamicAlpha {
 
   public init(bottom: number): void {
     this.distanceRatio =
-      settings.resolution.height * (this.playerState.lookZ - bottom);
+      settings.resolutionHeight * (this.playerState.lookZ - bottom);
   }
 
   public distanceRatio = 0;
-  public alpha = 0;
   public distance = 0;
 
-  public setDistanceAlpha(y: number): void {
+  public setDistanceAlpha(y: number): number {
     const shift = y - this.playerState.halfLookVertical;
     if (!shift) {
-      this.alpha = 0;
       this.distance = settings.lookLength;
-      return;
+      return 0;
     }
 
     this.distance = this.distanceRatio / shift;
-    this.alpha =
+    return (
       (settings.lookLength - this.distance) *
-      this.rayHandlerState.alphaMaxLightFact;
+      this.rayHandlerState.alphaMaxLightFact
+    );
   }
 }

@@ -48,7 +48,7 @@ const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
     x: 30.2,
-    y: 78,
+    y: 5,
     z: 0,
     angle: rad90 * 2
   },
@@ -117,7 +117,7 @@ async function tick(timestamp: number) {
 }
 
 const resolution = ref(
-  `${settings.resolution.width},${settings.resolution.height}`
+  `${settings.resolutionWidth},${settings.resolutionHeight}`
 );
 const levelTexture = ref(true);
 const wallTexture = ref(true);
@@ -141,15 +141,15 @@ function fullscreen() {
 function onFullscreenChange() {
   if (!mainCanvas.value) throw 'no canvas';
   const canvas = mainCanvas.value;
-  canvas.width = settings.resolution.width;
-  canvas.height = settings.resolution.height;
+  canvas.width = settings.resolutionWidth;
+  canvas.height = settings.resolutionHeight;
 
   if (!document.fullscreenElement) {
     canvas.width = 854;
     canvas.height = 480;
   } else {
-    canvas.width = settings.resolution.width;
-    canvas.height = settings.resolution.height;
+    canvas.width = settings.resolutionWidth;
+    canvas.height = settings.resolutionHeight;
   }
 }
 
