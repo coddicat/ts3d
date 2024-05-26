@@ -1,25 +1,23 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import { basementWall } from './wallMain';
+import type { MapItem } from '../../types';
+import { basementWall, coridorHeight } from './basic';
 
-export default (_: number, startX: number, startY: number) => ({
+export default (_: number, startX: number, startY: number): MapItem => ({
   walls: [
     basementWall,
     {
-      color: 0xc8c8dc,
-      top: 2.8,
+      top: coridorHeight,
       bottom: 0,
-      render: true,
       texture: new TextureSet(
         TextureType.WallCoridor,
-        2.8,
+        coridorHeight,
         startX,
         startY,
-        5,
-        false
+        5
       )
     }
   ],
   levels: [],
-  stopRay: false
+  stopRay: true
 });

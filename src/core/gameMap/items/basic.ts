@@ -1,25 +1,23 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem } from '../../types';
+import type { Level, MapItem, Wall } from '../../types';
+
+export const roomHeight = 3.5;
+export const basementDepth = -2.4;
+export const coridorHeight = 2.8;
 
 export const roomCeil: Level = {
-  bottom: 3.5,
-  texture: new Texture(TextureType.Ceil, 1)
+  bottom: roomHeight,
+  texture: new Texture(TextureType.Ceil)
 };
-
 export const coridorCeil: Level = {
-  bottom: 2.8,
-  texture: new Texture(TextureType.Ceil, 1)
-};
-
-export const lowCoridorCeil: Level = {
-  bottom: 2.5,
-  texture: new Texture(TextureType.CoridorCeil, 1)
+  bottom: coridorHeight,
+  texture: new Texture(TextureType.Ceil)
 };
 
 export const basementFloor: Level = {
-  bottom: -2.4,
-  texture: new Texture(TextureType.FloorBasement, 1)
+  bottom: basementDepth,
+  texture: new Texture(TextureType.FloorBasement)
 };
 
 export const coridorFloor: Level = {
@@ -29,16 +27,16 @@ export const coridorFloor: Level = {
 
 export const floor: Level = {
   bottom: 0,
-  texture: new Texture(TextureType.FloorMetal, 1)
+  texture: new Texture(TextureType.FloorMetal)
 };
 
 export const woodFloorTop: Level = {
   bottom: 0,
-  texture: new Texture(TextureType.Wood, 1)
+  texture: new Texture(TextureType.Wood)
 };
 export const woodFloorBottom: Level = {
   bottom: -0.3,
-  texture: new Texture(TextureType.Wood, 1)
+  texture: new Texture(TextureType.Wood)
 };
 
 export const floorNumber: Level = {
@@ -46,8 +44,14 @@ export const floorNumber: Level = {
   texture: new Texture(TextureType.Numbers)
 };
 export const ceilNumber: Level = {
-  bottom: 3.5,
-  texture: new Texture(TextureType.Numbers, 1)
+  bottom: roomHeight,
+  texture: new Texture(TextureType.Numbers)
+};
+
+export const basementWall: Wall = {
+  top: 0,
+  bottom: basementDepth,
+  texture: new Texture(TextureType.WallBasement, 2.4)
 };
 
 export const emptyItem: MapItem = {

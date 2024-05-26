@@ -91,3 +91,9 @@ export type MovingItemProps = {
   initMovingItem: (set: ItemSet, props: MovingItemProps) => MovingItem;
   tick: (t: number, item: MovingItem) => boolean;
 };
+
+export type ItemSetGetter = (
+  repeatX: number,
+  startX: number,
+  startY: number
+) => MapItem;

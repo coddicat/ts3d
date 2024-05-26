@@ -1,7 +1,7 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
 import type { MapItem, Wall } from '../../types';
-import { basementWall } from './wallMain';
+import { basementWall } from './basic';
 
 export const getWall = (
   startX: number,

@@ -1,14 +1,12 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import type { MapItem, Wall } from '../../types';
 import { floor, roomCeil } from './basic';
 
 const height = 0.6;
-const wall = {
+const wall: Wall = {
   bottom: height - 0.25,
   top: height,
-  color: 0x02f00,
-  render: true,
   texture: new Texture(TextureType.WallMain)
 };
 

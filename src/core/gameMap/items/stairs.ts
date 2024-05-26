@@ -1,5 +1,5 @@
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import type { Level, MapItem, Wall } from '../../types';
 import { MapItemType } from '../mapItemType';
 import { roomCeil, basementFloor } from './basic';
 import Texture from '../../texture/texture';
@@ -10,35 +10,31 @@ function stair(top: number, wood: boolean = false): MapItem {
     ? new Texture(TextureType.Wood, 1)
     : new Texture(TextureType.Parquet, 1);
 
-  const walls = [
+  const walls: Wall[] = [
     {
-      color: 0xc80fff,
       top,
       bottom,
-      render: true,
       texture: texture
     }
   ];
 
-  const levelTop = {
-    color: 0x6496fa,
+  const levelTop: Level = {
     bottom: top,
     texture: texture
   };
 
-  const levelBottom = {
-    color: 0x6496fa,
+  const levelBottom: Level = {
     bottom: bottom,
     texture: texture
   };
 
-  const levels = [basementFloor, levelBottom, levelTop, roomCeil];
-  const item = {
+  const levels: Level[] = [basementFloor, levelBottom, levelTop, roomCeil];
+
+  return {
     walls,
     levels,
     stopRay: false
   };
-  return item;
 }
 
 export default new Map<MapItemType, MapItem>([

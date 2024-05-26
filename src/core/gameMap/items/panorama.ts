@@ -1,14 +1,14 @@
-import { basementWall, getWall as getMainWall } from './wallMain';
+import { getWall as getMainWall } from './wallMain';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
+import type { MapItem } from '../../types';
+import { basementWall, roomHeight } from './basic';
 
-export default (_: number, startX: number, startY: number) => ({
+export default (_: number, startX: number, startY: number): MapItem => ({
   walls: [
     {
-      color: 0xc8c8dc,
       top: 2.8,
       bottom: 0.5,
-      render: true,
       texture: new TextureSet(
         TextureType.Window,
         2.3,
@@ -19,7 +19,7 @@ export default (_: number, startX: number, startY: number) => ({
         true
       )
     },
-    getMainWall(startX, startY, 3.5, 2.8, false),
+    getMainWall(startX, startY, roomHeight, 2.8, false),
     getMainWall(startX, startY, 0.5, 0, true),
     basementWall
   ],

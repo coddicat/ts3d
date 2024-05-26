@@ -9,7 +9,7 @@ import type {
   MovingItemProps,
   Wall
 } from '../../types';
-import { basementWall } from './wallMain';
+import { basementWall } from './basic';
 
 const hight = 2.5;
 const middle = 1.5;
