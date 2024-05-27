@@ -30,7 +30,7 @@ export const panoramaWall = (
     getRoomWall(startX, startY, panoramaBottom, 0, true),
     getBasementWall(startX, startY)
   ],
-  levels: [],
+  tiles: [],
   stopRay: false,
   transparent: panoramaTransparent
 });

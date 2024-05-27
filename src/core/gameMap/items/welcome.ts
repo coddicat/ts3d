@@ -21,6 +21,6 @@ export const welcomeWall = (
       )
     }
   ],
-  levels: [],
+  tiles: [],
   stopRay: true
 });

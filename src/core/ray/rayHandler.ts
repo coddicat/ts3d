@@ -86,7 +86,7 @@ class RayHandler implements CellHandler {
     }
 
     if (this.newItem !== this.prevItem || last) {
-      this.handleLevels(ray);
+      this.handleTiles(ray);
       if (!this.pixelsCounter.empty) return RayAction.stop;
       this.render.handleWalls(ray);
 
@@ -109,7 +109,7 @@ class RayHandler implements CellHandler {
     belowObjects: [] as SpriteObject[]
   };
 
-  private handleLevels(ray: Ray): void {
+  private handleTiles(ray: Ray): void {
     if (!this.prevItem || this.prevDistance < 0.2) return;
 
     if (this.refs.playerStateTimestamp !== this.playerState.timestamp) {
@@ -125,36 +125,36 @@ class RayHandler implements CellHandler {
     }
 
     if (this.prevItem.playerStateTimestamp !== this.playerState.timestamp) {
-      this.prevItem.aboveLevels = this.prevItem.levels.filter(
+      this.prevItem.aboveTiles = this.prevItem.tiles.filter(
         x => x.bottom > this.playerState.lookZ
       );
-      this.prevItem.belowLevels = this.prevItem.levels
+      this.prevItem.belowTiles = this.prevItem.tiles
         .filter(x => x.bottom < this.playerState.lookZ)
         .reverse();
       this.prevItem.playerStateTimestamp = this.playerState.timestamp;
     }
 
-    for (const level of this.prevItem.belowLevels!) {
+    for (const tile of this.prevItem.belowTiles!) {
       for (const obj of this.refs.belowObjects) {
-        if (obj.position.z < level.bottom) continue;
+        if (obj.position.z < tile.bottom) continue;
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }
 
-      this.render.handleLevel(ray, level);
+      this.render.handleTile(ray, tile);
       if (!this.pixelsCounter.empty) return;
     }
 
-    for (const level of this.prevItem.aboveLevels!) {
+    for (const tile of this.prevItem.aboveTiles!) {
       if (!this.pixelsCounter.empty) return;
 
       for (const obj of this.refs.aboveObjects) {
-        if (obj.position.z > level.bottom) continue;
+        if (obj.position.z > tile.bottom) continue;
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }
 
-      this.render.handleLevel(ray, level);
+      this.render.handleTile(ray, tile);
     }
 
     // for (const obj of this.spriteObjects) {

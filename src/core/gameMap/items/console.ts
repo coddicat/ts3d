@@ -15,7 +15,7 @@ const wall: Wall = {
 
 const getItem = (texture: TextureType): MapItem => ({
   walls: [wall],
-  levels: [
+  tiles: [
     roomFloor,
     roomCeil,
     {

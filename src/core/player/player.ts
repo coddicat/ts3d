@@ -151,17 +151,17 @@ export default class Player {
       this.fall(timestamp);
       return;
     }
-    const levels = item.levels
+    const tiles = item.tiles
       .filter(
-        level =>
-          level.bottom >= this.state.position.z && level.bottom < this.state.top
+        tile =>
+          tile.bottom >= this.state.position.z && tile.bottom < this.state.top
       )
       .map(x => x.bottom);
-    const level = levels.length > 0 ? Math.max(...levels) : null;
-    const cl = item.levels.find(
-      level =>
-        level.bottom < this.state.top &&
-        level.bottom > this.state.position.z + this.state.halfHeight
+    const tile = tiles.length > 0 ? Math.max(...tiles) : null;
+    const cl = item.tiles.find(
+      tile =>
+        tile.bottom < this.state.top &&
+        tile.bottom > this.state.position.z + this.state.halfHeight
     );
 
     if (cl) {
@@ -173,8 +173,8 @@ export default class Player {
       return;
     }
 
-    if (level != null) {
-      this.state.setZ(level, true);
+    if (tile != null) {
+      this.state.setZ(tile, true);
       return;
     }
     this.fall(timestamp);
@@ -235,35 +235,35 @@ export default class Player {
     if (newZ === this.state.position.z) return;
 
     this.state.timestamp++;
-    const levels = this.gameMap.check(newPos)?.levels ?? [];
+    const tiles = this.gameMap.check(newPos)?.tiles ?? [];
 
-    const topLevels = levels
+    const topTiles = tiles
       .filter(
         x => this.state.top <= x.bottom && newZ + this.state.height >= x.bottom
       )
       .map(x => x.bottom);
 
-    const topLevel = Math.min(...topLevels);
+    const topTile = Math.min(...topTiles);
 
-    if (topLevels.length > 0) {
+    if (topTiles.length > 0) {
       this.state.jumpingSpeed = 0;
-      this.state.setZ(topLevel - this.state.height, true);
+      this.state.setZ(topTile - this.state.height, true);
       return;
     }
 
-    const bottom = levels.filter(
+    const bottom = tiles.filter(
       x => this.state.position.z >= x.bottom && newZ < x.bottom
     );
-    const bottomLevels = bottom.map(x => x.bottom);
-    const bottomLevel = Math.max(...bottomLevels);
+    const bottomTiles = bottom.map(x => x.bottom);
+    const bottomTile = Math.max(...bottomTiles);
 
-    if (bottomLevels.length > 0) {
+    if (bottomTiles.length > 0) {
       this.state.jumpingSpeed =
-        bottom.find(x => x.bottom === bottomLevel)?.speed ?? 0;
+        bottom.find(x => x.bottom === bottomTile)?.speed ?? 0;
       if (this.state.jumpingSpeed === 0) {
         this.state.jumpingTimestamp = null;
       }
-      this.state.setZ(bottomLevel, true);
+      this.state.setZ(bottomTile, true);
     } else {
       this.state.setZ(newZ, false);
     }

@@ -3,7 +3,7 @@ import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
 import type {
   ItemSet,
-  Level,
+  Tile,
   MapItem,
   MovingItem,
   MovingItemProps,
@@ -14,15 +14,15 @@ import { getBasementWall, roomHeight } from './basic';
 const hight = roomHeight;
 const speed = 2000;
 
-const getDoorTopLevel = (bottom: number): Level => ({
+const getDoorTopTile = (bottom: number): Tile => ({
   name: 'door',
   bottom: bottom,
-  texture: new Texture(TextureType.DoorLevel, 1)
+  texture: new Texture(TextureType.DoorTile, 1)
 });
-const getDoorBottomLevel = (): Level => ({
+const getDoorBottomTile = (): Tile => ({
   name: 'door',
   bottom: 0,
-  texture: new Texture(TextureType.DoorLevel, 1)
+  texture: new Texture(TextureType.DoorTile, 1)
 });
 
 const getDoorWall = (
@@ -57,11 +57,11 @@ export const captainDoorMovingItemProps: MovingItemProps = {
   tick: (t: number, item: MovingItem) => {
     const mapItem = item.set.mapItem;
     const wall = mapItem.walls.find(x => x.name === 'door');
-    const level = mapItem.levels.find(x => x.name === 'door');
+    const tile = mapItem.tiles.find(x => x.name === 'door');
 
     if (t > speed) {
       wall!.top = item.state ? hight : hight + hight;
-      wall!.bottom = level!.bottom = item.state ? 0 : hight;
+      wall!.bottom = tile!.bottom = item.state ? 0 : hight;
 
       return true;
     }
@@ -70,7 +70,7 @@ export const captainDoorMovingItemProps: MovingItemProps = {
     const l0 = s0 * t;
 
     wall!.top = item.state ? hight + hight - l0 : hight + l0;
-    wall!.bottom = level!.bottom = item.state ? hight - l0 : l0;
+    wall!.bottom = tile!.bottom = item.state ? hight - l0 : l0;
 
     return false;
   }
@@ -85,6 +85,6 @@ export const captainDoorWall = (
     getDoorWall(repeatX, startX, startY),
     getBasementWall(startX, startY)
   ],
-  levels: [getDoorTopLevel(0), getDoorBottomLevel(), getDoorTopLevel(3.5)],
+  tiles: [getDoorTopTile(0), getDoorBottomTile(), getDoorTopTile(3.5)],
   stopRay: false
 });

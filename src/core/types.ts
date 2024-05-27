@@ -20,7 +20,7 @@ export enum Axis {
   y = 1
 }
 
-export type Level = {
+export type Tile = {
   bottom: number;
   texture?: Texture;
   name?: string;
@@ -36,14 +36,14 @@ export type Wall = {
 
 export type MapItem = {
   walls: Wall[];
-  levels: Level[];
+  tiles: Tile[];
   stopRay: boolean;
   mirror?: boolean;
   transparent?: number;
 
   //runtime
-  aboveLevels?: Level[];
-  belowLevels?: Level[];
+  aboveTiles?: Tile[];
+  belowTiles?: Tile[];
   playerStateTimestamp?: number;
 };
 

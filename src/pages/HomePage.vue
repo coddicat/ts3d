@@ -4,11 +4,13 @@
       <label>
         <span>fps: {{ fpsDisplay }}</span>
       </label>
-      <ResolutionSelect @update="updateResolution" />
-      <button @click="fullscreen">fullscreen</button>
+      <div style="display: flex; flex-direction: row; gap: 2px">
+        <ResolutionSelect @update="updateResolution" />
+        <button @click="fullscreen">fullscreen</button>
+      </div>
     </div>
-    <div class="main">
-      <canvas width="640" height="360" class="canvas" ref="mainCanvas"></canvas>
+    <div class="wrapper">
+      <canvas width="640" height="360" class="canvas" ref="canvasRef"></canvas>
     </div>
     <div></div>
   </div>
@@ -21,7 +23,7 @@ import { Game } from '../core/game';
 import { CanvasHandler } from '../core/canvasHandler';
 import { FpsHandler } from '../core/fpsHandler';
 
-const mainCanvas = ref(null as HTMLCanvasElement | null);
+const canvasRef = ref(null as HTMLCanvasElement | null);
 const fpsDisplay = ref(0);
 const stopped = ref(false);
 let animationFrame = 0;
@@ -48,14 +50,14 @@ function stop() {
   }
 }
 function fullscreen() {
-  if (!mainCanvas.value) throw 'no canvas';
-  const canvas = mainCanvas.value;
+  if (!canvasRef.value) throw 'no canvas';
+  const canvas = canvasRef.value;
   canvas.requestFullscreen();
 }
 
 onMounted(async () => {
-  if (!mainCanvas.value) throw 'no canvas';
-  const canvas = mainCanvas.value;
+  if (!canvasRef.value) throw 'no canvas';
+  const canvas = canvasRef.value;
 
   canvas.onclick = () => {
     canvas.requestPointerLock();
@@ -78,23 +80,25 @@ onUnmounted(() => {
 
 function updateResolution(resolution: number[]) {
   game.changedResolution(resolution[0], resolution[1]);
-  canvasHandler = new CanvasHandler(mainCanvas.value!);
+  canvasHandler = new CanvasHandler(canvasRef.value!);
 }
 </script>
 
 <style lang="scss">
 .home {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 }
 .settings {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 .canvas {
   border: 1px black solid;
   background-color: #000;
-  flex: 0 0;
   width: 854px;
   height: 480px;
 }
@@ -105,5 +109,11 @@ function updateResolution(resolution: number[]) {
   margin-left: -90px;
   margin-right: 10px;
   width: 200px;
+}
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
 }
 </style>

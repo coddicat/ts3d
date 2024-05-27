@@ -1,22 +1,22 @@
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem, Wall } from '../../types';
+import type { Tile, MapItem, Wall } from '../../types';
 
 export const basementDepth = -2.4;
 export const roomHeight = 3.5;
 
-export const roomFloor: Level = {
+export const roomFloor: Tile = {
   bottom: 0,
   texture: new Texture(TextureType.RoomFloor)
 };
 
-export const roomCeil: Level = {
+export const roomCeil: Tile = {
   bottom: roomHeight,
   texture: new Texture(TextureType.RoomCeil)
 };
 
-export const basementFloor: Level = {
+export const basementFloor: Tile = {
   bottom: basementDepth,
   texture: new Texture(TextureType.BasementFloor)
 };
@@ -61,30 +61,30 @@ export const roomWall = (
     getRoomWall(startX, startY, roomHeight, 0),
     getBasementWall(startX, startY)
   ],
-  levels: [],
+  tiles: [],
   stopRay: true
 });
 
 export const emptyItem: MapItem = {
   walls: [],
-  levels: [],
+  tiles: [],
   stopRay: false
 };
 
 export const outmapItem: MapItem = {
   walls: [],
-  levels: [],
+  tiles: [],
   stopRay: true
 };
 
 export const roomSpace: MapItem = {
   walls: [],
-  levels: [basementFloor, roomFloor, roomCeil],
+  tiles: [basementFloor, roomFloor, roomCeil],
   stopRay: false
 };
 
 export const basementSpace: MapItem = {
   walls: [],
-  levels: [basementFloor, roomCeil],
+  tiles: [basementFloor, roomCeil],
   stopRay: false
 };

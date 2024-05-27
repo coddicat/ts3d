@@ -31,6 +31,6 @@ export const techWall = (
     getTechWall(startX, startY, roomHeight, 0, false),
     getBasementWall(startX, startY)
   ],
-  levels: [],
+  tiles: [],
   stopRay: true
 });

@@ -1,19 +1,19 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem } from '../../types';
+import type { Tile, MapItem } from '../../types';
 import { roomHeight, basementFloor } from './basic';
 
-export const floorNumber: Level = {
+export const floorNumber: Tile = {
   bottom: 0,
   texture: new Texture(TextureType.Numbers)
 };
-export const ceilNumber: Level = {
+export const ceilNumber: Tile = {
   bottom: roomHeight,
   texture: new Texture(TextureType.Numbers)
 };
 
 export const numberSpace: MapItem = {
   walls: [],
-  levels: [basementFloor, floorNumber, ceilNumber],
+  tiles: [basementFloor, floorNumber, ceilNumber],
   stopRay: false
 };

@@ -1,15 +1,15 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem } from '../../types';
+import type { Tile, MapItem } from '../../types';
 import { basementFloor, roomCeil } from './basic';
 
 const bridgeBottom = -0.3;
 
-export const bridgeFloorTop: Level = {
+export const bridgeFloorTop: Tile = {
   bottom: 0,
   texture: new Texture(TextureType.Wood)
 };
-export const bridgeFloorBottom: Level = {
+export const bridgeFloorBottom: Tile = {
   bottom: bridgeBottom,
   texture: new Texture(TextureType.Wood)
 };
@@ -22,6 +22,6 @@ export const bridgeSpace: MapItem = {
       texture: new Texture(TextureType.Wood)
     }
   ],
-  levels: [basementFloor, bridgeFloorBottom, bridgeFloorTop, roomCeil],
+  tiles: [basementFloor, bridgeFloorBottom, bridgeFloorTop, roomCeil],
   stopRay: false
 };

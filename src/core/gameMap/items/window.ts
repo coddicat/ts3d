@@ -33,7 +33,7 @@ export const windowWall = (
     getRoomWall(startX, startY, windowBottom, 0, true),
     getBasementWall(startX, startY)
   ],
-  levels: [
+  tiles: [
     {
       bottom: windowBottom,
       texture: new Texture(TextureType.RoomFloor)

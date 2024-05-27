@@ -1,7 +1,7 @@
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem } from '../../types';
+import type { Tile, MapItem } from '../../types';
 import {
   getRoomWall,
   roomFloor,
@@ -12,12 +12,12 @@ import {
 
 export const coridorHeight = 2.8;
 
-export const coridorCeil: Level = {
+export const coridorCeil: Tile = {
   bottom: coridorHeight,
   texture: new Texture(TextureType.RoomCeil)
 };
 
-export const coridorFloor: Level = {
+export const coridorFloor: Tile = {
   bottom: 0,
   texture: new Texture(TextureType.RoomFloor)
 };
@@ -28,7 +28,7 @@ export const coridorSpace = (
   startY: number
 ): MapItem => ({
   walls: [getRoomWall(startX, startY, roomHeight, coridorHeight)],
-  levels: [basementFloor, roomFloor, coridorCeil],
+  tiles: [basementFloor, roomFloor, coridorCeil],
   stopRay: false
 });
 
@@ -51,6 +51,6 @@ export const coridorWall = (
       )
     }
   ],
-  levels: [],
+  tiles: [],
   stopRay: true
 });

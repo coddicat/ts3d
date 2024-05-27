@@ -22,7 +22,7 @@ export enum TextureType {
   DoorAbove,
   DoorTop,
   DoorBottom,
-  DoorLevel,
+  DoorTile,
   CaptainDoor,
 
   Welcome,
@@ -72,7 +72,7 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.DoorAbove, href('../../assets/doorAbove.png')],
   [TextureType.DoorTop, href('../../assets/doorTop.png')],
   [TextureType.DoorBottom, href('../../assets/doorBottom.png')],
-  [TextureType.DoorLevel, href('../../assets/doorLevel.png')],
+  [TextureType.DoorTile, href('../../assets/doorTile.png')],
   [TextureType.CaptainDoor, href('../../assets/captainDoor.png')],
 
   [TextureType.Welcome, href('../../assets/welcome.png')],

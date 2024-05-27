@@ -2,7 +2,7 @@ import textureStore from '../texture/textureStore';
 import type {
   ItemSet,
   ItemSetByKey,
-  Level,
+  Tile,
   MapItem,
   MovingItem,
   Wall
@@ -17,7 +17,7 @@ export class GameMap {
   private mapData!: MapItem[][];
   private setsByKey!: ItemSetByKey[];
 
-  private initTextures(arr: Level[] | Wall[]): void {
+  private initTextures(arr: Tile[] | Wall[]): void {
     for (const item of arr) {
       if (!item.texture) continue;
       const data = textureStore.getTextureData(item.texture.type);
@@ -40,9 +40,9 @@ export class GameMap {
     }
     if (!item) item = emptyItem;
 
-    this.initTextures(item.levels);
+    this.initTextures(item.tiles);
     this.initTextures(item.walls);
-    item.levels.sort((a, b) => a.bottom - b.bottom);
+    item.tiles.sort((a, b) => a.bottom - b.bottom);
     item.walls.sort((a, b) => a.bottom - b.bottom);
     return item;
   }

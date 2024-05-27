@@ -25,7 +25,7 @@ export const mirrorWall = (
       bottom: basementDepth
     }
   ],
-  levels: [],
+  tiles: [],
   stopRay: true,
   mirror: true,
   transparent: mirrorTransparent

@@ -7,7 +7,7 @@ import type Ray from '../ray/ray';
 import type RayCasting from '../ray/rayCasting';
 import type RayHandler from '../ray/rayHandler';
 import type { TextureData } from '../texture/textureData';
-import type { Wall, Level, PixelCounter } from '../types';
+import type { Wall, Tile, PixelCounter } from '../types';
 import { Axis } from '../types';
 
 class Render {
@@ -132,13 +132,13 @@ class Render {
     );
   }
 
-  public handleLevel(rayState: Ray, level: Level): void {
-    const textureData = level.texture?.data;
+  public handleTile(rayState: Ray, tile: Tile): void {
+    const textureData = tile.texture?.data;
     if (!textureData) {
       return;
     }
 
-    this.dynamicAlpha.init(level.bottom);
+    this.dynamicAlpha.init(tile.bottom);
     const y0 =
       this.playerState.halfLookVertical +
       this.dynamicAlpha.distanceRatio / this.rayHandlerState.newDistance;
