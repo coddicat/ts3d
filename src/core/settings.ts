@@ -1,16 +1,23 @@
 const rad = Math.PI / 180;
 const pi2 = Math.PI * 2;
 
+export const resolutionOptions = [
+  [640, 360],
+  [854, 480],
+  [960, 540],
+  [1024, 576],
+  [1280, 720],
+  [1920, 1080]
+];
+
 const settings = {
-  resolutionWidth: 640,
-  resolutionHeight: 360,
+  resolutionWidth: 0,
+  resolutionHeight: 0,
   moveSpeed: 0.006,
   turnSpeed: 0.001,
   playerHeight: 1.8,
   playerWidth: 1.34,
   maxLookVertical: 0,
-  levelTexture: true,
-  wallTexture: true,
 
   lookLength: 0,
   HFOV: 0,
@@ -26,11 +33,6 @@ const settings = {
   angles: [] as number[],
   angleStep_pi2: 0
 };
-
-export function setLookLength(length: number): void {
-  settings.lookLength = length;
-  settings.maxLightFact = 255 / length;
-}
 
 export function setResolution(width: number, height: number): void {
   settings.resolutionWidth = width;
@@ -48,6 +50,11 @@ export function setResolution(width: number, height: number): void {
   calculateAngles();
 }
 
+function setLookLength(length: number): void {
+  settings.lookLength = length;
+  settings.maxLightFact = 255 / length;
+}
+
 function setHFOV(degrees: number): void {
   settings.HFOV = degrees * rad;
   settings.halfHFOV = settings.HFOV / 2;
@@ -63,6 +70,6 @@ function calculateAngles(): void {
 
 setLookLength(70);
 setHFOV(83);
-setResolution(640, 360);
+setResolution(resolutionOptions[0][0], resolutionOptions[0][1]);
 
 export default settings;

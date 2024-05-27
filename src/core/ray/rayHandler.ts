@@ -8,6 +8,7 @@ import type SpriteObject from '../sprite/spriteObject';
 import type { MapItem, SpriteAngleState } from '../types';
 import { RayAction, PixelCounter } from '../types';
 import settings from '../settings';
+import type SpriteStore from '../sprite/spriteStore';
 
 export interface CellHandler {
   handle(rayState: Ray, last: boolean): RayAction;
@@ -30,13 +31,12 @@ class RayHandler implements CellHandler {
   private rayCastingState: RayCasting;
   private render: Render;
 
-  private spriteObjects: SpriteObject[];
+  private spriteStore: SpriteStore;
   private spriteState: SpriteAngleState;
 
   constructor(
     playerState: PlayerState,
-
-    spriteObjects: SpriteObject[],
+    spriteStore: SpriteStore,
     rayCastingState: RayCasting,
     gameMap: GameMap
   ) {
@@ -50,7 +50,7 @@ class RayHandler implements CellHandler {
     this.playerState = playerState;
     this.gameMap = gameMap;
 
-    this.spriteObjects = spriteObjects;
+    this.spriteStore = spriteStore;
     this.spriteState = {
       lastDistance: 0.6
     };
@@ -113,10 +113,12 @@ class RayHandler implements CellHandler {
     if (!this.prevItem || this.prevDistance < 0.2) return;
 
     if (this.refs.playerStateTimestamp !== this.playerState.timestamp) {
-      this.refs.aboveObjects = this.spriteObjects.filter(
+      const spriteObjects = this.spriteStore.spriteObjects;
+
+      this.refs.aboveObjects = spriteObjects.filter(
         o => o.position.z > this.playerState.lookZ
       );
-      this.refs.belowObjects = this.spriteObjects.filter(
+      this.refs.belowObjects = spriteObjects.filter(
         o => o.position.z <= this.playerState.lookZ
       );
       this.refs.playerStateTimestamp = this.playerState.timestamp;

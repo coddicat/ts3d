@@ -4,13 +4,12 @@ import type PlayerState from '../player/playerState';
 import Ray from './ray';
 import { RayAngle } from './rayAngle';
 import RayHandler from './rayHandler';
-import type SpriteObject from '../sprite/spriteObject';
 import { mod } from '../exts';
 import textureStore, { TextureType } from '../texture/textureStore';
 import type { TextureData } from '../texture/textureData';
+import type SpriteStore from '../sprite/spriteStore';
 
 class RayCasting {
-  private imageData: ImageData;
   private playerState: PlayerState;
   private rayHandler: RayHandler;
   private ray: Ray;
@@ -19,17 +18,15 @@ class RayCasting {
   public displayX!: number;
 
   constructor(
-    imageData: ImageData,
     playerState: PlayerState,
-    spriteObjects: SpriteObject[],
+    spriteStore: SpriteStore,
     gameMap: GameMap
   ) {
-    this.imageData = imageData;
     this.playerState = playerState;
 
     this.rayAngle = new RayAngle(0, playerState);
     settings.data.fill(0);
-    this.rayHandler = new RayHandler(playerState, spriteObjects, this, gameMap);
+    this.rayHandler = new RayHandler(playerState, spriteStore, this, gameMap);
 
     this.ray = new Ray(
       this.playerState.position,
@@ -78,8 +75,6 @@ class RayCasting {
 
       this.rayHandler.reset();
     } while (this.displayX < settings.resolutionWidth);
-
-    this.imageData.data.set(settings.buf8);
   }
 
   private drawBackground(

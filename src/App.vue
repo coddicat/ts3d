@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HomeView from './components/HomeView.vue';
+import HomePage from './pages/HomePage.vue';
 </script>
 
 <template>
-  <HomeView />
+  <HomePage />
 </template>
 
 <style lang="scss">
