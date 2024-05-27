@@ -73,7 +73,7 @@ class Painter {
     }
   }
 
-  public getSpriteIndexBySideX_positive(
+  public getTileSpriteIndexBySideX_positive(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
@@ -88,7 +88,7 @@ class Painter {
     const fixedX = maxY - mod(spriteY, height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_positive(
+  public getTileSpriteIndexBySideY_positive(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
@@ -103,7 +103,7 @@ class Painter {
     const fixedX = maxX - mod(spriteX, width);
     return Math.imul(spriteY, width) + fixedX;
   }
-  public getSpriteIndexBySideX_negative(
+  public getTileSpriteIndexBySideX_negative(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
@@ -118,7 +118,7 @@ class Painter {
     const fixedX = mod(spriteY, height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_negative(
+  public getTileSpriteIndexBySideY_negative(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
@@ -134,7 +134,7 @@ class Painter {
     return Math.imul(spriteY, width) + fixedX;
   }
 
-  public drawSpriteLineDynamic(
+  public drawTileSpriteLine(
     dataIndex: number,
     top: number,
     bottom: number,

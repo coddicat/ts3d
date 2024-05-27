@@ -1,4 +1,3 @@
-//import { sign } from '../exts';
 import { sign } from '../exts';
 import type { GameMap } from '../gameMap/gameMap';
 import type PlayerState from '../player/playerState';
@@ -32,132 +31,123 @@ export default class Player {
     this.collisionHandler = new CollisionHandler(state, gameMap);
   }
 
-  private fixDistance(d: number): number {
-    d -= collisionDistance;
-    if (d < 0) d = 0;
-    return d;
+  private move(dt: number, forward: number, right: number) {
+    const state = this.state;
+    const pos = state.position;
+
+    let userAngle = pos.angle;
+
+    let cos = state.cos;
+    let sin = state.sin;
+
+    //45
+    if (right > 0 && forward > 0) {
+      cos = state.cos * cos45 - state.sin * sin45;
+      sin = state.sin * cos45 + state.cos * sin45;
+      userAngle += quartPi;
+    }
+    //-45
+    if (right < 0 && forward > 0) {
+      cos = state.cos * cos45 + state.sin * sin45;
+      sin = state.sin * cos45 - state.cos * sin45;
+      userAngle -= quartPi;
+    }
+
+    //135
+    if (right > 0 && forward < 0) {
+      cos = state.cos * cos135 - state.sin * sin135;
+      sin = state.sin * cos135 + state.cos * sin135;
+      userAngle += Pi_34;
+    }
+    //-135
+    if (right < 0 && forward < 0) {
+      cos = state.cos * cos135 + state.sin * sin135;
+      sin = state.sin * cos135 - state.cos * sin135;
+      userAngle -= Pi_34;
+    }
+
+    //180
+    if (right == 0 && forward < 0) {
+      cos = -state.cos;
+      sin = -state.sin;
+      userAngle += Math.PI;
+    }
+    //-90
+    if (right != 0 && forward == 0) {
+      cos = -state.sin * right;
+      sin = state.cos * right;
+      userAngle += halfPi * right;
+    }
+
+    const distance = settings.moveSpeed * dt;
+    const xDistance = cos * distance;
+    const yDistance = sin * distance;
+
+    let nx = pos.x + xDistance;
+    let ny = pos.y + yDistance;
+
+    const xSign = sign(cos);
+    const ySign = sign(sin);
+    const xAngle = xSign < 0 ? Math.PI : 0;
+    const yAngle = ySign < 0 ? Pi1_5 : halfPi;
+
+    const ray = new Ray(pos, new RayAngle(userAngle), this.collisionHandler);
+    const rayX = new Ray(pos, new RayAngle(xAngle), this.collisionHandler);
+    const rayY = new Ray(pos, new RayAngle(yAngle), this.collisionHandler);
+
+    const xres = rayX.send(Math.abs(xDistance) + collisionDistance, false);
+    const yres = rayY.send(Math.abs(yDistance) + collisionDistance, false);
+    if (xres.stopped) {
+      const d = Math.max(0, xres.distance - collisionDistance);
+      nx = pos.x + d * xSign;
+    }
+    if (yres.stopped) {
+      const d = Math.max(0, yres.distance - collisionDistance);
+      ny = pos.y + d * ySign;
+    }
+
+    const res =
+      !xres.stopped &&
+      !yres.stopped &&
+      ray.send(distance + collisionDistance, false).stopped;
+    if (res) {
+      nx = pos.x;
+      ny = pos.y;
+    }
+
+    pos.x = nx;
+    pos.y = ny;
   }
 
-  public move(timestamp: number, forward: number, right: number): void {
+  public handleMove(timestamp: number, forward: number, right: number): void {
+    const state = this.state;
+
     if (!forward && !right) {
-      this.state.movingTimestamp = null;
+      state.movingTimestamp = null;
     }
-    if (this.state.movingTimestamp) {
-      const t = timestamp - this.state.movingTimestamp;
-      let userAngle = this.state.position.angle;
 
-      let cos = this.state.cos;
-      let sin = this.state.sin;
-
-      //45
-      if (right > 0 && forward > 0) {
-        cos = this.state.cos * cos45 - this.state.sin * sin45;
-        sin = this.state.sin * cos45 + this.state.cos * sin45;
-        userAngle += quartPi;
-      }
-      //-45
-      if (right < 0 && forward > 0) {
-        cos = this.state.cos * cos45 + this.state.sin * sin45;
-        sin = this.state.sin * cos45 - this.state.cos * sin45;
-        userAngle -= quartPi;
-      }
-
-      //135
-      if (right > 0 && forward < 0) {
-        cos = this.state.cos * cos135 - this.state.sin * sin135;
-        sin = this.state.sin * cos135 + this.state.cos * sin135;
-        userAngle += Pi_34;
-      }
-      //-135
-      if (right < 0 && forward < 0) {
-        cos = this.state.cos * cos135 + this.state.sin * sin135;
-        sin = this.state.sin * cos135 - this.state.cos * sin135;
-        userAngle -= Pi_34;
-      }
-
-      //180
-      if (right == 0 && forward < 0) {
-        cos = -this.state.cos;
-        sin = -this.state.sin;
-        userAngle += Math.PI;
-      }
-      //-90
-      if (right != 0 && forward == 0) {
-        cos = -this.state.sin * right;
-        sin = this.state.cos * right;
-        userAngle += halfPi * right;
-      }
-
-      const distance = settings.moveSpeed * t;
-      const xDistance = cos * distance;
-      const yDistance = sin * distance;
-
-      let nx = this.state.position.x + xDistance;
-      let ny = this.state.position.y + yDistance;
-
-      const xSign = sign(cos);
-      const ySign = sign(sin);
-      const xAngle = xSign < 0 ? Math.PI : 0;
-      const yAngle = ySign < 0 ? Pi1_5 : halfPi;
-
-      const ray = new Ray(
-        this.state.position,
-        new RayAngle(userAngle),
-        this.collisionHandler
-      );
-      const rayX = new Ray(
-        this.state.position,
-        new RayAngle(xAngle),
-        this.collisionHandler
-      );
-      const rayY = new Ray(
-        this.state.position,
-        new RayAngle(yAngle),
-        this.collisionHandler
-      );
-
-      const xres = rayX.send(Math.abs(xDistance) + collisionDistance, false);
-      const yres = rayY.send(Math.abs(yDistance) + collisionDistance, false);
-      if (xres.stopped) {
-        const d = this.fixDistance(xres.distance);
-        nx = this.state.position.x + d * xSign;
-      }
-      if (yres.stopped) {
-        const d = this.fixDistance(yres.distance);
-        ny = this.state.position.y + d * ySign;
-      }
-
-      const res =
-        !xres.stopped &&
-        !yres.stopped &&
-        ray.send(distance + collisionDistance, false).stopped;
-      if (res) {
-        nx = this.state.position.x;
-        ny = this.state.position.y;
-      }
-
-      this.state.position.x = nx;
-      this.state.position.y = ny;
+    if (state.movingTimestamp) {
+      this.move(timestamp - state.movingTimestamp, forward, right);
     }
-    this.checkFloor(this.state.position, timestamp);
-    this.state.movingTimestamp = timestamp;
+
+    this.checkFloor(state.position, timestamp);
+    state.movingTimestamp = timestamp;
   }
 
   private checkFloor(pos: Position2D, timestamp: number): void {
-    const newPos = { x: pos.x | 0, y: pos.y | 0 };
+    const item = this.gameMap.check(pos.x | 0, pos.y | 0);
 
-    const item = this.gameMap.check(newPos);
     if (!item) {
       this.fall(timestamp);
       return;
     }
-    const tiles = item.tiles
+    const levels = item.tiles
       .filter(
         tile =>
           tile.bottom >= this.state.position.z && tile.bottom < this.state.top
       )
       .map(x => x.bottom);
-    const tile = tiles.length > 0 ? Math.max(...tiles) : null;
+    const level = levels.length > 0 ? Math.max(...levels) : null;
     const cl = item.tiles.find(
       tile =>
         tile.bottom < this.state.top &&
@@ -173,8 +163,8 @@ export default class Player {
       return;
     }
 
-    if (tile != null) {
-      this.state.setZ(tile, true);
+    if (level != null) {
+      this.state.setZ(level, true);
       return;
     }
     this.fall(timestamp);
@@ -182,19 +172,6 @@ export default class Player {
 
   private fall(timestamp: number): void {
     this.state.jumpingTimestamp = this.state.jumpingTimestamp ?? timestamp;
-  }
-
-  public turn(turning: boolean, timestamp: number, direction: number): void {
-    if (!turning) {
-      this.state.turningTimestamp = null;
-      return;
-    }
-    if (this.state.turningTimestamp) {
-      const t = timestamp - this.state.turningTimestamp;
-      const angle = this.state.position.angle;
-      this.state.setAngle(angle + settings.turnSpeed * t * direction);
-    }
-    this.state.turningTimestamp = timestamp;
   }
 
   public jump(timestamp: number): void {
@@ -223,11 +200,6 @@ export default class Player {
       return;
     }
 
-    const newPos = {
-      x: this.state.position.x | 0,
-      y: this.state.position.y | 0
-    };
-
     const t = timestamp - this.state.jumpingTimestamp;
     const v0 = this.state.jumpingSpeed ?? 0;
     const newZ = (this.state.jumpingFloor ?? 0) + t * (v0 - acc * (t >> 1));
@@ -235,7 +207,9 @@ export default class Player {
     if (newZ === this.state.position.z) return;
 
     this.state.timestamp++;
-    const tiles = this.gameMap.check(newPos)?.tiles ?? [];
+    const tiles =
+      this.gameMap.check(this.state.position.x | 0, this.state.position.y | 0)
+        ?.tiles ?? [];
 
     const topTiles = tiles
       .filter(

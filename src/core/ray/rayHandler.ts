@@ -74,7 +74,8 @@ class RayHandler implements CellHandler {
   }
 
   public handle(ray: Ray, last: boolean): RayAction {
-    this.newItem = this.gameMap.check(ray.cellPosition);
+    const pos = ray.cellPosition;
+    this.newItem = this.gameMap.check(pos.x, pos.y);
     this.newDistance = ray.distance * this.rayCastingState.rayAngle.fixDistance;
 
     if (

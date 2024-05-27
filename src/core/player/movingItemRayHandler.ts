@@ -13,11 +13,8 @@ export default class MovingItemRayHandler implements CellHandler {
   }
 
   public handle(ray: Ray): RayAction {
-    this.item = this.gameMap.movingItems.find(d =>
-      d.set.set.find(
-        s => s.x === ray.cellPosition.x && s.y === ray.cellPosition.y
-      )
-    );
+    const pos = ray.cellPosition;
+    this.item = this.gameMap.findMovingItem(pos.x, pos.y);
     if (this.item) return RayAction.stop;
     return RayAction.continue;
   }

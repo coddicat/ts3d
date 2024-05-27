@@ -16,6 +16,8 @@ import { singleItems, itemsInSet, movingTypes } from './items';
 export class GameMap {
   private mapData!: MapItem[][];
   private setsByKey!: ItemSetByKey[];
+  private movingItems: MovingItem[] = [];
+  private currentMovingItem: MovingItem | null = null;
 
   private initTextures(arr: Tile[] | Wall[]): void {
     for (const item of arr) {
@@ -45,33 +47,6 @@ export class GameMap {
     item.tiles.sort((a, b) => a.bottom - b.bottom);
     item.walls.sort((a, b) => a.bottom - b.bottom);
     return item;
-  }
-
-  public async init(): Promise<void> {
-    const types = [...itemsInSet.keys()];
-    this.setsByKey = [];
-    types.forEach(type => {
-      const sets = this.findItemSets(type);
-      this.setsByKey.push({
-        type,
-        sets
-      });
-      this.initMovingItems(type, sets);
-    });
-
-    this.mapData = gridMap.map((row: string, y: number) =>
-      [...row].map((c: string, x: number) => this.getItem(c, x, y))
-    );
-  }
-
-  public check(cellPos: { x: number; y: number }): MapItem {
-    if (cellPos.y < 0 || cellPos.y >= this.mapData.length || cellPos.x < 0) {
-      return outmapItem;
-    }
-    if (cellPos.x >= this.mapData[cellPos.y].length) {
-      return outmapItem;
-    }
-    return this.mapData[cellPos.y][cellPos.x];
   }
 
   private getItemSet(
@@ -143,26 +118,54 @@ export class GameMap {
     });
   }
 
-  public movingItems: MovingItem[] = [];
-  private movingItem: MovingItem | null = null;
+  public async init(): Promise<void> {
+    const types = [...itemsInSet.keys()];
+    this.setsByKey = [];
+    types.forEach(type => {
+      const sets = this.findItemSets(type);
+      this.setsByKey.push({
+        type,
+        sets
+      });
+      this.initMovingItems(type, sets);
+    });
+
+    this.mapData = gridMap.map((row: string, y: number) =>
+      [...row].map((c: string, x: number) => this.getItem(c, x, y))
+    );
+  }
+
+  public check(x: number, y: number): MapItem {
+    const mapData = this.mapData;
+
+    if (y < 0 || y >= mapData.length || x < 0) return outmapItem;
+    if (x >= mapData[y].length) return outmapItem;
+
+    return mapData[y][x];
+  }
 
   public tickMovingItem(timestamp: number): boolean {
-    if (!this.movingItem) return false;
+    const current = this.currentMovingItem;
 
-    const t = timestamp - this.movingItem.timestamp;
-    const finish = this.movingItem.props.tick(t, this.movingItem);
+    if (!current) return false;
 
-    if (finish) {
-      this.movingItem = null;
-    }
+    if (current.props.tick(timestamp - current.timestamp, current))
+      this.currentMovingItem = null;
 
     return true;
   }
 
   public toggleMovingItem(item: MovingItem, timestamp: number): void {
-    if (this.movingItem) return;
-    this.movingItem = item;
-    this.movingItem.timestamp = timestamp;
-    this.movingItem.state = !this.movingItem.state;
+    if (this.currentMovingItem) return;
+
+    item.timestamp = timestamp;
+    item.state = !item.state;
+    this.currentMovingItem = item;
+  }
+
+  public findMovingItem(x: number, y: number): MovingItem | undefined {
+    return this.movingItems.find(d =>
+      d.set.set.find(s => s.x === x && s.y === y)
+    );
   }
 }

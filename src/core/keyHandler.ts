@@ -37,18 +37,10 @@ export class KeyHandler {
       if (item) this.gameMap.toggleMovingItem(item, timestamp);
     }
 
-    this.player.move(
+    this.player.handleMove(
       timestamp,
       up ? 1 : down ? -1 : 0,
       moveRight ? 1 : moveLeft ? -1 : 0
-    );
-
-    const left = this.activeKeys.get('ArrowLeft');
-    const right = this.activeKeys.get('ArrowRight');
-    this.player.turn(
-      (left || right) ?? false,
-      timestamp,
-      right ? 1 : left ? -1 : 0
     );
 
     if (this.activeKeys.get('Space')) {

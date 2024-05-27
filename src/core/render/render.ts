@@ -151,7 +151,7 @@ class Render {
     const dataIndex =
       Math.imul(top, settings.resolutionWidth) + this.rayCastingState.displayX;
 
-    this.painter.drawSpriteLineDynamic(
+    this.painter.drawTileSpriteLine(
       dataIndex,
       top,
       bottom,

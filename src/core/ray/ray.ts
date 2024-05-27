@@ -106,14 +106,14 @@ export default class Ray {
     if (this.side === Axis.x) {
       this.spriteIndexGetter =
         this.rayAngle.sinSign > 0
-          ? Painter.prototype.getSpriteIndexBySideX_positive
-          : Painter.prototype.getSpriteIndexBySideX_negative;
+          ? Painter.prototype.getTileSpriteIndexBySideX_positive
+          : Painter.prototype.getTileSpriteIndexBySideX_negative;
       this.distance = this.axisY.nextStep();
     } else {
       this.spriteIndexGetter =
         this.rayAngle.cosSign > 0
-          ? Painter.prototype.getSpriteIndexBySideY_positive
-          : Painter.prototype.getSpriteIndexBySideY_negative;
+          ? Painter.prototype.getTileSpriteIndexBySideY_positive
+          : Painter.prototype.getTileSpriteIndexBySideY_negative;
       this.distance = this.axisX.nextStep();
     }
 

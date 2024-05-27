@@ -26,6 +26,7 @@ export default class PlayerState extends SpriteObject {
   ) {
     super(position, size, textureTypes, repeat);
     this.setAngle(position.angle);
+    this.setZ(position.z, false);
   }
 
   public lookVertical = 0;
