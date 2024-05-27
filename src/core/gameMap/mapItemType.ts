@@ -18,6 +18,7 @@ export enum MapItemType {
   PanoramaWall,
 
   DoorWall,
+  CaptainDoor,
   TechWall,
   WelcomeWall,
 
@@ -56,6 +57,7 @@ export const mapItemTypeKeys = new Map<string, MapItemType>([
 
   ['M', MapItemType.MirrorWall],
   ['D', MapItemType.DoorWall],
+  ['d', MapItemType.CaptainDoor],
   ['W', MapItemType.WelcomeWall],
   ['O', MapItemType.WindowWall],
   ['P', MapItemType.PanoramaWall],

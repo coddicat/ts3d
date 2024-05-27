@@ -14,6 +14,10 @@ import { tunnelSpace, tunnelWall } from './items/tunnel';
 import { numberSpace } from './items/number';
 import { panoramaWall } from './items/panorama';
 import { mirrorWall } from './items/mirror';
+import {
+  captainDoorMovingItemProps,
+  captainDoorWall
+} from './items/captainDoor';
 
 export const singleItems = new Map<MapItemType, MapItem>([
   [MapItemType.BasementSpace, basementSpace],
@@ -36,9 +40,11 @@ export const itemsInSet = new Map<MapItemType, ItemSetGetter>([
   [MapItemType.WindowWall, windowWall],
   [MapItemType.PanoramaWall, panoramaWall],
   [MapItemType.DoorWall, doorWall],
+  [MapItemType.CaptainDoor, captainDoorWall],
   [MapItemType.MirrorWall, mirrorWall]
 ]);
 
 export const movingTypes = new Map<MapItemType, MovingItemProps>([
-  [MapItemType.DoorWall, doorMovingItemProps]
+  [MapItemType.DoorWall, doorMovingItemProps],
+  [MapItemType.CaptainDoor, captainDoorMovingItemProps]
 ]);

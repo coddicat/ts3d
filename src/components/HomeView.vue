@@ -48,7 +48,7 @@ const rad90 = Math.PI / 2;
 const playerState = new PlayerState(
   {
     x: 30.2,
-    y: 5,
+    y: 70,
     z: 0,
     angle: rad90 * 2
   },
