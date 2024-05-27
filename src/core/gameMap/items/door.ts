@@ -9,6 +9,7 @@ import type {
   MovingItemProps,
   Wall
 } from '../../types';
+
 import { basementWall } from './basic';
 
 const hight = 2.5;
@@ -87,7 +88,7 @@ const initMovingItem = (set: ItemSet, props: MovingItemProps): MovingItem => ({
   props,
   set,
   timestamp: 0,
-  state: true
+  state: true //closed
 });
 
 export const doorMovingItemProps: MovingItemProps = {
@@ -127,7 +128,11 @@ export const doorMovingItemProps: MovingItemProps = {
   }
 };
 
-export default (repeatX: number, startX: number, startY: number): MapItem => ({
+export const doorWall = (
+  repeatX: number,
+  startX: number,
+  startY: number
+): MapItem => ({
   walls: [
     getDoorWallAbove(repeatX, startX, startY),
     getDoorWallTop(repeatX, startX, startY),

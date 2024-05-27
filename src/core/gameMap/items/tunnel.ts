@@ -1,8 +1,8 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
 import type { ItemSetGetter, Level, MapItem } from '../../types';
-import { basementFloor, coridorFloor, roomHeight } from './basic';
-import { getWall } from './wallMain';
+import { coridorFloor } from './coridor';
+import { getRoomWall, roomHeight, basementFloor } from './basic';
 
 export const tunnelHeight = 2.5;
 
@@ -28,7 +28,7 @@ export const tunnelSpace: ItemSetGetter = (
   startX: number,
   startY: number
 ): MapItem => ({
-  walls: [getWall(startX, startY, roomHeight, tunnelHeight)],
+  walls: [getRoomWall(startX, startY, roomHeight, tunnelHeight)],
   levels: [basementFloor, coridorFloor, tunnelCeil],
   stopRay: false
 });

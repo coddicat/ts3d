@@ -1,59 +1,44 @@
 import type { ItemSetGetter, MapItem, MovingItemProps } from '../types';
 import { MapItemType } from './mapItemType';
-import Door, { doorMovingItemProps } from './items/door';
-import WelcomeWall from './items/welcome';
-import CoridorWall from './items/wallCoridor';
-import CoridorSpace from './items/spaceCoridor';
-import MainWall from './items/wallMain';
-import TechWall from './items/wallTech';
-import Window from './items/window';
-import Stairs from './items/stairs';
-import Shelfs from './items/shelfs';
-import {
-  console11,
-  console12,
-  console13,
-  console21,
-  console22,
-  console23
-} from './items/console';
-
-import { roomItem, bridgeItem, numberItem, basementSpace } from './items/basic';
-import Mirror from './items/mirror';
-import Box from './items/box';
-import Panorama from './items/panorama';
+import { doorWall, doorMovingItemProps } from './items/door';
+import { welcomeWall } from './items/welcome';
+import { coridorSpace, coridorWall } from './items/coridor';
+import { roomSpace, basementSpace, roomWall } from './items/basic';
+import { techWall } from './items/tech';
+import { windowWall } from './items/window';
+import { stairs } from './items/stairs';
+import { shelfsSpace } from './items/shelfs';
+import { console } from './items/console';
+import { bridgeSpace } from './items/bridge';
 import { tunnelSpace, tunnelWall } from './items/tunnel';
+import { numberSpace } from './items/number';
+import { panoramaWall } from './items/panorama';
+import { mirrorWall } from './items/mirror';
 
 export const singleItems = new Map<MapItemType, MapItem>([
   [MapItemType.BasementSpace, basementSpace],
-  [MapItemType.Shelfs, Shelfs],
-  [MapItemType.RoomSpace, roomItem],
-  [MapItemType.BridgeSpace, bridgeItem],
-  [MapItemType.Number, numberItem],
+  [MapItemType.ShelfsSpace, shelfsSpace],
+  [MapItemType.RoomSpace, roomSpace],
+  [MapItemType.BridgeSpace, bridgeSpace],
+  [MapItemType.NumberSpace, numberSpace],
   [MapItemType.TunnelWall, tunnelWall],
-  ...Stairs.entries(),
-  [MapItemType.Box, Box],
-  [MapItemType.Console11, console11],
-  [MapItemType.Console12, console12],
-  [MapItemType.Console13, console13],
-  [MapItemType.Console21, console21],
-  [MapItemType.Console22, console22],
-  [MapItemType.Console23, console23]
+  ...stairs.entries(),
+  ...console.entries()
 ]);
 
 export const itemsInSet = new Map<MapItemType, ItemSetGetter>([
-  [MapItemType.WelcomeWall, WelcomeWall],
-  [MapItemType.CoridorSpace, CoridorSpace],
+  [MapItemType.CoridorSpace, coridorSpace],
+  [MapItemType.CoridorWall, coridorWall],
   [MapItemType.TunnelSpace, tunnelSpace],
-  [MapItemType.WallCoridor, CoridorWall],
-  [MapItemType.WallMain, MainWall],
-  [MapItemType.Tech, TechWall],
-  [MapItemType.Window, Window],
-  [MapItemType.Panorama, Panorama],
-  [MapItemType.Door, Door],
-  [MapItemType.Mirror, Mirror]
+  [MapItemType.WelcomeWall, welcomeWall],
+  [MapItemType.RoomWall, roomWall],
+  [MapItemType.TechWall, techWall],
+  [MapItemType.WindowWall, windowWall],
+  [MapItemType.PanoramaWall, panoramaWall],
+  [MapItemType.DoorWall, doorWall],
+  [MapItemType.MirrorWall, mirrorWall]
 ]);
 
 export const movingTypes = new Map<MapItemType, MovingItemProps>([
-  [MapItemType.Door, doorMovingItemProps]
+  [MapItemType.DoorWall, doorMovingItemProps]
 ]);

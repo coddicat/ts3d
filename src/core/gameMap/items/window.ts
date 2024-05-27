@@ -1,18 +1,25 @@
-import { getWall as getMainWall } from './wallMain';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
 import Texture from '../../texture/texture';
 import type { MapItem } from '../../types';
-import { basementWall, roomHeight } from './basic';
+import { getRoomWall, roomHeight, basementWall } from './basic';
 
-export default (_: number, startX: number, startY: number): MapItem => ({
+const windowTop = 2.8;
+const windowBottom = 0.5;
+const windowTransparent = 0.6;
+
+export const windowWall = (
+  _: number,
+  startX: number,
+  startY: number
+): MapItem => ({
   walls: [
     {
-      top: 2.8,
-      bottom: 0.5,
+      top: windowTop,
+      bottom: windowBottom,
       texture: new TextureSet(
         TextureType.Window,
-        2.3,
+        windowTop - windowBottom,
         startX,
         startY,
         2,
@@ -20,20 +27,20 @@ export default (_: number, startX: number, startY: number): MapItem => ({
         true
       )
     },
-    getMainWall(startX, startY, roomHeight, 2.8, false),
-    getMainWall(startX, startY, 0.5, 0, true),
+    getRoomWall(startX, startY, roomHeight, windowTop, false),
+    getRoomWall(startX, startY, windowBottom, 0, true),
     basementWall
   ],
   levels: [
     {
-      bottom: 0.5,
+      bottom: windowBottom,
       texture: new Texture(TextureType.FloorMetal)
     },
     {
-      bottom: 2.8,
+      bottom: windowTop,
       texture: new Texture(TextureType.FloorMetal)
     }
   ],
   stopRay: false,
-  transparent: 0.6
+  transparent: windowTransparent
 });

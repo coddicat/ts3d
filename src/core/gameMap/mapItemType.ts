@@ -1,72 +1,81 @@
 export enum MapItemType {
   Empty,
-  CoridorSpace,
-  TunnelSpace,
-  BasementSpace,
-  WallCoridor,
-  TunnelWall,
-  RoomSpace,
-  BridgeSpace,
-  WallMain,
-  WelcomeWall,
-  Stair0,
-  Stair1,
-  Stair2,
-  Stair3,
-  Stair4,
-  Stair5,
-  Stair6,
-  Stair7,
-  Mirror,
-  Door,
-  Number,
-  Window,
-  Panorama,
-  Shelfs,
-  Box,
-  Console11,
-  Console12,
-  Console13,
-  Console21,
-  Console22,
-  Console23,
-  Tech
-}
 
-//export const movingItemTypes = [MapItemType.Door, MapItemType.Platform];
+  RoomSpace,
+  RoomWall,
+
+  CoridorSpace,
+  CoridorWall,
+
+  TunnelSpace,
+  TunnelWall,
+
+  BasementSpace,
+  BridgeSpace,
+
+  MirrorWall,
+  WindowWall,
+  PanoramaWall,
+
+  DoorWall,
+  TechWall,
+  WelcomeWall,
+
+  ShelfsSpace,
+  NumberSpace,
+
+  StairSpace0,
+  StairSpace1,
+  StairSpace2,
+  StairSpace3,
+  StairSpace4,
+  StairSpace5,
+  StairSpace6,
+  StairSpace7,
+
+  ConsoleSpace11,
+  ConsoleSpace12,
+  ConsoleSpace13,
+  ConsoleSpace21,
+  ConsoleSpace22,
+  ConsoleSpace23
+}
 
 export const mapItemTypeKeys = new Map<string, MapItemType>([
   ['.', MapItemType.RoomSpace],
+  ['@', MapItemType.RoomWall],
+
   [',', MapItemType.CoridorSpace],
+  ['#', MapItemType.CoridorWall],
+
   ['_', MapItemType.TunnelSpace],
+  ['%', MapItemType.TunnelWall],
+
   ['~', MapItemType.BasementSpace],
   ['-', MapItemType.BridgeSpace],
-  ['#', MapItemType.WallCoridor],
-  ['%', MapItemType.TunnelWall],
-  ['@', MapItemType.WallMain],
-  ['0', MapItemType.Stair0],
-  ['1', MapItemType.Stair1],
-  ['2', MapItemType.Stair2],
-  ['3', MapItemType.Stair3],
-  ['4', MapItemType.Stair4],
-  ['5', MapItemType.Stair5],
-  ['6', MapItemType.Stair6],
-  ['7', MapItemType.Stair7],
-  ['M', MapItemType.Mirror],
-  ['D', MapItemType.Door],
+
+  ['M', MapItemType.MirrorWall],
+  ['D', MapItemType.DoorWall],
   ['W', MapItemType.WelcomeWall],
-  ['N', MapItemType.Number],
-  ['O', MapItemType.Window],
-  ['P', MapItemType.Panorama],
-  ['S', MapItemType.Shelfs],
-  ['B', MapItemType.Box],
+  ['O', MapItemType.WindowWall],
+  ['P', MapItemType.PanoramaWall],
+  ['T', MapItemType.TechWall],
+  ['S', MapItemType.ShelfsSpace],
+  ['N', MapItemType.NumberSpace],
 
-  ['╔', MapItemType.Console11], //201
-  ['╩', MapItemType.Console12], //202
-  ['╦', MapItemType.Console13], //203
-  ['╠', MapItemType.Console21], //204
-  ['═', MapItemType.Console22], //205
-  ['╬', MapItemType.Console23], //206
+  ['0', MapItemType.StairSpace0],
+  ['1', MapItemType.StairSpace1],
+  ['2', MapItemType.StairSpace2],
+  ['3', MapItemType.StairSpace3],
+  ['4', MapItemType.StairSpace4],
+  ['5', MapItemType.StairSpace5],
+  ['6', MapItemType.StairSpace6],
+  ['7', MapItemType.StairSpace7],
 
-  ['T', MapItemType.Tech]
+  ['╔', MapItemType.ConsoleSpace11], //201
+  ['╩', MapItemType.ConsoleSpace12], //202
+  ['╦', MapItemType.ConsoleSpace13], //203
+  ['╠', MapItemType.ConsoleSpace21], //204
+  ['═', MapItemType.ConsoleSpace22], //205
+  ['╬', MapItemType.ConsoleSpace23] //206
 ]);

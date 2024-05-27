@@ -1,22 +1,22 @@
 import Texture from '../../texture/texture';
-import type { Level, Wall } from '../../types';
-import { basementFloor, floor, roomCeil } from './basic';
+import type { Level, MapItem, Wall } from '../../types';
 import { TextureType } from '../../texture/textureStore';
+import { roomFloor, basementFloor, roomCeil } from './basic';
 
-function shelfLevels(bottom: number): Level[] {
+function getShelfLevels(bottom: number): Level[] {
   return [
     {
       bottom,
-      texture: new Texture(TextureType.FloorMetal, 1)
+      texture: new Texture(TextureType.FloorMetal)
     },
     {
       bottom: bottom - 0.2,
-      texture: new Texture(TextureType.FloorMetal, 1)
+      texture: new Texture(TextureType.FloorMetal)
     }
   ];
 }
 
-function shelfWall(bottom: number): Wall {
+function getShelfWall(bottom: number): Wall {
   return {
     top: bottom,
     bottom: bottom - 0.2,
@@ -24,15 +24,15 @@ function shelfWall(bottom: number): Wall {
   };
 }
 
-export default {
+export const shelfsSpace: MapItem = {
   stopRay: false,
-  walls: [shelfWall(-0.6), shelfWall(-1.2), shelfWall(-1.8)],
+  walls: [getShelfWall(-0.6), getShelfWall(-1.2), getShelfWall(-1.8)],
   levels: [
     basementFloor,
-    floor,
+    roomFloor,
     roomCeil,
-    ...shelfLevels(-0.6),
-    ...shelfLevels(-1.2),
-    ...shelfLevels(-1.8)
+    ...getShelfLevels(-0.6),
+    ...getShelfLevels(-1.2),
+    ...getShelfLevels(-1.8)
   ]
 };

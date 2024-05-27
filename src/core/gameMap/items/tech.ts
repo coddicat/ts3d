@@ -1,9 +1,9 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
 import type { MapItem, Wall } from '../../types';
-import { basementWall, roomHeight } from './basic';
+import { roomHeight, basementWall } from './basic';
 
-export const getWall = (
+const getTechWall = (
   startX: number,
   startY: number,
   top: number,
@@ -13,17 +13,21 @@ export const getWall = (
   top,
   bottom,
   texture: new TextureSet(
-    TextureType.WallMain,
+    TextureType.Tech,
     roomHeight,
     startX,
     startY,
-    2,
+    8,
     revert
   )
 });
 
-export default (_: number, startX: number, startY: number): MapItem => ({
-  walls: [getWall(startX, startY, roomHeight, 0), basementWall],
+export const techWall = (
+  _: number,
+  startX: number,
+  startY: number
+): MapItem => ({
+  walls: [getTechWall(startX, startY, roomHeight, 0, false), basementWall],
   levels: [],
   stopRay: true
 });

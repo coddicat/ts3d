@@ -1,11 +1,18 @@
 import type { MapItem } from '../../types';
-import { basementDepth, basementWall, roomHeight } from './basic';
-import { getWall as getMainWall } from './wallMain';
+import { getRoomWall, roomHeight, basementWall, basementDepth } from './basic';
 
-export default (_: number, startX: number, startY: number): MapItem => ({
+const mirrorTransparent = 0.75;
+const mirrorTop = 2.5;
+const mirrorBottom = 0.5;
+
+export const mirrorWall = (
+  _: number,
+  startX: number,
+  startY: number
+): MapItem => ({
   walls: [
-    getMainWall(startX, startY, roomHeight, 2.8, false),
-    getMainWall(startX, startY, 0.5, 0, true),
+    getRoomWall(startX, startY, roomHeight, mirrorTop, false),
+    getRoomWall(startX, startY, mirrorBottom, 0, true),
     basementWall,
     //collision
     {
@@ -16,5 +23,5 @@ export default (_: number, startX: number, startY: number): MapItem => ({
   levels: [],
   stopRay: true,
   mirror: true,
-  transparent: 0.75
+  transparent: mirrorTransparent
 });
