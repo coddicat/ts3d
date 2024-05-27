@@ -8,24 +8,30 @@ export const roomHeight = 3.5;
 
 export const roomFloor: Level = {
   bottom: 0,
-  texture: new Texture(TextureType.FloorMetal)
+  texture: new Texture(TextureType.RoomFloor)
 };
 
 export const roomCeil: Level = {
   bottom: roomHeight,
-  texture: new Texture(TextureType.Ceil)
+  texture: new Texture(TextureType.RoomCeil)
 };
 
 export const basementFloor: Level = {
   bottom: basementDepth,
-  texture: new Texture(TextureType.FloorBasement)
+  texture: new Texture(TextureType.BasementFloor)
 };
 
-export const basementWall: Wall = {
+export const getBasementWall = (startX: number, startY: number): Wall => ({
   top: 0,
   bottom: basementDepth,
-  texture: new Texture(TextureType.WallBasement, -basementDepth)
-};
+  texture: new TextureSet(
+    TextureType.BasementWall,
+    -basementDepth,
+    startX,
+    startY,
+    2
+  )
+});
 
 export const getRoomWall = (
   startX: number,
@@ -37,11 +43,11 @@ export const getRoomWall = (
   top,
   bottom,
   texture: new TextureSet(
-    TextureType.WallMain,
+    TextureType.RoomWall,
     roomHeight,
     startX,
     startY,
-    2,
+    4,
     revert
   )
 });
@@ -51,7 +57,10 @@ export const roomWall = (
   startX: number,
   startY: number
 ): MapItem => ({
-  walls: [getRoomWall(startX, startY, roomHeight, 0), basementWall],
+  walls: [
+    getRoomWall(startX, startY, roomHeight, 0),
+    getBasementWall(startX, startY)
+  ],
   levels: [],
   stopRay: true
 });

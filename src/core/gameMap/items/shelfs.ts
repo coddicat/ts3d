@@ -7,11 +7,11 @@ function getShelfLevels(bottom: number): Level[] {
   return [
     {
       bottom,
-      texture: new Texture(TextureType.FloorMetal)
+      texture: new Texture(TextureType.RoomFloor)
     },
     {
       bottom: bottom - 0.2,
-      texture: new Texture(TextureType.FloorMetal)
+      texture: new Texture(TextureType.RoomFloor)
     }
   ];
 }

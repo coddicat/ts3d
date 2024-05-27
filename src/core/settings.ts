@@ -61,7 +61,7 @@ function calculateAngles(): void {
   }
 }
 
-setLookLength(80);
+setLookLength(70);
 setHFOV(83);
 setResolution(640, 360);
 

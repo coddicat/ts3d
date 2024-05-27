@@ -10,7 +10,7 @@ import type {
   Wall
 } from '../../types';
 
-import { basementWall } from './basic';
+import { getBasementWall } from './basic';
 
 const hight = 2.5;
 const middle = 1.5;
@@ -137,7 +137,7 @@ export const doorWall = (
     getDoorWallAbove(repeatX, startX, startY),
     getDoorWallTop(repeatX, startX, startY),
     getDoorWallBottom(repeatX, startX, startY),
-    basementWall
+    getBasementWall(startX, startY)
   ],
   levels: [getDoorLevelTop(), getDoorLevelBottom()],
   stopRay: false

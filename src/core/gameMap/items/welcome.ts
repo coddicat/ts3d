@@ -13,7 +13,7 @@ export const welcomeWall = (
       top: roomHeight,
       bottom: 0,
       texture: new TextureSet(
-        TextureType.WelcomeWall,
+        TextureType.Welcome,
         roomHeight,
         startX,
         startY,

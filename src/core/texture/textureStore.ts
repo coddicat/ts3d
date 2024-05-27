@@ -1,30 +1,30 @@
 import { TextureData } from './textureData';
 
 export enum TextureType {
+  RoomWall,
+  RoomFloor,
+  RoomCeil,
+
   CoridorCeil,
-  WallCoridor,
-  WallMain,
+  CoridorWall,
+
   TunnelWall,
-  FloorMetal,
-  FloorBasement,
-  DoorLevel,
+
+  BasementFloor,
+  BasementWall,
+
   Numbers,
-  //WallBriks,
-  DukeFront,
-  DukeBack,
-  DukeSide,
   Banan,
   Wood,
-  //WallMetal,
-  WallBasement,
   Parquet,
-  //Ground,
   Sand,
+
   DoorAbove,
   DoorTop,
   DoorBottom,
-  WelcomeWall,
-  Ceil,
+  DoorLevel,
+
+  Welcome,
   Window,
   Aim,
   Console11,
@@ -34,40 +34,46 @@ export enum TextureType {
   Console22,
   Console23,
   Sky,
-  Tech
+  Tech,
+
+  DukeFront,
+  DukeBack,
+  DukeSide
 }
 
 const href = (path: string): string => new URL(path, import.meta.url).href;
 
 const textureFiles = new Map<TextureType, string>([
-  [TextureType.FloorBasement, href('../../assets/floor_basement.png')],
-  [TextureType.CoridorCeil, href('../../assets/ceil_coridor.png')],
-  [TextureType.WallMain, href('../../assets/wall_main.png')],
-  [TextureType.WallCoridor, href('../../assets/wall1.png')],
-  [TextureType.TunnelWall, href('../../assets/low_coridor.png')],
-  [TextureType.FloorMetal, href('../../assets/floor_metal.png')],
-  [TextureType.DukeFront, href('../../assets/duke_front.png')],
-  [TextureType.DukeBack, href('../../assets/duke_back.png')],
-  [TextureType.DukeSide, href('../../assets/duke_side.png')],
-  [TextureType.DukeSide, href('../../assets/duke_side.png')],
-  [TextureType.WallBasement, href('../../assets/wall_basement.png')],
-  // [TextureType.WallBriks, href('../../assets/wall_briks.png')],
-  [TextureType.Wood, href('../../assets/wall_wood.png')],
-  //[TextureType.WallMetal, href('../../assets/wall_metal.png')],
+  [TextureType.RoomWall, href('../../assets/roomWall.png')],
+  [TextureType.RoomFloor, href('../../assets/roomFloor.png')],
+  [TextureType.RoomCeil, href('../../assets/roomCeil.png')],
+
+  [TextureType.CoridorCeil, href('../../assets/coridorCeil.png')],
+  [TextureType.CoridorWall, href('../../assets/coridorWall.png')],
+
+  [TextureType.BasementFloor, href('../../assets/basementFloor.png')],
+
+  [TextureType.TunnelWall, href('../../assets/tunnelWall.png')],
+
+  [TextureType.DukeFront, href('../../assets/dukeFront.png')],
+  [TextureType.DukeBack, href('../../assets/dukeBack.png')],
+  [TextureType.DukeSide, href('../../assets/dukeSide.png')],
+
+  [TextureType.BasementWall, href('../../assets/basementWall.png')],
+
+  [TextureType.Wood, href('../../assets/wood.png')],
+
   [TextureType.Numbers, href('../../assets/numbers.png')],
   [TextureType.Banan, href('../../assets/banan.png')],
   [TextureType.Parquet, href('../../assets/parquet.png')],
-
-  //[TextureType.Ground, href('../../assets/ground.png')],
   [TextureType.Sand, href('../../assets/sand.png')],
 
-  [TextureType.DoorAbove, href('../../assets/door_above.png')],
-  [TextureType.DoorTop, href('../../assets/door_top.png')],
-  [TextureType.DoorBottom, href('../../assets/door_bottom.png')],
-  [TextureType.DoorLevel, href('../../assets/door_level.png')],
+  [TextureType.DoorAbove, href('../../assets/doorAbove.png')],
+  [TextureType.DoorTop, href('../../assets/doorTop.png')],
+  [TextureType.DoorBottom, href('../../assets/doorBottom.png')],
+  [TextureType.DoorLevel, href('../../assets/doorLevel.png')],
 
-  [TextureType.WelcomeWall, href('../../assets/welcome_wall.png')],
-  [TextureType.Ceil, href('../../assets/ceil.png')],
+  [TextureType.Welcome, href('../../assets/welcome.png')],
 
   [TextureType.Window, href('../../assets/window.png')],
   [TextureType.Aim, href('../../assets/aim.png')],
@@ -92,6 +98,7 @@ async function loadTexture(url: string): Promise<TextureData> {
   img.src = url;
   return new Promise<TextureData>((resolve, reject) => {
     img.onerror = function (e: Event | string) {
+      console.error(`failed load ${url}`);
       reject(e);
     };
     img.onload = function () {

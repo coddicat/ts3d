@@ -7,19 +7,19 @@ import {
   roomFloor,
   roomHeight,
   basementFloor,
-  basementWall
+  getBasementWall
 } from './basic';
 
 export const coridorHeight = 2.8;
 
 export const coridorCeil: Level = {
   bottom: coridorHeight,
-  texture: new Texture(TextureType.Ceil)
+  texture: new Texture(TextureType.RoomCeil)
 };
 
 export const coridorFloor: Level = {
   bottom: 0,
-  texture: new Texture(TextureType.FloorMetal)
+  texture: new Texture(TextureType.RoomFloor)
 };
 
 export const coridorSpace = (
@@ -38,12 +38,12 @@ export const coridorWall = (
   startY: number
 ): MapItem => ({
   walls: [
-    basementWall,
+    getBasementWall(startX, startY),
     {
       top: coridorHeight,
       bottom: 0,
       texture: new TextureSet(
-        TextureType.WallCoridor,
+        TextureType.CoridorWall,
         coridorHeight,
         startX,
         startY,

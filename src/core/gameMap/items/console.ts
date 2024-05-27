@@ -10,7 +10,7 @@ const depth = 0.25;
 const wall: Wall = {
   bottom: height - depth,
   top: height,
-  texture: new Texture(TextureType.WallMain)
+  texture: new Texture(TextureType.RoomWall)
 };
 
 const getItem = (texture: TextureType): MapItem => ({
