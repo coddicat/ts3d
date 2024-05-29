@@ -27,7 +27,7 @@ export default class SpriteObject {
     this.halfWidth = this.width / 2;
   }
 
-  public setRatio(type: TextureType, textureDataWidth: number): void {
+  public setRatio(textureDataWidth: number): void {
     this.ratio = textureDataWidth / this.width;
   }
 }

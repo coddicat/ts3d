@@ -66,7 +66,7 @@ export default class SpriteStore {
         const data = textureStore.getTextureData(texture.type);
         if (data) {
           texture.setData(data);
-          sprite.setRatio(texture.type, data.width);
+          sprite.setRatio(data.width);
         }
       });
     });
