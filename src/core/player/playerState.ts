@@ -26,27 +26,21 @@ export default class PlayerState extends SpriteObject {
   ) {
     super(position, size, textureTypes, repeat);
     this.setAngle(position.angle);
-    this.setZ(position.z, false);
+    this.setZ(position.z);
   }
 
   public lookVertical = 0;
   public halfLookVertical = settings.halfHeight;
 
-  //player props
-  public jumpingTimestamp: number | null = null;
-  public jumpingFloor: number | null = null;
-  public jumpingSpeed: number | null = null;
+  public speedZ = 0;
 
-  public movingTimestamp: number | null = null;
-  public turningTimestamp: number | null = null;
-
-  public setZ(value: number, jump: boolean): void {
+  public setZ(value: number): void {
     this.position.z = value;
     this.lookZ = this.position.z + this.lookHeight;
     this.top = this.position.z + this.height;
-    if (jump) {
-      this.jumpingFloor = this.position.z;
-    }
+
+    //TODO check if need to change also when moving
+    this.timestamp++;
   }
 
   public setAngle(value: number): void {

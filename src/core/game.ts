@@ -13,10 +13,10 @@ const rad90 = Math.PI / 2;
 export class Game {
   private playerState = new PlayerState(
     {
-      x: 30.2,
-      y: 70,
+      x: 27.5,
+      y: 72,
       z: 0,
-      angle: rad90 * 2
+      angle: rad90 * 3
     },
     { width: settings.playerWidth, height: settings.playerWidth },
     [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],

@@ -38,13 +38,12 @@ export class KeyHandler {
     }
 
     this.player.handleMove(
-      timestamp,
       up ? 1 : down ? -1 : 0,
       moveRight ? 1 : moveLeft ? -1 : 0
     );
 
     if (this.activeKeys.get('Space')) {
-      this.player.jump(timestamp);
+      this.player.jump();
     }
   }
 }

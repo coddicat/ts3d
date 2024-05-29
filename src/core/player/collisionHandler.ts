@@ -1,10 +1,9 @@
 import type { GameMap } from '../gameMap/gameMap';
 import type Ray from '../ray/ray';
 import type { CellHandler } from '../ray/rayHandler';
+import settings from '../settings';
 import { RayAction } from '../types';
 import type PlayerState from './playerState';
-
-const stairsHeight = 0.301;
 
 export default class CollisionHandler implements CellHandler {
   private state: PlayerState;
@@ -26,28 +25,31 @@ export default class CollisionHandler implements CellHandler {
     const userBottom = pos.z;
     const userTop = userBottom + state.height;
 
-    let stepZ = userBottom;
-
+    let stairs = false;
+    let stairsHeight = 0;
     for (const wall of walls) {
       const top = wall.top;
       if (wall.bottom >= userTop || top <= userBottom) continue;
 
-      if (top <= userBottom + stairsHeight) {
-        stepZ = Math.max(stepZ, top);
+      if (top <= userBottom + settings.stairsTollerance) {
+        stairs = true;
+        stairsHeight = Math.max(stairsHeight, top - userBottom);
         continue;
       }
 
       return RayAction.stop;
     }
 
-    if (pos.z != stepZ) {
-      // //TODO extract to method
-      // pos.z = stepZ;
-      // state.lookZ = stepZ + state.lookHeight;
-      // state.top = stepZ + state.height;
-
-      state.setZ(stepZ, false);
-      state.timestamp++;
+    if (stairs) {
+      for (const wall of walls) {
+        const top = wall.top;
+        if (
+          wall.bottom >= userTop + stairsHeight ||
+          top <= userBottom + stairsHeight
+        )
+          continue;
+        return RayAction.stop;
+      }
     }
 
     return RayAction.continue;
