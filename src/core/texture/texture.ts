@@ -2,10 +2,16 @@ import type { TextureData } from './textureData';
 import type { TextureType } from './textureStore';
 
 export default class Texture {
-  constructor(type: TextureType, repeat: number, transparent = false) {
+  constructor(
+    type: TextureType,
+    repeat: number = 1,
+    transparent = false,
+    revert = false
+  ) {
     this.type = type;
     this.repeat = repeat;
     this.transparent = transparent;
+    this.revert = revert;
   }
 
   public type: TextureType;

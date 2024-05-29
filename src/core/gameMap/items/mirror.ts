@@ -1,33 +1,32 @@
-import Texture from '../../texture/texture';
-import { TextureType } from '../../texture/textureStore';
 import type { MapItem } from '../../types';
+import {
+  getRoomWall,
+  roomHeight,
+  basementDepth,
+  getBasementWall
+} from './basic';
 
-export default {
+const mirrorTransparent = 0.75;
+const mirrorTop = 2.5;
+const mirrorBottom = 0.5;
+
+export const mirrorWall = (
+  _: number,
+  startX: number,
+  startY: number
+): MapItem => ({
   walls: [
+    getRoomWall(startX, startY, roomHeight, mirrorTop, false),
+    getRoomWall(startX, startY, mirrorBottom, 0, true),
+    getBasementWall(startX, startY),
+    //collision
     {
-      color: 0xffffff,
-      top: 4,
-      bottom: 2.5,
-      render: true,
-      texture: new Texture(TextureType.WallMetal, 2)
-    },
-    {
-      color: 0xffffff,
-      top: 0.25,
-      bottom: 0,
-      render: true,
-      texture: new Texture(TextureType.WallMetal, 2)
-    },
-    //for collision
-    {
-      color: 0,
-      top: 4,
-      bottom: 0,
-      render: false,
-      texture: null
+      top: roomHeight,
+      bottom: basementDepth
     }
   ],
-  levels: [],
-  stopRay: false,
-  mirror: true
-} as MapItem;
+  tiles: [],
+  stopRay: true,
+  mirror: true,
+  transparent: mirrorTransparent
+});

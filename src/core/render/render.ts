@@ -7,7 +7,7 @@ import type Ray from '../ray/ray';
 import type RayCasting from '../ray/rayCasting';
 import type RayHandler from '../ray/rayHandler';
 import type { TextureData } from '../texture/textureData';
-import type { Wall, Level, PixelCounter } from '../types';
+import type { Wall, Tile, PixelCounter } from '../types';
 import { Axis } from '../types';
 
 class Render {
@@ -34,11 +34,21 @@ class Render {
   }
 
   private drawWall(rayState: Ray, light: number, wall: Wall): void {
-    const fact = settings.resolution.width / this.rayHandlerState.newDistance;
+    const texture = wall.texture;
+    if (!texture) {
+      return;
+    }
+
+    const textureData = texture.data;
+    if (!textureData) {
+      return;
+    }
+
+    const fact = settings.resolutionHeight / this.rayHandlerState.newDistance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
-    const repeatX = wall.texture?.repeatX ?? 1;
-    const startY = wall.texture?.startY ?? 0;
-    const startX = wall.texture?.startX ?? 0;
+    const repeatX = texture.repeatX ?? 1;
+    const startY = texture.startY ?? 0;
+    const startX = texture.startX ?? 0;
 
     const s =
       rayState.side === Axis.y
@@ -50,42 +60,32 @@ class Render {
     const y0 = a - wall.top * fact;
     const y1 = a - wall.bottom * fact;
 
-    const top = Math.max(0, Math.min(y0, y1) | 0);
+    const top = Math.max(0, (Math.min(y0, y1) + 1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
+      Math.imul(top, settings.resolutionWidth) + this.rayCastingState.displayX;
 
-    if (settings.wallTexture && wall!.texture?.data) {
-      this.painter.drawSpriteLine(
-        dataIndex,
-        y0,
-        y1,
-        top,
-        bottom,
+    this.painter.drawSpriteLine(
+      dataIndex,
+      y0,
+      y1,
+      top,
+      bottom,
 
-        //spriteX:
-        wall.texture?.data ? (offset * wall.texture?.data.width) | 0 : 0,
+      //spriteX:
+      textureData ? (offset * textureData.width) | 0 : 0,
 
-        //repeatedHeight:
-        //TODO improve to onetime calculatation
-        ((wall.top - wall.bottom) * wall.texture.data.height) /
-          wall.texture.repeat,
+      //repeatedHeight:
+      //TODO improve to onetime calculatation
+      ((wall.top - wall.bottom) * textureData.height) / texture.repeat,
 
-        //revert
-        wall.texture.revert,
+      texture.revert,
 
-        //checkAlpha
-        wall.texture.transparent,
-
-        //light:
-        light,
-
-        //textureData
-        wall.texture?.data
-      );
-    } else {
-      this.painter.drawLineStatic(dataIndex, top, bottom, wall.color, light);
-    }
+      //checkAlpha
+      texture.transparent,
+      light,
+      textureData
+    );
   }
 
   private drawSprite(
@@ -96,7 +96,7 @@ class Render {
     light: number,
     textureData: TextureData
   ): void {
-    const fact = settings.resolution.width / distance;
+    const fact = settings.resolutionHeight / distance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
     const y0 = a - top * fact;
     const y1 = a - bottom * fact;
@@ -104,8 +104,7 @@ class Render {
     const top_ = Math.max(0, Math.min(y0, y1) | 0);
     const bottom_ = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top_, settings.resolution.width) +
-      this.rayCastingState.displayX;
+      Math.imul(top_, settings.resolutionWidth) + this.rayCastingState.displayX;
 
     this.painter.drawSpriteLine(
       dataIndex,
@@ -133,31 +132,32 @@ class Render {
     );
   }
 
-  public handleLevel(rayState: Ray, level: Level): void {
-    this.dynamicAlpha.init(level.bottom);
+  public handleTile(rayState: Ray, tile: Tile): void {
+    const textureData = tile.texture?.data;
+    if (!textureData) {
+      return;
+    }
+
+    this.dynamicAlpha.init(tile.bottom);
     const y0 =
       this.playerState.halfLookVertical +
-      this.dynamicAlpha.distanceRate / this.rayHandlerState.newDistance;
+      this.dynamicAlpha.distanceRatio / this.rayHandlerState.newDistance;
     const y1 =
       this.playerState.halfLookVertical +
-      this.dynamicAlpha.distanceRate / this.rayHandlerState.prevDistance;
+      this.dynamicAlpha.distanceRatio / this.rayHandlerState.prevDistance;
 
     const top = Math.max(0, Math.min(y0, y1) | 0);
     const bottom = Math.min(Math.max(y0, y1) | 0, settings.maxBottom);
     const dataIndex =
-      Math.imul(top, settings.resolution.width) + this.rayCastingState.displayX;
+      Math.imul(top, settings.resolutionWidth) + this.rayCastingState.displayX;
 
-    if (settings.levelTexture && level.texture?.data) {
-      this.painter.drawSpriteLineDynamic(
-        dataIndex,
-        top,
-        bottom,
-        rayState,
-        level.texture?.data
-      );
-    } else {
-      this.painter.drawLineDynamic(dataIndex, top, bottom, level.color);
-    }
+    this.painter.drawTileSpriteLine(
+      dataIndex,
+      top,
+      bottom,
+      rayState,
+      textureData
+    );
   }
 
   public handleSprite(
@@ -188,7 +188,7 @@ class Render {
     if (light < 1) return;
 
     for (const wall of this.rayHandlerState.newItem.walls) {
-      if (wall.render) this.drawWall(rayState, light, wall);
+      this.drawWall(rayState, light, wall);
       if (!this.pixelCounter.empty) return;
     }
   }

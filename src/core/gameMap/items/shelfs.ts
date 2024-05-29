@@ -1,42 +1,38 @@
 import Texture from '../../texture/texture';
-import type { Level, Wall } from '../../types';
-import { floor, ceil } from './basic';
+import type { Tile, MapItem, Wall } from '../../types';
 import { TextureType } from '../../texture/textureStore';
+import { roomFloor, basementFloor, roomCeil } from './basic';
 
-function shelfLevels(bottom: number): Level[] {
+function getShelfTiles(bottom: number): Tile[] {
   return [
     {
-      color: 0xc8c8dc,
       bottom,
-      texture: new Texture(TextureType.FloorMetal, 1)
+      texture: new Texture(TextureType.RoomFloor)
     },
     {
-      color: 0xc8c8dc,
       bottom: bottom - 0.2,
-      texture: new Texture(TextureType.FloorMetal, 1)
+      texture: new Texture(TextureType.RoomFloor)
     }
   ];
 }
 
-function shelfWall(bottom: number): Wall {
+function getShelfWall(bottom: number): Wall {
   return {
-    color: 0xc0c0dc,
     top: bottom,
     bottom: bottom - 0.2,
-    render: true,
-    texture: new Texture(TextureType.WallWood, 1)
+    texture: new Texture(TextureType.Wood, 1)
   };
 }
 
-export default {
+export const shelfsSpace: MapItem = {
   stopRay: false,
-  walls: [shelfWall(0.6), shelfWall(1.2), shelfWall(1.8), shelfWall(2.4)],
-  levels: [
-    floor,
-    ceil,
-    ...shelfLevels(0.6),
-    ...shelfLevels(1.2),
-    ...shelfLevels(1.8),
-    ...shelfLevels(2.4)
+  walls: [getShelfWall(-0.6), getShelfWall(-1.2), getShelfWall(-1.8)],
+  tiles: [
+    basementFloor,
+    roomFloor,
+    roomCeil,
+    ...getShelfTiles(-0.6),
+    ...getShelfTiles(-1.2),
+    ...getShelfTiles(-1.8)
   ]
 };

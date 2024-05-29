@@ -1,58 +1,76 @@
 const rad = Math.PI / 180;
-const lookAngleDegrees = 60;
+const pi2 = Math.PI * 2;
+
+export const resolutionOptions = [
+  [640, 360],
+  [854, 480],
+  [960, 540],
+  [1024, 576],
+  [1280, 720],
+  [1920, 1080]
+];
 
 const settings = {
-  resolution: {
-    width: 640,
-    height: 480
-  },
-  moveSpeed: 0.015,
-  turnSpeed: 0.002,
+  resolutionWidth: 0,
+  resolutionHeight: 0,
+  moveSpeed: 0.006,
+  turnSpeed: 0.001,
   playerHeight: 1.8,
   playerWidth: 1.34,
-  levelTexture: true,
-  wallTexture: true,
-  fixFact: 1,
+  stairsTollerance: 0.301,
+  maxLookVertical: 0,
 
   lookLength: 0,
-  lookAngleDegrees: 0,
-  lookAngle: 0,
-  lookMapStep: 0,
+  HFOV: 0,
   halfHeight: 0,
+  halfWidth: 0,
   maxLightFact: 0,
   maxBottom: 0,
-  halfLookAngle: 0,
+  halfHFOV: 0,
   buf8: new Uint8ClampedArray(),
   data: new Uint32Array(),
-  angleStep: 0
+  angleStep: 0,
+  planeDistance: 0,
+  angles: [] as number[],
+  angleStep_pi2: 0
 };
 
-export function setLookLength(length: number): void {
-  settings.lookLength = length;
-  settings.maxLightFact = 255 / length;
-}
-
 export function setResolution(width: number, height: number): void {
-  settings.resolution.width = width;
-  settings.resolution.height = height;
+  settings.resolutionWidth = width;
+  settings.resolutionHeight = height;
+  settings.halfWidth = width / 2;
   settings.halfHeight = height / 2;
   settings.maxBottom = height - 1;
   const buf = new ArrayBuffer(height * width * 4);
   settings.buf8 = new Uint8ClampedArray(buf);
   settings.data = new Uint32Array(buf);
-  settings.angleStep = settings.lookAngle / width;
+  settings.angleStep = settings.HFOV / width;
+  settings.planeDistance = settings.halfWidth / Math.tan(settings.halfHFOV);
+  settings.maxLookVertical = height * 0.625;
+  settings.angleStep_pi2 = settings.angleStep / pi2;
+  calculateAngles();
 }
 
-export function setLookAngle(degrees: number): void {
-  settings.lookAngleDegrees = degrees;
-  settings.lookAngle = lookAngleDegrees * rad;
-  settings.lookMapStep = (lookAngleDegrees * rad) / 20;
-  settings.halfLookAngle = settings.lookAngle / 2;
-  settings.angleStep = settings.lookAngle / settings.resolution.width;
+function setLookLength(length: number): void {
+  settings.lookLength = length;
+  settings.maxLightFact = 255 / length;
 }
 
-setLookLength(80);
-setLookAngle(60);
-setResolution(640, 480);
+function setHFOV(degrees: number): void {
+  settings.HFOV = degrees * rad;
+  settings.halfHFOV = settings.HFOV / 2;
+}
+
+function calculateAngles(): void {
+  for (let x = 0; x < settings.resolutionWidth; x++) {
+    const offset = x - settings.halfWidth;
+    const angle = Math.atan(offset / settings.planeDistance);
+    settings.angles[x] = angle;
+  }
+}
+
+setLookLength(70);
+setHFOV(83);
+setResolution(resolutionOptions[0][0], resolutionOptions[0][1]);
 
 export default settings;

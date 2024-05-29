@@ -1,33 +1,7 @@
 <script setup lang="ts">
-import HomeView from './components/HomeView.vue';
+import HomePage from './pages/HomePage.vue';
 </script>
 
 <template>
-  <HomeView />
+  <HomePage />
 </template>
-
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 1000px;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>

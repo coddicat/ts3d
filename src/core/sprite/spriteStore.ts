@@ -20,24 +20,37 @@ function getBanan(x: number, y: number, z: number): SpriteObject {
 }
 
 const sprites = [
-  new SpriteObject(
-    {
-      x: 25,
-      y: 36.5,
-      z: 0,
-      angle: 0
-    },
-    {
-      height: 1.8,
-      width: 1.34
-    },
-    [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
-    1
-  ),
-  getBanan(21.5, 8.5, 0.6),
-  getBanan(21.5, 8.5, 1.2),
-  getBanan(21.5, 8.5, 1.8),
-  getBanan(21.5, 8.5, 2.4)
+  // new SpriteObject(
+  //   {
+  //     x: 0,
+  //     y: 84,
+  //     z: 0,
+  //     angle: 0
+  //   },
+  //   {
+  //     height: 1080,
+  //     width: 1920
+  //   },
+  //   [TextureType.Sky],
+  //   1
+  // ),
+  // new SpriteObject(
+  //   {
+  //     x: 30,
+  //     y: 5,
+  //     z: 0,
+  //     angle: 0
+  //   },
+  //   {
+  //     height: 1.8,
+  //     width: 1.34
+  //   },
+  //   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
+  //   1
+  // ),
+  getBanan(29.5, 73.5, -0.6),
+  getBanan(29.5, 73.5, -1.2),
+  getBanan(29.5, 73.5, -1.8)
 ];
 
 export default class SpriteStore {
@@ -53,7 +66,7 @@ export default class SpriteStore {
         const data = textureStore.getTextureData(texture.type);
         if (data) {
           texture.setData(data);
-          sprite.setWRate(texture.type, data.width);
+          sprite.setRatio(texture.type, data.width);
         }
       });
     });

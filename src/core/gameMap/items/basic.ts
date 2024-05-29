@@ -1,62 +1,90 @@
 import Texture from '../../texture/texture';
+import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { Level, MapItem } from '../../types';
+import type { Tile, MapItem, Wall } from '../../types';
 
-export const ceil: Level = {
-  color: 0xdcb9ac,
-  bottom: 4,
-  texture: new Texture(TextureType.Ceil, 1)
-};
+export const basementDepth = -2.4;
+export const roomHeight = 3.5;
 
-export const floor: Level = {
-  color: 0xc8c8dc,
+export const roomFloor: Tile = {
   bottom: 0,
-  texture: new Texture(TextureType.FloorMetal, 1)
+  texture: new Texture(TextureType.RoomFloor)
 };
 
-export const towerFloor: Level = {
-  color: 0xc8c8dc,
-  bottom: 0,
-  texture: new Texture(TextureType.Ground, 1)
+export const roomCeil: Tile = {
+  bottom: roomHeight,
+  texture: new Texture(TextureType.RoomCeil)
 };
 
-export const floorEmpty: Level = {
-  color: 0xc8c8dc,
-  bottom: 0,
-  texture: new Texture(TextureType.Sand, 1)
+export const basementFloor: Tile = {
+  bottom: basementDepth,
+  texture: new Texture(TextureType.BasementFloor)
 };
 
-export const floorNumber: Level = {
-  color: 0xa8ff00,
-  bottom: 0,
-  texture: new Texture(TextureType.FloorNumber, 1)
-};
-export const ceilNumber: Level = {
-  color: 0xa8ff00,
-  bottom: 5,
-  texture: new Texture(TextureType.FloorNumber, 1)
-};
+export const getBasementWall = (startX: number, startY: number): Wall => ({
+  top: 0,
+  bottom: basementDepth,
+  texture: new TextureSet(
+    TextureType.BasementWall,
+    -basementDepth,
+    startX,
+    startY,
+    2
+  )
+});
 
-export const roomSpaceItem: MapItem = {
-  walls: [],
-  levels: [floor, ceil],
-  stopRay: false
-};
+export const getRoomWall = (
+  startX: number,
+  startY: number,
+  top: number,
+  bottom: number,
+  revert: boolean = false
+): Wall => ({
+  top,
+  bottom,
+  texture: new TextureSet(
+    TextureType.RoomWall,
+    roomHeight,
+    startX,
+    startY,
+    4,
+    revert
+  )
+});
+
+export const roomWall = (
+  _: number,
+  startX: number,
+  startY: number
+): MapItem => ({
+  walls: [
+    getRoomWall(startX, startY, roomHeight, 0),
+    getBasementWall(startX, startY)
+  ],
+  tiles: [],
+  stopRay: true
+});
 
 export const emptyItem: MapItem = {
   walls: [],
-  levels: [floorEmpty],
+  tiles: [],
   stopRay: false
 };
 
-export const numberItem: MapItem = {
+export const outmapItem: MapItem = {
   walls: [],
-  levels: [floorNumber, ceilNumber],
+  tiles: [],
+  stopRay: true
+};
+
+export const roomSpace: MapItem = {
+  walls: [],
+  tiles: [basementFloor, roomFloor, roomCeil],
   stopRay: false
 };
 
-export const roomItem: MapItem = {
+export const basementSpace: MapItem = {
   walls: [],
-  levels: [floor, ceil],
+  tiles: [basementFloor, roomCeil],
   stopRay: false
 };

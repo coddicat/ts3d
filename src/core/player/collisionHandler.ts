@@ -1,7 +1,7 @@
 import type { GameMap } from '../gameMap/gameMap';
 import type Ray from '../ray/ray';
 import type { CellHandler } from '../ray/rayHandler';
-import type { Position2D } from '../types';
+import settings from '../settings';
 import { RayAction } from '../types';
 import type PlayerState from './playerState';
 
@@ -14,29 +14,52 @@ export default class CollisionHandler implements CellHandler {
     this.gameMap = gameMap;
   }
 
-  private checkMoveCollision(cellPos: Position2D): RayAction {
-    const item = this.gameMap.check(cellPos);
-    if (!item || !item.walls.length) return RayAction.continue;
-    const top = this.state.position.z + this.state.height;
-    const bottom = this.state.position.z;
-    const collisions = item.walls.filter(x => top > x.bottom && bottom < x.top);
+  private checkMoveCollision(x: number, y: number): RayAction {
+    const item = this.gameMap.check(x, y);
+    const walls = item.walls;
 
-    if (collisions.length > 0) {
-      const max = Math.max(...collisions.map(x => x.top));
-      if (max <= bottom + 0.301) {
-        this.state.position.z = max;
-        this.state.lookZ = max + this.state.lookHeight;
-        this.state.top = max + this.state.height;
-        return RayAction.continue;
+    if (!item || !walls.length) return RayAction.continue;
+
+    const state = this.state;
+    const pos = state.position;
+    const userBottom = pos.z;
+    const userTop = userBottom + state.height;
+
+    let stairs = false;
+    let stairsHeight = 0;
+    for (const wall of walls) {
+      const top = wall.top;
+      if (wall.bottom >= userTop || top <= userBottom) continue;
+
+      if (top <= userBottom + settings.stairsTollerance) {
+        stairs = true;
+        stairsHeight = Math.max(stairsHeight, top - userBottom);
+        continue;
+      }
+
+      return RayAction.stop;
+    }
+
+    if (stairs) {
+      for (const wall of walls) {
+        const top = wall.top;
+        if (
+          wall.bottom >= userTop + stairsHeight ||
+          top <= userBottom + stairsHeight
+        )
+          continue;
+        return RayAction.stop;
       }
     }
 
-    return collisions.length > 0 ? RayAction.stop : RayAction.continue;
+    return RayAction.continue;
   }
 
   public handle(ray: Ray): RayAction {
-    return ray.cellPosition.x <= 0 || ray.cellPosition.y <= 0
+    const pos = ray.cellPosition;
+
+    return pos.x <= 0 || pos.y <= 0
       ? RayAction.stop
-      : this.checkMoveCollision(ray.cellPosition);
+      : this.checkMoveCollision(pos.x, pos.y);
   }
 }

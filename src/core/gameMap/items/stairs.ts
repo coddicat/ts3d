@@ -1,72 +1,51 @@
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import type { Tile, MapItem, Wall } from '../../types';
 import { MapItemType } from '../mapItemType';
-import { ceil, floor, floorEmpty } from './basic';
 import Texture from '../../texture/texture';
+import { basementFloor, roomCeil } from './basic';
 
-function stair(top: number, open = true): MapItem {
-  const bottom = (((top - 0.3) * 1000) | 0) / 1000;
+const stairDepth = 0.3;
 
-  const walls = [
+function getStairSpace(top: number, wood: boolean = false): MapItem {
+  const bottom = (((top - stairDepth) * 1000) | 0) / 1000;
+  const texture = wood
+    ? new Texture(TextureType.Wood, 1)
+    : new Texture(TextureType.Parquet, 1);
+
+  const walls: Wall[] = [
     {
-      color: 0xc80fff,
       top,
       bottom,
-      render: true,
-      texture: new Texture(TextureType.WallBriks, 1)
-    },
-    {
-      color: 0xc80fff,
-      top: 6,
-      bottom: 5,
-      render: true,
-      texture: new Texture(TextureType.WallBriks, 1)
+      texture: texture
     }
   ];
 
-  const levelTop = {
-    color: 0x6496fa,
+  const tileTop: Tile = {
     bottom: top,
-    texture: new Texture(TextureType.Parquet, 1)
+    texture: texture
   };
 
-  const levelBottom = {
-    color: 0x6496fa,
+  const tileBottom: Tile = {
     bottom: bottom,
-    texture: null
+    texture: texture
   };
 
-  const levels = !bottom
-    ? [levelTop, ...(open ? [] : [ceil])]
-    : [
-        ...(open ? [floorEmpty] : [floor]),
-        levelBottom,
-        levelTop,
-        ...(open ? [] : [ceil])
-      ];
-  const item = {
+  const tiles: Tile[] = [basementFloor, tileBottom, tileTop, roomCeil];
+
+  return {
     walls,
-    levels,
+    tiles,
     stopRay: false
   };
-  return item;
 }
 
-export default new Map<MapItemType, MapItem>([
-  [MapItemType.Stair1, stair(0.3, false)],
-  [MapItemType.Stair2, stair(0.6, false)],
-  [MapItemType.Stair3, stair(0.9, false)],
-  [MapItemType.Stair4, stair(1.2)],
-  [MapItemType.Stair5, stair(1.5)],
-  [MapItemType.Stair6, stair(1.8)],
-  [MapItemType.Stair7, stair(3)],
-  [MapItemType.Stair8, stair(2.4)],
-  [MapItemType.Stair9, stair(2.7)],
-  [MapItemType.Stair10, stair(3)],
-  [MapItemType.Stair11, stair(3.3)],
-  [MapItemType.Stair12, stair(3.6)],
-  [MapItemType.Stair13, stair(3.9)],
-  [MapItemType.Stair14, stair(4.2)],
-  [MapItemType.Stair15, stair(4.5)],
-  [MapItemType.Stair16, stair(4.8)]
+export const stairs = new Map<MapItemType, MapItem>([
+  [MapItemType.StairSpace0, getStairSpace(0, true)],
+  [MapItemType.StairSpace1, getStairSpace(-stairDepth * 1)],
+  [MapItemType.StairSpace2, getStairSpace(-stairDepth * 2)],
+  [MapItemType.StairSpace3, getStairSpace(-stairDepth * 3)],
+  [MapItemType.StairSpace4, getStairSpace(-stairDepth * 4)],
+  [MapItemType.StairSpace5, getStairSpace(-stairDepth * 5)],
+  [MapItemType.StairSpace6, getStairSpace(-stairDepth * 6)],
+  [MapItemType.StairSpace7, getStairSpace(-stairDepth * 7)]
 ]);

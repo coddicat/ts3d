@@ -8,6 +8,7 @@ import type SpriteObject from '../sprite/spriteObject';
 import type { MapItem, SpriteAngleState } from '../types';
 import { RayAction, PixelCounter } from '../types';
 import settings from '../settings';
+import type SpriteStore from '../sprite/spriteStore';
 
 export interface CellHandler {
   handle(rayState: Ray, last: boolean): RayAction;
@@ -22,7 +23,6 @@ class RayHandler implements CellHandler {
   public newItem: MapItem | null;
   public prevDistance: number;
   public newDistance: number;
-  public mirrorFact: number;
   public alphaMaxLightFact: number;
   public gameMap: GameMap;
 
@@ -31,13 +31,12 @@ class RayHandler implements CellHandler {
   private rayCastingState: RayCasting;
   private render: Render;
 
-  private spriteObjects: SpriteObject[];
+  private spriteStore: SpriteStore;
   private spriteState: SpriteAngleState;
 
   constructor(
     playerState: PlayerState,
-
-    spriteObjects: SpriteObject[],
+    spriteStore: SpriteStore,
     rayCastingState: RayCasting,
     gameMap: GameMap
   ) {
@@ -46,13 +45,12 @@ class RayHandler implements CellHandler {
     this.newItem = null;
     this.prevDistance = 0.2;
     this.newDistance = 0.2;
-    this.mirrorFact = 1;
     this.alphaMaxLightFact = settings.maxLightFact;
     this.pixelsCounter = new PixelCounter();
     this.playerState = playerState;
     this.gameMap = gameMap;
 
-    this.spriteObjects = spriteObjects;
+    this.spriteStore = spriteStore;
     this.spriteState = {
       lastDistance: 0.6
     };
@@ -71,17 +69,25 @@ class RayHandler implements CellHandler {
     this.prevDistance = 0.2;
     this.newDistance = 0.2;
     this.alphaMaxLightFact = settings.maxLightFact;
-    this.mirrorFact = 1;
     this.pixelsCounter.reset();
     this.spriteState.lastDistance = 0.6;
   }
 
   public handle(ray: Ray, last: boolean): RayAction {
-    this.newItem = this.gameMap.check(ray.cellPosition);
+    const pos = ray.cellPosition;
+    this.newItem = this.gameMap.check(pos.x, pos.y);
     this.newDistance = ray.distance * this.rayCastingState.rayAngle.fixDistance;
 
+    if (
+      this.prevItem &&
+      this.newItem != this.prevItem &&
+      this.prevItem.transparent
+    ) {
+      this.alphaMaxLightFact *= this.prevItem.transparent;
+    }
+
     if (this.newItem !== this.prevItem || last) {
-      this.handleLevels(ray);
+      this.handleTiles(ray);
       if (!this.pixelsCounter.empty) return RayAction.stop;
       this.render.handleWalls(ray);
 
@@ -90,8 +96,6 @@ class RayHandler implements CellHandler {
     }
 
     if (this.newItem && this.newItem.mirror) {
-      this.mirrorFact *= 0.75;
-      this.alphaMaxLightFact = settings.maxLightFact * this.mirrorFact;
       return RayAction.mirror;
     }
 
@@ -106,55 +110,58 @@ class RayHandler implements CellHandler {
     belowObjects: [] as SpriteObject[]
   };
 
-  private handleLevels(ray: Ray): void {
+  private handleTiles(ray: Ray): void {
     if (!this.prevItem || this.prevDistance < 0.2) return;
 
     if (this.refs.playerStateTimestamp !== this.playerState.timestamp) {
-      this.refs.aboveObjects = this.spriteObjects.filter(
+      const spriteObjects = this.spriteStore.spriteObjects;
+
+      this.refs.aboveObjects = spriteObjects.filter(
         o => o.position.z > this.playerState.lookZ
       );
-      this.refs.belowObjects = this.spriteObjects.filter(
+      this.refs.belowObjects = spriteObjects.filter(
         o => o.position.z <= this.playerState.lookZ
       );
       this.refs.playerStateTimestamp = this.playerState.timestamp;
     }
 
     if (this.prevItem.playerStateTimestamp !== this.playerState.timestamp) {
-      this.prevItem.aboveLevels = this.prevItem.levels.filter(
+      this.prevItem.aboveTiles = this.prevItem.tiles.filter(
         x => x.bottom > this.playerState.lookZ
       );
-      this.prevItem.belowLevels = this.prevItem.levels
+      this.prevItem.belowTiles = this.prevItem.tiles
         .filter(x => x.bottom < this.playerState.lookZ)
         .reverse();
       this.prevItem.playerStateTimestamp = this.playerState.timestamp;
     }
 
-    for (const level of this.prevItem.belowLevels!) {
+    for (const tile of this.prevItem.belowTiles!) {
       for (const obj of this.refs.belowObjects) {
-        if (obj.position.z < level.bottom) continue;
+        if (obj.position.z < tile.bottom) continue;
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }
 
-      this.render.handleLevel(ray, level);
+      this.render.handleTile(ray, tile);
       if (!this.pixelsCounter.empty) return;
     }
 
-    for (const level of this.prevItem.aboveLevels!) {
-      this.render.handleLevel(ray, level);
+    for (const tile of this.prevItem.aboveTiles!) {
       if (!this.pixelsCounter.empty) return;
 
       for (const obj of this.refs.aboveObjects) {
-        if (obj.position.z > level.bottom) continue;
+        if (obj.position.z > tile.bottom) continue;
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }
+
+      this.render.handleTile(ray, tile);
     }
 
-    for (const obj of this.spriteObjects) {
-      this.handleSprite(ray, obj);
-      if (!this.pixelsCounter.empty) return;
-    }
+    // for (const obj of this.spriteObjects) {
+    //   this.handleSprite(ray, obj);
+    //   if (!this.pixelsCounter.empty) return;
+    // }
   }
 
   private handleSprite(ray: Ray, sprite: SpriteObject): void {
@@ -208,7 +215,7 @@ class RayHandler implements CellHandler {
       distance,
 
       //spriteX:
-      ((side * sideDistance + sprite.halfWidth) * sprite.wRate) | 0,
+      ((side * sideDistance + sprite.halfWidth) * sprite.ratio) | 0,
 
       texture.data!
     );

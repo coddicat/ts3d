@@ -4,10 +4,12 @@ import type PlayerState from '../player/playerState';
 import Ray from './ray';
 import { RayAngle } from './rayAngle';
 import RayHandler from './rayHandler';
-import type SpriteObject from '../sprite/spriteObject';
+import { mod } from '../exts';
+import textureStore, { TextureType } from '../texture/textureStore';
+import type { TextureData } from '../texture/textureData';
+import type SpriteStore from '../sprite/spriteStore';
 
 class RayCasting {
-  private imageData: ImageData;
   private playerState: PlayerState;
   private rayHandler: RayHandler;
   private ray: Ray;
@@ -16,17 +18,15 @@ class RayCasting {
   public displayX!: number;
 
   constructor(
-    imageData: ImageData,
     playerState: PlayerState,
-    spriteObjects: SpriteObject[],
+    spriteStore: SpriteStore,
     gameMap: GameMap
   ) {
-    this.imageData = imageData;
     this.playerState = playerState;
 
-    this.rayAngle = new RayAngle();
+    this.rayAngle = new RayAngle(0, playerState);
     settings.data.fill(0);
-    this.rayHandler = new RayHandler(playerState, spriteObjects, this, gameMap);
+    this.rayHandler = new RayHandler(playerState, spriteStore, this, gameMap);
 
     this.ray = new Ray(
       this.playerState.position,
@@ -46,21 +46,65 @@ class RayCasting {
 
   public draw3D(): void {
     this.displayX = 0;
-    let angle = this.playerState.position.angle - settings.halfLookAngle;
+
+    //TODO extract and once calcualtion
+    const textureData = textureStore.getTextureData(TextureType.Sky)!;
+    const skyRatio = textureData.width * settings.angleStep_pi2;
+    const skyOffsetStep = settings.angleStep_pi2 * textureData.width;
+    const skyY = settings.maxLookVertical - this.playerState.lookVertical;
+
+    let skyOffset = this.playerState.angle_pi2 * textureData.width;
+
     do {
-      const fixDistance = Math.cos(
-        (this.playerState.position.angle - angle) * settings.fixFact
-      );
-      this.rayAngle.setAngle(angle, fixDistance);
+      const angle =
+        settings.angles[this.displayX] + this.playerState.position.angle;
+
+      this.rayAngle.setAngle(angle);
 
       this.handleAngle();
+      this.drawBackground(
+        this.displayX,
+        skyY,
+        skyOffset,
+        skyRatio,
+        textureData
+      );
 
       this.displayX++;
-      angle += settings.angleStep;
-      this.rayHandler.reset();
-    } while (this.displayX < settings.resolution.width);
+      skyOffset += skyOffsetStep;
 
-    this.imageData.data.set(settings.buf8);
+      this.rayHandler.reset();
+    } while (this.displayX < settings.resolutionWidth);
+  }
+
+  private drawBackground(
+    x: number,
+    y: number,
+    offset: number,
+    ratio: number,
+    textureData: TextureData
+  ) {
+    const spriteX = offset | 0;
+    let top = 0;
+
+    while (top <= settings.resolutionHeight - 1) {
+      if (settings.data[x]) {
+        top++;
+        x += settings.resolutionWidth;
+        y++;
+        continue;
+      }
+
+      const index =
+        Math.imul(mod((y * ratio) | 0, textureData.height), textureData.width) +
+        spriteX;
+
+      settings.data[x] = textureData.data[index];
+
+      top++;
+      x += settings.resolutionWidth;
+      y++;
+    }
   }
 }
 

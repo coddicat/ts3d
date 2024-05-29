@@ -20,32 +20,30 @@ export enum Axis {
   y = 1
 }
 
-export type Level = {
-  color: number;
+export type Tile = {
   bottom: number;
-  texture: null | Texture;
-  name?: string | undefined;
-  speed?: number | undefined;
+  texture?: Texture;
+  name?: string;
+  speed?: number;
 };
 
 export type Wall = {
-  color: number;
   top: number;
   bottom: number;
-  render: boolean;
-  texture: null | Texture;
-  name?: string | undefined;
+  texture?: Texture;
+  name?: string;
 };
 
 export type MapItem = {
   walls: Wall[];
-  levels: Level[];
+  tiles: Tile[];
   stopRay: boolean;
   mirror?: boolean;
+  transparent?: number;
 
   //runtime
-  aboveLevels?: Level[];
-  belowLevels?: Level[];
+  aboveTiles?: Tile[];
+  belowTiles?: Tile[];
   playerStateTimestamp?: number;
 };
 
@@ -68,7 +66,7 @@ export class PixelCounter {
     this.empty = true;
   }
   public increse(): boolean {
-    return (this.empty = ++this.count < settings.resolution.height);
+    return (this.empty = ++this.count < settings.resolutionHeight);
   }
 }
 
@@ -93,3 +91,9 @@ export type MovingItemProps = {
   initMovingItem: (set: ItemSet, props: MovingItemProps) => MovingItem;
   tick: (t: number, item: MovingItem) => boolean;
 };
+
+export type ItemSetGetter = (
+  repeatX: number,
+  startX: number,
+  startY: number
+) => MapItem;

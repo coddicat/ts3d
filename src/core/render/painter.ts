@@ -15,62 +15,6 @@ class Painter {
     this.dynamicAlpha = dynamicAlpha;
   }
 
-  public drawLineStatic(
-    dataIndex: number,
-    top: number,
-    bottom: number,
-    color: number,
-    light: number
-  ): void {
-    if (light < 1) return;
-    const alphaMask = light << 24;
-
-    while (top <= bottom) {
-      if (settings.data[dataIndex]) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
-
-      settings.data[dataIndex] = color | alphaMask;
-
-      if (!this.pixelsCounter.increse()) return;
-
-      top++;
-      dataIndex += settings.resolution.width;
-    }
-  }
-
-  public drawLineDynamic(
-    dataIndex: number,
-    top: number,
-    bottom: number,
-    color: number
-  ): void {
-    while (top <= bottom) {
-      if (settings.data[dataIndex]) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
-
-      this.dynamicAlpha.setDistanceAlpha(top);
-
-      if (this.dynamicAlpha.alpha < 1) {
-        top++;
-        dataIndex += settings.resolution.width;
-        continue;
-      }
-
-      settings.data[dataIndex] = color | (this.dynamicAlpha.alpha << 24);
-
-      if (!this.pixelsCounter.increse()) return;
-
-      top++;
-      dataIndex += settings.resolution.width;
-    }
-  }
-
   public drawSpriteLine(
     dataIndex: number,
     y0: number,
@@ -87,116 +31,119 @@ class Painter {
   ): void {
     if (light < 1 || top === bottom) return;
     const alphaMask = 0x00ffffff | (light << 24);
-    const diff = top - y0;
-    const hRate = repeatedHeight / (y1 - y0);
+    const dy = top - y0;
+    const ratio = repeatedHeight / (y1 - y0);
+
     let spriteY = revert
-      ? diff +
+      ? dy +
         //todo
-        (textureData.height - mod(repeatedHeight, textureData.height)) / hRate
-      : diff;
+        (textureData.height - mod(repeatedHeight, textureData.height)) / ratio
+      : dy;
+
+    const { resolutionWidth, data } = settings;
+    const { height, width, data: textureImageData } = textureData;
 
     while (top <= bottom) {
-      if (settings.data[dataIndex]) {
+      if (data[dataIndex]) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += resolutionWidth;
         spriteY++;
         continue;
       }
 
       const index =
-        Math.imul(
-          mod((spriteY * hRate) | 0, textureData.height),
-          textureData.width
-        ) + spriteX;
+        Math.imul(mod((spriteY * ratio) | 0, height), width) + spriteX;
 
-      const pixel = textureData.data[index];
+      const pixel = textureImageData[index];
 
       if (checkAlpha && !pixel) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += resolutionWidth;
         spriteY++;
         continue;
       }
 
-      settings.data[dataIndex] = pixel & alphaMask;
+      data[dataIndex] = pixel & alphaMask;
 
       if (!this.pixelsCounter.increse()) return;
 
       top++;
-      dataIndex += settings.resolution.width;
+      dataIndex += resolutionWidth;
       spriteY++;
     }
   }
 
-  public getSpriteIndexBySideX_positive(
+  public getTileSpriteIndexBySideX_positive(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
     diff: number
   ): number {
-    const { width } = textureData;
+    const { width, height, factY, maxY } = textureData;
 
     const fixCosDiff = rayAngle.fixCos * diff;
     const sideX = offset - fixCosDiff + (fixCosDiff | 0) + 1;
     const spriteX = ((sideX - (sideX | 0)) * width) | 0;
-    const spriteY = (diff * textureData.factY) | 0;
-    const fixedX = textureData.maxY - mod(spriteY, textureData.height);
+    const spriteY = (diff * factY) | 0;
+    const fixedX = maxY - mod(spriteY, height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_positive(
+  public getTileSpriteIndexBySideY_positive(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
     diff: number
   ): number {
-    const { width } = textureData;
+    const { width, height, factX, maxX } = textureData;
 
     const fixSinDiff = rayAngle.fixSin * diff;
     const side = offset - fixSinDiff + (fixSinDiff | 0) + 1;
-    const spriteY = (side - (side | 0)) * textureData.height;
-    const spriteX = (diff * textureData.factX) | 0;
-    const fixedX = textureData.maxX - mod(spriteX, width);
+    const spriteY = (side - (side | 0)) * height;
+    const spriteX = (diff * factX) | 0;
+    const fixedX = maxX - mod(spriteX, width);
     return Math.imul(spriteY, width) + fixedX;
   }
-  public getSpriteIndexBySideX_negative(
+  public getTileSpriteIndexBySideX_negative(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
     diff: number
   ): number {
-    const { width } = textureData;
+    const { width, height, factY } = textureData;
 
     const fixCosDiff = rayAngle.fixCos * diff;
     const sideX = offset - fixCosDiff + (fixCosDiff | 0) + 1;
     const spriteX = ((sideX - (sideX | 0)) * width) | 0;
-    const spriteY = (diff * textureData.factY) | 0;
-    const fixedX = mod(spriteY, textureData.height);
+    const spriteY = (diff * factY) | 0;
+    const fixedX = mod(spriteY, height);
     return Math.imul(fixedX, width) + spriteX;
   }
-  public getSpriteIndexBySideY_negative(
+  public getTileSpriteIndexBySideY_negative(
     rayAngle: RayAngle,
     offset: number,
     textureData: TextureData,
     diff: number
   ): number {
-    const { width } = textureData;
+    const { width, height, factX } = textureData;
 
     const fixSinDiff = rayAngle.fixSin * diff;
     const side = offset - fixSinDiff + (fixSinDiff | 0) + 1;
-    const spriteY = (side - (side | 0)) * textureData.height;
-    const spriteX = (diff * textureData.factX) | 0;
+    const spriteY = (side - (side | 0)) * height;
+    const spriteX = (diff * factX) | 0;
     const fixedX = mod(spriteX, width);
     return Math.imul(spriteY, width) + fixedX;
   }
 
-  public drawSpriteLineDynamic(
+  public drawTileSpriteLine(
     dataIndex: number,
     top: number,
     bottom: number,
     rayState: Ray,
     textureData: TextureData
   ): void {
-    const { rayAngle } = rayState;
+    const { rayAngle, fixedDistance } = rayState;
+    const { resolutionWidth, data } = settings;
+
     if (textureData.rayTimestamp !== rayAngle.timestamp) {
       textureData.factX = textureData.width * rayAngle.fixCosAbs;
       textureData.factY = textureData.height * rayAngle.fixSinAbs;
@@ -204,23 +151,21 @@ class Painter {
     }
 
     while (top <= bottom) {
-      if (settings.data[dataIndex]) {
+      if (data[dataIndex]) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += resolutionWidth;
         continue;
       }
 
-      this.dynamicAlpha.setDistanceAlpha(top);
+      const alpha = this.dynamicAlpha.setDistanceAlpha(top);
 
-      if (this.dynamicAlpha.alpha < 1) {
+      if (alpha < 1) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += resolutionWidth;
         continue;
       }
 
-      const diff = Math.abs(
-        rayState.fixedDistance - this.dynamicAlpha.distance
-      );
+      const diff = Math.abs(fixedDistance - this.dynamicAlpha.distance);
       const pixel =
         textureData.data[
           rayState.spriteIndexGetter(
@@ -233,17 +178,16 @@ class Painter {
 
       if (!pixel) {
         top++;
-        dataIndex += settings.resolution.width;
+        dataIndex += resolutionWidth;
         continue;
       }
 
-      settings.data[dataIndex] =
-        (this.dynamicAlpha.alpha << 24) | (pixel & 0x00ffffff);
+      data[dataIndex] = (alpha << 24) | (pixel & 0x00ffffff);
 
       if (!this.pixelsCounter.increse()) return;
 
       top++;
-      dataIndex += settings.resolution.width;
+      dataIndex += resolutionWidth;
     }
   }
 }
