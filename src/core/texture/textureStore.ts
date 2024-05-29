@@ -42,52 +42,50 @@ export enum TextureType {
   DukeSide
 }
 
-const href = (path: string): string => new URL(path, import.meta.url).href;
-
 const textureFiles = new Map<TextureType, string>([
-  [TextureType.RoomWall, href('../../assets/roomWall.png')],
-  [TextureType.RoomFloor, href('../../assets/roomFloor.png')],
-  [TextureType.RoomCeil, href('../../assets/roomCeil.png')],
+  [TextureType.RoomWall, './textures/roomWall.png'],
+  [TextureType.RoomFloor, './textures/roomFloor.png'],
+  [TextureType.RoomCeil, './textures/roomCeil.png'],
 
-  [TextureType.CoridorCeil, href('../../assets/coridorCeil.png')],
-  [TextureType.CoridorWall, href('../../assets/coridorWall.png')],
+  [TextureType.CoridorCeil, './textures/coridorCeil.png'],
+  [TextureType.CoridorWall, './textures/coridorWall.png'],
 
-  [TextureType.BasementFloor, href('../../assets/basementFloor.png')],
+  [TextureType.BasementFloor, './textures/basementFloor.png'],
 
-  [TextureType.TunnelWall, href('../../assets/tunnelWall.png')],
+  [TextureType.TunnelWall, './textures/tunnelWall.png'],
 
-  [TextureType.DukeFront, href('../../assets/dukeFront.png')],
-  [TextureType.DukeBack, href('../../assets/dukeBack.png')],
-  [TextureType.DukeSide, href('../../assets/dukeSide.png')],
+  [TextureType.DukeFront, './textures/dukeFront.png'],
+  [TextureType.DukeBack, './textures/dukeBack.png'],
+  [TextureType.DukeSide, './textures/dukeSide.png'],
 
-  [TextureType.BasementWall, href('../../assets/basementWall.png')],
+  [TextureType.BasementWall, './textures/basementWall.png'],
 
-  [TextureType.Wood, href('../../assets/wood.png')],
+  [TextureType.Wood, './textures/wood.png'],
 
-  [TextureType.Numbers, href('../../assets/numbers.png')],
-  [TextureType.Banan, href('../../assets/banan.png')],
-  [TextureType.Parquet, href('../../assets/parquet.png')],
-  [TextureType.Sand, href('../../assets/sand.png')],
+  [TextureType.Numbers, './textures/numbers.png'],
+  [TextureType.Banan, './textures/banan.png'],
+  [TextureType.Parquet, './textures/parquet.png'],
+  [TextureType.Sand, './textures/sand.png'],
 
-  [TextureType.DoorAbove, href('../../assets/doorAbove.png')],
-  [TextureType.DoorTop, href('../../assets/doorTop.png')],
-  [TextureType.DoorBottom, href('../../assets/doorBottom.png')],
-  [TextureType.DoorTile, href('../../assets/doorTile.png')],
-  [TextureType.CaptainDoor, href('../../assets/captainDoor.png')],
+  [TextureType.DoorAbove, './textures/doorAbove.png'],
+  [TextureType.DoorTop, './textures/doorTop.png'],
+  [TextureType.DoorBottom, './textures/doorBottom.png'],
+  [TextureType.DoorTile, './textures/doorTile.png'],
+  [TextureType.CaptainDoor, './textures/captainDoor.png'],
 
-  [TextureType.Welcome, href('../../assets/welcome.png')],
+  [TextureType.Welcome, './textures/welcome.png'],
 
-  [TextureType.Window, href('../../assets/window.png')],
-  [TextureType.Aim, href('../../assets/aim.png')],
-  [TextureType.Console11, href('../../assets/console_11.png')],
-  [TextureType.Console12, href('../../assets/console_12.png')],
-  [TextureType.Console13, href('../../assets/console_13.png')],
-  [TextureType.Console21, href('../../assets/console_21.png')],
-  [TextureType.Console22, href('../../assets/console_22.png')],
-  [TextureType.Console23, href('../../assets/console_23.png')],
+  [TextureType.Window, './textures/window.png'],
+  [TextureType.Aim, './textures/aim.png'],
+  [TextureType.Console11, './textures/console_11.png'],
+  [TextureType.Console12, './textures/console_12.png'],
+  [TextureType.Console13, './textures/console_13.png'],
+  [TextureType.Console21, './textures/console_21.png'],
+  [TextureType.Console22, './textures/console_22.png'],
+  [TextureType.Console23, './textures/console_23.png'],
 
-  [TextureType.Sky, href('../../assets/sky.png')],
-  [TextureType.Tech, href('../../assets/tech.png')]
+  [TextureType.Sky, './textures/sky.png'],
+  [TextureType.Tech, './textures/tech.png']
 ]);
 
 const store = {
