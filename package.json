@@ -1,8 +1,15 @@
 {
   "name": "ts3d",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "Rodion Shlomo Solomonyk",
+    "url": "https://www.linkedin.com/in/rodion-shlomo-solomonyk/"
+  },
+  "repository": {
+    "url": "https://github.com/coddicat/ts3d"
+  },
   "scripts": {
     "dev": "vite --host",
     "build": "vue-tsc && vite build",
