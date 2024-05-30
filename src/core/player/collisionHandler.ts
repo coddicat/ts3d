@@ -9,6 +9,9 @@ export default class CollisionHandler implements CellHandler {
   private state: PlayerState;
   private gameMap: GameMap;
 
+  public stairsHeight = 0;
+  public stairs = false;
+
   constructor(state: PlayerState, gameMap: GameMap) {
     this.state = state;
     this.gameMap = gameMap;

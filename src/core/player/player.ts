@@ -14,7 +14,7 @@ const halfPi = Math.PI / 2; //90deg
 const Pi_34 = (Math.PI / 4) * 3; //135/deg
 const Pi1_5 = Math.PI * 1.5;
 const acc = -0.00001;
-const jumpSpeed = 0.0035;
+const jumpSpeed = 0.004;
 
 const cos45 = Math.cos(quartPi);
 const cos135 = Math.cos(Pi_34);
@@ -37,7 +37,7 @@ export default class Player {
     this.collisionHandler = new CollisionHandler(state, gameMap);
   }
 
-  private move(dt: number) {
+  private move(dt: number): boolean {
     const state = this.state;
 
     let cos = state.cos;
@@ -46,7 +46,7 @@ export default class Player {
     const right = this.moveRight;
     const forward = this.moveForward;
     if (!forward && !right) {
-      return;
+      return false;
     }
 
     //45
@@ -82,10 +82,15 @@ export default class Player {
       sin = state.cos * right;
     }
 
-    this.moveToCollision(dt, cos, sin, state.position);
+    return this.moveToCollision(dt, cos, sin, state.position);
   }
 
-  private moveToCollision(dt: number, cos: number, sin: number, pos: Vector3D) {
+  private moveToCollision(
+    dt: number,
+    cos: number,
+    sin: number,
+    pos: Vector3D
+  ): boolean {
     const distance = settings.moveSpeed * dt;
     const xDistance = Math.abs(cos * distance);
     const yDistance = Math.abs(sin * distance);
@@ -99,18 +104,21 @@ export default class Player {
 
     const collTollerance = collisionDistance - 0.0001;
 
+    const x = pos.x;
+    const y = pos.y;
+
     const rayTop = new Ray(
       {
-        x: pos.x,
-        y: pos.y - collTollerance
+        x: x,
+        y: y - collTollerance
       },
       rayXangle,
       this.collisionHandler
     );
     const rayBottom = new Ray(
       {
-        x: pos.x,
-        y: pos.y + collTollerance
+        x: x,
+        y: y + collTollerance
       },
       rayXangle,
       this.collisionHandler
@@ -118,16 +126,16 @@ export default class Player {
 
     const rayLeft = new Ray(
       {
-        x: pos.x - collTollerance,
-        y: pos.y
+        x: x - collTollerance,
+        y: y
       },
       rayYangle,
       this.collisionHandler
     );
     const rayRight = new Ray(
       {
-        x: pos.x + collTollerance,
-        y: pos.y
+        x: x + collTollerance,
+        y: y
       },
       rayYangle,
       this.collisionHandler
@@ -150,8 +158,11 @@ export default class Player {
       Math.max(0, resultLeft.distance - collisionDistance),
       Math.max(0, resultRight.distance - collisionDistance)
     );
-    pos.x += dx * xSign;
-    pos.y += dy * ySign;
+
+    pos.x = x + dx * xSign;
+    pos.y = y + dy * ySign;
+
+    return pos.y != y || pos.x != x;
   }
 
   private fall(dt: number): number {
@@ -195,19 +206,27 @@ export default class Player {
 
   public tick(timestamp: number): void {
     const state = this.state;
+    const pos = state.position;
     const dt = !this.lastTimestamp ? 0 : timestamp - this.lastTimestamp;
     this.lastTimestamp = timestamp;
 
-    this.move(dt);
-
-    const tiles =
-      this.gameMap.check(state.position.x | 0, state.position.y | 0)?.tiles ??
-      [];
-
-    this.stairs(tiles);
+    const tiles = this.gameMap.check(pos.x | 0, pos.y | 0)?.tiles ?? [];
 
     this.onFloor = false;
     const distance = this.fall(dt);
+    if (this.tileCollision(tiles, distance, dt)) {
+      return;
+    }
+    if (this.checkdead(tiles)) {
+      return;
+    }
+
+    this.move(dt);
+    this.stairs();
+  }
+
+  private tileCollision(tiles: Tile[], distance: number, dt: number): boolean {
+    const state = this.state;
 
     const oldTopZ = state.top;
     const oldBottomZ = state.position.z;
@@ -215,15 +234,19 @@ export default class Player {
     const newTopZ = oldTopZ + distance;
 
     const collisionBottomTiles = tiles.filter(
-      tile => tile.bottom > newBottomZ && tile.bottom <= oldBottomZ
+      tile =>
+        tile.bottom > newBottomZ &&
+        (tile.prevBottom ?? tile.bottom) <= oldBottomZ
     );
 
     const collisionTopTiles = tiles.filter(
-      tile => tile.bottom < newTopZ && tile.bottom >= oldTopZ
+      tile =>
+        tile.bottom < newTopZ && (tile.prevBottom ?? tile.bottom) >= oldTopZ
     );
 
     if (collisionTopTiles.length > 0 && collisionBottomTiles.length > 0) {
       this.dead();
+      return true;
     } else if (collisionTopTiles.length > 0) {
       this.ceilCollision(collisionTopTiles);
     } else if (collisionBottomTiles.length > 0) {
@@ -231,18 +254,34 @@ export default class Player {
     } else {
       state.setZ(newBottomZ);
     }
+    return false;
   }
 
-  private stairs(tiles: Tile[]): void {
+  private checkdead(tiles: Tile[]): boolean {
     const state = this.state;
-    const z = state.position.z;
+    const bottom = state.position.z;
+    const top = state.top;
 
-    const collisionSteirTiles = tiles.filter(
-      tile => tile.bottom > z && tile.bottom < z + settings.stairsTollerance
+    if (tiles.some(tile => tile.bottom > bottom && tile.bottom < top)) {
+      this.dead();
+      return true;
+    }
+    return false;
+  }
+
+  private stairs(): void {
+    const state = this.state;
+    const pos = state.position;
+    const z = pos.z;
+
+    const tiles = this.gameMap.check(pos.x | 0, pos.y | 0)?.tiles ?? [];
+
+    const collisionStairTiles = tiles.filter(
+      tile => tile.bottom > z && tile.bottom <= z + settings.stairsTollerance
     );
 
-    if (collisionSteirTiles.length > 0) {
-      const max = Math.max(...collisionSteirTiles.map(t => t.bottom));
+    if (collisionStairTiles.length > 0) {
+      const max = Math.max(...collisionStairTiles.map(t => t.bottom));
       state.setZ(max);
     }
   }

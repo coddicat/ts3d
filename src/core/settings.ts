@@ -17,7 +17,7 @@ const settings = {
   turnSpeed: 0.001,
   playerHeight: 1.8,
   playerWidth: 1.34,
-  stairsTollerance: 0.301,
+  stairsTollerance: 0.4,
   maxLookVertical: 0,
 
   lookLength: 0,

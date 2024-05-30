@@ -106,7 +106,6 @@ export const doorMovingItemProps: MovingItemProps = {
 
       bottomWall!.top = bottomTile!.bottom = item.state ? middle : 0;
       bottomWall!.bottom = item.state ? 0 : 0 - middle;
-
       return true;
     }
 
