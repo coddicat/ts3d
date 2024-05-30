@@ -25,6 +25,7 @@ export type Tile = {
   texture?: Texture;
   name?: string;
   speed?: number;
+  prevBottom?: number; //due to canvas timespan
 };
 
 export type Wall = {

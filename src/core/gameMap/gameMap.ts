@@ -18,6 +18,7 @@ export class GameMap {
   private setsByKey!: ItemSetByKey[];
   private movingItems: MovingItem[] = [];
   private currentMovingItem: MovingItem | null = null;
+  private resetMovingItem = false;
 
   private initTextures(arr: Tile[] | Wall[]): void {
     for (const item of arr) {
@@ -144,15 +145,21 @@ export class GameMap {
     return mapData[y][x];
   }
 
-  public tickMovingItem(timestamp: number): boolean {
+  public tickMovingItem(timestamp: number): void {
     const current = this.currentMovingItem;
+    if (!current) return;
 
-    if (!current) return false;
-
-    if (current.props.tick(timestamp - current.timestamp, current))
+    if (this.resetMovingItem) {
       this.currentMovingItem = null;
+      current.set.mapItem.tiles.forEach(tile => (tile.prevBottom = undefined));
+      return;
+    }
 
-    return true;
+    current.set.mapItem.tiles.forEach(tile => (tile.prevBottom = tile.bottom));
+
+    if (current.props.tick(timestamp - current.timestamp, current)) {
+      this.resetMovingItem = true;
+    }
   }
 
   public toggleMovingItem(item: MovingItem, timestamp: number): void {
@@ -161,6 +168,7 @@ export class GameMap {
     item.timestamp = timestamp;
     item.state = !item.state;
     this.currentMovingItem = item;
+    this.resetMovingItem = false;
   }
 
   public findMovingItem(x: number, y: number): MovingItem | undefined {
