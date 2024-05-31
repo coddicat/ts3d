@@ -25,9 +25,20 @@
       </li>
     </ul>
     <p><b>Enjoy exploring this classic technique in a modern context!</b></p>
-    <a href="https://github.com/coddicat/ts3d">
-      https://github.com/coddicat/ts3d
-    </a>
+    <div>
+      Links:
+      <ul>
+        <li><a href="https://github.com/coddicat/ts3d">GitHub</a></li>
+        <li>
+          <a href="https://www.linkedin.com/in/rodion-shlomo-solomonyk/">
+            LinkedIn
+          </a>
+        </li>
+        <li>
+          <a href="https://www.buymeacoffee.com/coddicat">Buy Me a Coffee</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
