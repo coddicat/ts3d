@@ -56,6 +56,7 @@ export class Game {
     setResolution(width, height);
     this.playerState.halfLookVertical =
       settings.halfHeight + this.playerState.lookVertical;
+    this.rayCasting.init();
   }
 
   public HandleMouse(e: MouseEvent) {
