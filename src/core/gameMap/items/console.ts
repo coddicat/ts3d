@@ -1,17 +1,18 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem, Wall } from '../../types';
+import type { MapItem } from '../../types';
+import { Wall } from '../../types';
 import { MapItemType } from '../mapItemType';
 import { roomCeil, roomFloor } from './basic';
 
 const height = 0.6;
 const depth = 0.25;
 
-const wall: Wall = {
-  bottom: height - depth,
-  top: height,
-  texture: new Texture(TextureType.RoomWall)
-};
+const wall: Wall = new Wall(
+  height,
+  height - depth,
+  new Texture(TextureType.RoomWall)
+);
 
 const getItem = (texture: TextureType): MapItem => ({
   walls: [wall],

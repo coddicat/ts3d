@@ -45,7 +45,9 @@ export class Game {
   }
 
   public async init(): Promise<void> {
+    this.keyHandler.init();
     await textureStore.init();
+    this.rayCasting.init();
     await this.gameMap.init();
     await this.spriteStore.init();
   }

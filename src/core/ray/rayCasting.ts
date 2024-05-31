@@ -14,6 +14,11 @@ class RayCasting {
   private rayHandler: RayHandler;
   private ray: Ray;
 
+  private background?: TextureData;
+  private backgroundWidth = 0;
+  private backgroundRatio = 0;
+  private backgroundOffsetStep = 0;
+
   public rayAngle: RayAngle;
   public displayX!: number;
 
@@ -35,6 +40,14 @@ class RayCasting {
     );
   }
 
+  public init() {
+    //background sky
+    this.background = textureStore.getTextureData(TextureType.Sky)!;
+    this.backgroundWidth = this.background.width;
+    this.backgroundRatio = this.backgroundWidth * settings.angleStep_pi2;
+    this.backgroundOffsetStep = settings.angleStep_pi2 * this.backgroundWidth;
+  }
+
   public reset(): void {
     settings.data.fill(0);
   }
@@ -47,13 +60,9 @@ class RayCasting {
   public draw3D(): void {
     this.displayX = 0;
 
-    //TODO extract and once calcualtion
-    const textureData = textureStore.getTextureData(TextureType.Sky)!;
-    const skyRatio = textureData.width * settings.angleStep_pi2;
-    const skyOffsetStep = settings.angleStep_pi2 * textureData.width;
     const skyY = settings.maxLookVertical - this.playerState.lookVertical;
 
-    let skyOffset = this.playerState.angle_pi2 * textureData.width;
+    let skyOffset = this.playerState.angle_pi2 * this.backgroundWidth;
 
     do {
       const angle =
@@ -62,16 +71,17 @@ class RayCasting {
       this.rayAngle.setAngle(angle);
 
       this.handleAngle();
+
       this.drawBackground(
         this.displayX,
         skyY,
         skyOffset,
-        skyRatio,
-        textureData
+        this.backgroundRatio,
+        this.background!
       );
 
       this.displayX++;
-      skyOffset += skyOffsetStep;
+      skyOffset += this.backgroundOffsetStep;
 
       this.rayHandler.reset();
     } while (this.displayX < settings.resolutionWidth);

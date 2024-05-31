@@ -1,13 +1,13 @@
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
+import { Wall } from '../../types';
 import type {
   ItemSet,
   Tile,
   MapItem,
   MovingItem,
-  MovingItemProps,
-  Wall
+  MovingItemProps
 } from '../../types';
 import { getBasementWall, roomHeight } from './basic';
 
@@ -17,7 +17,7 @@ const direction = 1;
 
 const getDoorTopTile = (stat: boolean): Tile => ({
   name: stat ? 'static' : 'top',
-  bottom: stat ? hight / 2 - (direction * hight) / 2 : hight,
+  bottom: stat ? (hight - direction * hight) >> 1 : hight,
   texture: new Texture(TextureType.DoorTile, 1)
 });
 const getDoorBottomTile = (): Tile => ({
@@ -26,25 +26,21 @@ const getDoorBottomTile = (): Tile => ({
   texture: new Texture(TextureType.DoorTile, 1)
 });
 
-const getDoorWall = (
-  repeatX: number,
-  startX: number,
-  startY: number
-): Wall => ({
-  name: 'door',
-  top: hight,
-  bottom: 0,
-
-  texture: new TextureSet(
-    TextureType.CaptainDoor,
+const getDoorWall = (repeatX: number, startX: number, startY: number): Wall =>
+  new Wall(
     hight,
-    startX,
-    startY,
-    repeatX,
-    false,
-    true
-  )
-});
+    0,
+    new TextureSet(
+      TextureType.CaptainDoor,
+      hight,
+      startX,
+      startY,
+      repeatX,
+      false,
+      true
+    ),
+    'door'
+  );
 
 const initMovingItem = (set: ItemSet, props: MovingItemProps): MovingItem => ({
   props,

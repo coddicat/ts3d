@@ -1,7 +1,8 @@
 import Texture from '../../texture/texture';
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { Tile, MapItem, Wall } from '../../types';
+import type { Tile, MapItem } from '../../types';
+import { Wall } from '../../types';
 
 export const basementDepth = -2.4;
 export const roomHeight = 3.5;
@@ -21,17 +22,12 @@ export const basementFloor: Tile = {
   texture: new Texture(TextureType.BasementFloor)
 };
 
-export const getBasementWall = (startX: number, startY: number): Wall => ({
-  top: 0,
-  bottom: basementDepth,
-  texture: new TextureSet(
-    TextureType.BasementWall,
-    -basementDepth,
-    startX,
-    startY,
-    2
-  )
-});
+export const getBasementWall = (startX: number, startY: number): Wall =>
+  new Wall(
+    0,
+    basementDepth,
+    new TextureSet(TextureType.BasementWall, -basementDepth, startX, startY, 2)
+  );
 
 export const getRoomWall = (
   startX: number,
@@ -39,18 +35,12 @@ export const getRoomWall = (
   top: number,
   bottom: number,
   revert: boolean = false
-): Wall => ({
-  top,
-  bottom,
-  texture: new TextureSet(
-    TextureType.RoomWall,
-    roomHeight,
-    startX,
-    startY,
-    4,
-    revert
-  )
-});
+): Wall =>
+  new Wall(
+    top,
+    bottom,
+    new TextureSet(TextureType.RoomWall, roomHeight, startX, startY, 4, revert)
+  );
 
 export const roomWall = (
   _: number,

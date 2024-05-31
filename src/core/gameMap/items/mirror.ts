@@ -1,4 +1,4 @@
-import type { MapItem } from '../../types';
+import { Wall, type MapItem } from '../../types';
 import {
   getRoomWall,
   roomHeight,
@@ -20,10 +20,7 @@ export const mirrorWall = (
     getRoomWall(startX, startY, mirrorBottom, 0, true),
     getBasementWall(startX, startY),
     //collision
-    {
-      top: roomHeight,
-      bottom: basementDepth
-    }
+    new Wall(roomHeight, basementDepth)
   ],
   tiles: [],
   stopRay: true,

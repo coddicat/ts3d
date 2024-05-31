@@ -1,5 +1,6 @@
 import { TextureType } from '../../texture/textureStore';
-import type { Tile, MapItem, Wall } from '../../types';
+import { Wall } from '../../types';
+import type { Tile, MapItem } from '../../types';
 import { MapItemType } from '../mapItemType';
 import Texture from '../../texture/texture';
 import { basementFloor, roomCeil } from './basic';
@@ -12,13 +13,7 @@ function getStairSpace(top: number, wood: boolean = false): MapItem {
     ? new Texture(TextureType.Wood, 1)
     : new Texture(TextureType.Parquet, 1);
 
-  const walls: Wall[] = [
-    {
-      top,
-      bottom,
-      texture: texture
-    }
-  ];
+  const walls: Wall[] = [new Wall(top, bottom, texture)];
 
   const tileTop: Tile = {
     bottom: top,

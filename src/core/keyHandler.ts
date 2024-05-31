@@ -9,7 +9,9 @@ export class KeyHandler {
   constructor(player: Player, gameMap: GameMap) {
     this.player = player;
     this.gameMap = gameMap;
+  }
 
+  public init() {
     window.onkeydown = (e: KeyboardEvent) => {
       this.activeKeys.set(e.code, true);
     };

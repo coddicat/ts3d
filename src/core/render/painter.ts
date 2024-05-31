@@ -27,18 +27,15 @@ class Painter {
     revert: boolean | undefined,
     checkAlpha: boolean,
     light: number,
-    textureData: TextureData
+    textureData: TextureData,
+    heightFactor: number
   ): void {
     if (light < 1 || top === bottom) return;
     const alphaMask = 0x00ffffff | (light << 24);
     const dy = top - y0;
     const ratio = repeatedHeight / (y1 - y0);
 
-    let spriteY = revert
-      ? dy +
-        //todo
-        (textureData.height - mod(repeatedHeight, textureData.height)) / ratio
-      : dy;
+    let spriteY = revert ? dy + heightFactor / ratio : dy;
 
     const { resolutionWidth, data } = settings;
     const { height, width, data: textureImageData } = textureData;

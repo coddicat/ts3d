@@ -1,6 +1,6 @@
 import Texture from '../../texture/texture';
 import { TextureType } from '../../texture/textureStore';
-import type { ItemSetGetter, Tile, MapItem } from '../../types';
+import { type ItemSetGetter, type Tile, type MapItem, Wall } from '../../types';
 import { coridorFloor } from './coridor';
 import { getRoomWall, roomHeight, basementFloor } from './basic';
 
@@ -13,11 +13,7 @@ export const tunnelCeil: Tile = {
 
 export const tunnelWall: MapItem = {
   walls: [
-    {
-      top: tunnelHeight,
-      bottom: 0,
-      texture: new Texture(TextureType.TunnelWall, tunnelHeight)
-    }
+    new Wall(tunnelHeight, 0, new Texture(TextureType.TunnelWall, tunnelHeight))
   ],
   tiles: [],
   stopRay: true
