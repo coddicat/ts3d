@@ -1,5 +1,6 @@
 import Texture from '../../texture/texture';
-import type { Tile, MapItem, Wall } from '../../types';
+import { Wall } from '../../types';
+import type { Tile, MapItem } from '../../types';
 import { TextureType } from '../../texture/textureStore';
 import { roomFloor, basementFloor, roomCeil } from './basic';
 
@@ -17,11 +18,7 @@ function getShelfTiles(bottom: number): Tile[] {
 }
 
 function getShelfWall(bottom: number): Wall {
-  return {
-    top: bottom,
-    bottom: bottom - 0.2,
-    texture: new Texture(TextureType.Wood, 1)
-  };
+  return new Wall(bottom, bottom - 0.2, new Texture(TextureType.Wood));
 }
 
 export const shelfsSpace: MapItem = {

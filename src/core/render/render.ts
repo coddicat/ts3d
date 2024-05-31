@@ -9,6 +9,7 @@ import type RayHandler from '../ray/rayHandler';
 import type { TextureData } from '../texture/textureData';
 import type { Wall, Tile, PixelCounter } from '../types';
 import { Axis } from '../types';
+import type SpriteObject from '../sprite/spriteObject';
 
 class Render {
   private rayHandlerState: RayHandler;
@@ -76,21 +77,22 @@ class Render {
       textureData ? (offset * textureData.width) | 0 : 0,
 
       //repeatedHeight:
-      //TODO improve to onetime calculatation
-      ((wall.top - wall.bottom) * textureData.height) / texture.repeat,
+      wall.repeatHeight,
 
       texture.revert,
 
       //checkAlpha
       texture.transparent,
       light,
-      textureData
+      textureData,
+
+      //heightFactor:
+      wall.heightFactor
     );
   }
 
   private drawSprite(
-    top: number,
-    bottom: number,
+    sprite: SpriteObject,
     distance: number,
     spriteX: number,
     light: number,
@@ -98,6 +100,8 @@ class Render {
   ): void {
     const fact = settings.resolutionHeight / distance;
     const a = this.playerState.halfLookVertical + fact * this.playerState.lookZ;
+    const top = sprite.top;
+    const bottom = sprite.position.z;
     const y0 = a - top * fact;
     const y1 = a - bottom * fact;
 
@@ -128,7 +132,11 @@ class Render {
       //light:
       light,
 
-      textureData
+      textureData,
+
+      //heightFactor:
+      1
+      //TODO sprite.heightFactor
     );
   }
 
@@ -161,8 +169,7 @@ class Render {
   }
 
   public handleSprite(
-    top: number,
-    bottom: number,
+    sprite: SpriteObject,
     distance: number,
     spriteX: number,
     textureData: TextureData
@@ -174,7 +181,7 @@ class Render {
 
     if (light < 1) return;
 
-    this.drawSprite(top, bottom, distance, spriteX, light, textureData);
+    this.drawSprite(sprite, distance, spriteX, light, textureData);
   }
 
   public handleWalls(rayState: Ray): void {

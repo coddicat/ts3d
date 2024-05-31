@@ -1,6 +1,6 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import { Wall, type MapItem } from '../../types';
 import { roomHeight } from './basic';
 
 export const welcomeWall = (
@@ -9,17 +9,11 @@ export const welcomeWall = (
   startY: number
 ): MapItem => ({
   walls: [
-    {
-      top: roomHeight,
-      bottom: 0,
-      texture: new TextureSet(
-        TextureType.Welcome,
-        roomHeight,
-        startX,
-        startY,
-        repeatX
-      )
-    }
+    new Wall(
+      roomHeight,
+      0,
+      new TextureSet(TextureType.Welcome, roomHeight, startX, startY, repeatX)
+    )
   ],
   tiles: [],
   stopRay: true

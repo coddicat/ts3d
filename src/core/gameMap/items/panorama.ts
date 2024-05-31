@@ -1,6 +1,6 @@
 import TextureSet from '../../texture/textureSet';
 import { TextureType } from '../../texture/textureStore';
-import type { MapItem } from '../../types';
+import { Wall, type MapItem } from '../../types';
 import { getRoomWall, roomHeight, getBasementWall } from './basic';
 
 const panoramaTop = 2.8;
@@ -13,10 +13,10 @@ export const panoramaWall = (
   startY: number
 ): MapItem => ({
   walls: [
-    {
-      top: panoramaTop,
-      bottom: panoramaBottom,
-      texture: new TextureSet(
+    new Wall(
+      panoramaTop,
+      panoramaBottom,
+      new TextureSet(
         TextureType.Window,
         panoramaTop - panoramaBottom,
         startX,
@@ -25,7 +25,7 @@ export const panoramaWall = (
         false,
         true
       )
-    },
+    ),
     getRoomWall(startX, startY, roomHeight, panoramaTop, false),
     getRoomWall(startX, startY, panoramaBottom, 0, true),
     getBasementWall(startX, startY)

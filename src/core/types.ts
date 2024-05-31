@@ -1,6 +1,7 @@
 import settings from './settings';
 import type { MapItemType } from './gameMap/mapItemType';
 import type Texture from './texture/texture';
+import { mod } from './exts';
 
 export interface Position2D {
   x: number;
@@ -28,12 +29,49 @@ export type Tile = {
   prevBottom?: number; //due to canvas timespan
 };
 
-export type Wall = {
-  top: number;
-  bottom: number;
-  texture?: Texture;
-  name?: string;
-};
+export class Wall {
+  public top: number;
+  public bottom: number;
+  public texture?: Texture;
+  public name?: string;
+
+  private _repeatHeight?: number;
+  public get repeatHeight(): number {
+    return (
+      (this._repeatHeight = this._repeatHeight ?? this.getRepeatHeight()) ?? 0
+    );
+  }
+  public getRepeatHeight(): number | undefined {
+    if (!this.texture?.data) {
+      return undefined;
+    }
+    return (
+      ((this.top - this.bottom) * this.texture.data.height) /
+      this.texture.repeat
+    );
+  }
+
+  private _heightFactor?: number;
+  public get heightFactor(): number {
+    return (
+      (this._heightFactor = this._heightFactor ?? this.getHeightFactor()) ?? 0
+    );
+  }
+  public getHeightFactor(): number | undefined {
+    if (!this.texture?.data || !this.repeatHeight) {
+      return undefined;
+    }
+    const height = this.texture.data.height;
+    return height - mod(this.repeatHeight, height);
+  }
+
+  constructor(top: number, bottom: number, texture?: Texture, name?: string) {
+    this.top = top;
+    this.bottom = bottom;
+    this.texture = texture;
+    this.name = name;
+  }
+}
 
 export type MapItem = {
   walls: Wall[];

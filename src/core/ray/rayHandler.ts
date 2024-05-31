@@ -210,8 +210,7 @@ class RayHandler implements CellHandler {
     sprite.timestamp = this.rayCastingState.rayAngle.timestamp;
 
     this.render.handleSprite(
-      sprite.top,
-      sprite.position.z,
+      sprite,
       distance,
 
       //spriteX:
