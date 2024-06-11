@@ -1,6 +1,6 @@
-import settings from './settings';
-import type PlayerState from './player/playerState';
-import type RayHandler from './ray/rayHandler';
+import settings from '../settings';
+import type PlayerState from '../player/playerState';
+import type RayHandler from '../ray/rayHandler';
 
 export default class DynamicAlpha {
   private playerState: PlayerState;

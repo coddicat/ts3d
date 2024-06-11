@@ -1,5 +1,5 @@
-import type PlayerState from './player/playerState';
-import settings from './settings';
+import type PlayerState from '../player/playerState';
+import settings from '../settings';
 
 export class MouseHandler {
   private playerState: PlayerState;

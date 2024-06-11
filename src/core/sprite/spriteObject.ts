@@ -1,6 +1,8 @@
+import type PlayerState from '../player/playerState';
 import Texture from '../texture/texture';
 import type { TextureType } from '../texture/textureStore';
 import type { Vector3D } from '../types';
+import type SpriteStore from './spriteStore';
 
 export default class SpriteObject {
   position: Vector3D;
@@ -12,11 +14,14 @@ export default class SpriteObject {
   halfWidth: number;
   ratio!: number;
 
+  public interaction?: (state: PlayerState, spriteStore: SpriteStore) => void;
+
   constructor(
     position: Vector3D,
     size: { width: number; height: number },
     textureTypes: TextureType[],
-    repeat: number
+    repeat: number,
+    interaction?: (state: PlayerState) => void
   ) {
     this.position = position;
     this.width = size.width;
@@ -25,6 +30,7 @@ export default class SpriteObject {
     this.timestamp = 0;
     this.top = position.z + size.height;
     this.halfWidth = this.width / 2;
+    this.interaction = interaction;
   }
 
   public setRatio(textureDataWidth: number): void {

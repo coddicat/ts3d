@@ -175,6 +175,15 @@ export default class Player {
     return distance;
   }
 
+  private dead() {
+    //TODO access from everywhere to reset
+    this.moveForward = 0;
+    this.moveRight = 0;
+    this.lastTimestamp = undefined;
+    this.onFloor = true;
+    this.state.dead();
+  }
+
   public handleMove(forward: number, right: number): void {
     if (!this.onFloor) {
       return;
@@ -192,6 +201,10 @@ export default class Player {
     }
   }
 
+  public objectsInteraction() {
+    this.gameMap.interactObjects(this.state);
+  }
+
   public checkMovingItem(): MovingItem | null {
     const handler = new MovingItemRayHandler(this.gameMap);
     const ray = new Ray(
@@ -205,9 +218,18 @@ export default class Player {
   }
 
   public tick(timestamp: number): void {
+    const dt = !this.lastTimestamp ? 0 : timestamp - this.lastTimestamp;
+
+    //life
+    this.state.life -= dt / 500;
+    if (this.state.life <= 0) {
+      //TODO
+      this.dead();
+    }
+
+    //movement
     const state = this.state;
     const pos = state.position;
-    const dt = !this.lastTimestamp ? 0 : timestamp - this.lastTimestamp;
     this.lastTimestamp = timestamp;
 
     const tiles = this.gameMap.check(pos.x | 0, pos.y | 0)?.tiles ?? [];
@@ -300,13 +322,5 @@ export default class Player {
     const min = Math.min(...collision.map(t => t.bottom));
     state.speedZ = 0;
     state.setZ(min - state.height);
-  }
-
-  private dead(): void {
-    //TODO
-    alert('dead');
-    this.state.position.x = 3;
-    this.state.position.y = 3;
-    this.state.setZ(0);
   }
 }

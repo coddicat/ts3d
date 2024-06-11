@@ -1,5 +1,5 @@
-import type { GameMap } from './gameMap/gameMap';
-import type Player from './player/player';
+import type { GameMap } from '../gameMap/gameMap';
+import type Player from '../player/player';
 
 export class KeyHandler {
   private activeKeys = new Map<string, boolean>();
@@ -47,5 +47,7 @@ export class KeyHandler {
     if (this.activeKeys.get('Space')) {
       this.player.jump();
     }
+
+    this.player.objectsInteraction();
   }
 }

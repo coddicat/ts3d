@@ -39,7 +39,9 @@ export enum TextureType {
 
   DukeFront,
   DukeBack,
-  DukeSide
+  DukeSide,
+
+  Oxygen
 }
 
 const textureFiles = new Map<TextureType, string>([
@@ -85,7 +87,8 @@ const textureFiles = new Map<TextureType, string>([
   [TextureType.Console23, './textures/console_23.png'],
 
   [TextureType.Sky, './textures/sky.png'],
-  [TextureType.Tech, './textures/tech.png']
+  [TextureType.Tech, './textures/tech.png'],
+  [TextureType.Oxygen, './textures/oxygen.png']
 ]);
 
 const store = {

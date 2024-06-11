@@ -1,23 +1,16 @@
 import PlayerState from './player/playerState';
 import settings, { setResolution } from '../core/settings';
 import textureStore, { TextureType } from './texture/textureStore';
-import { KeyHandler } from './keyHandler';
+import { KeyHandler } from './handlers/keyHandler';
 import Player from './player/player';
 import { GameMap } from './gameMap/gameMap';
 import SpriteStore from './sprite/spriteStore';
-import { MouseHandler } from './mouseHandler';
+import { MouseHandler } from './handlers/mouseHandler';
 import RayCasting from './ray/rayCasting';
 
-const rad90 = Math.PI / 2;
-
 export class Game {
-  private playerState = new PlayerState(
-    {
-      x: 27.5,
-      y: 72,
-      z: 0,
-      angle: rad90 * 3
-    },
+  public playerState = new PlayerState(
+    settings.getPlayerStartPosition(),
     { width: settings.playerWidth, height: settings.playerWidth },
     [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
     1
@@ -31,10 +24,10 @@ export class Game {
   private rayCasting: RayCasting;
 
   constructor() {
-    this.gameMap = new GameMap();
+    this.spriteStore = new SpriteStore(this.playerState);
+    this.gameMap = new GameMap(this.spriteStore);
     this.player = new Player(this.playerState, this.gameMap);
     this.keyHandler = new KeyHandler(this.player, this.gameMap);
-    this.spriteStore = new SpriteStore(this.playerState);
     this.mouseHandler = new MouseHandler(this.playerState);
 
     this.rayCasting = new RayCasting(

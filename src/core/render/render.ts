@@ -1,6 +1,6 @@
 import { mod } from '../exts';
 import settings from '../settings';
-import DynamicAlpha from '../dynamicAlpha';
+import DynamicAlpha from './dynamicAlpha';
 import Painter from './painter';
 import type PlayerState from '../player/playerState';
 import type Ray from '../ray/ray';

@@ -18,6 +18,8 @@ export default class PlayerState extends SpriteObject {
   public sin = 0;
   public angle_pi2 = 0;
 
+  public life = 100;
+
   constructor(
     position: Vector3D,
     size: { width: number; height: number },
@@ -48,5 +50,18 @@ export default class PlayerState extends SpriteObject {
     this.cos = Math.cos(value);
     this.sin = Math.sin(value);
     this.angle_pi2 = value / pi2;
+  }
+
+  public dead() {
+    //TODO
+    alert('dead');
+    const startPos = settings.getPlayerStartPosition();
+    this.position.x = startPos.x;
+    this.position.y = startPos.y;
+    this.position.z = startPos.z;
+    this.position.angle = startPos.angle;
+    this.setAngle(this.position.angle);
+    this.setZ(this.position.z);
+    this.life = 100;
   }
 }

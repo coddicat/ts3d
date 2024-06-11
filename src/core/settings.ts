@@ -1,5 +1,8 @@
+import type { Vector3D } from './types';
+
 const rad = Math.PI / 180;
 const pi2 = Math.PI * 2;
+const rad90 = Math.PI / 2;
 
 export const resolutionOptions = [
   [640, 360],
@@ -11,6 +14,13 @@ export const resolutionOptions = [
 ];
 
 const settings = {
+  getPlayerStartPosition: (): Vector3D => ({
+    x: 27.5,
+    y: 72,
+    z: 0,
+    angle: rad90 * 3
+  }),
+
   resolutionWidth: 0,
   resolutionHeight: 0,
   moveSpeed: 0.006,
