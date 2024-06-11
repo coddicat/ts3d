@@ -1,6 +1,7 @@
 import type PlayerState from '../player/playerState';
 import SpriteObject from './spriteObject';
 import textureStore, { TextureType } from '../texture/textureStore';
+import { OxygenObject } from './oxygenObject';
 
 function getBanan(x: number, y: number, z: number): SpriteObject {
   return new SpriteObject(
@@ -19,35 +20,26 @@ function getBanan(x: number, y: number, z: number): SpriteObject {
   );
 }
 
+function getOxygen(x: number, y: number, z: number = 0) {
+  return new OxygenObject({
+    x: x,
+    y: y,
+    z: z,
+    angle: 0
+  });
+}
+
 const sprites = [
-  // new SpriteObject(
-  //   {
-  //     x: 0,
-  //     y: 84,
-  //     z: 0,
-  //     angle: 0
-  //   },
-  //   {
-  //     height: 1080,
-  //     width: 1920
-  //   },
-  //   [TextureType.Sky],
-  //   1
-  // ),
-  // new SpriteObject(
-  //   {
-  //     x: 30,
-  //     y: 5,
-  //     z: 0,
-  //     angle: 0
-  //   },
-  //   {
-  //     height: 1.8,
-  //     width: 1.34
-  //   },
-  //   [TextureType.DukeFront, TextureType.DukeBack, TextureType.DukeSide],
-  //   1
-  // ),
+  getOxygen(25, 70.7),
+  getOxygen(25.5, 77.5),
+  getOxygen(30.5, 80.5),
+  getOxygen(26.5, 73.5, -2.4),
+  getOxygen(34.5, 59.5, 0),
+  getOxygen(19.5, 60.5, 0),
+  getOxygen(17.5, 39.5, 0),
+  getOxygen(5.5, 58.5, 0),
+  getOxygen(16.5, 47.5, 0),
+
   getBanan(29.5, 73.5, -0.6),
   getBanan(29.5, 73.5, -1.2),
   getBanan(29.5, 73.5, -1.8)

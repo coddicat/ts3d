@@ -12,6 +12,9 @@ import type { MapItemType } from './mapItemType';
 import { mapItemTypeKeys } from './mapItemType';
 import { outmapItem, emptyItem } from './items/basic';
 import { singleItems, itemsInSet, movingTypes } from './items';
+import type SpriteStore from '../sprite/spriteStore';
+
+import type PlayerState from '../player/playerState';
 
 export class GameMap {
   private mapData!: MapItem[][];
@@ -19,6 +22,7 @@ export class GameMap {
   private movingItems: MovingItem[] = [];
   private currentMovingItem: MovingItem | null = null;
   private resetMovingItem = false;
+  private spriteStore: SpriteStore;
 
   private initTextures(arr: Tile[] | Wall[]): void {
     for (const item of arr) {
@@ -119,6 +123,10 @@ export class GameMap {
     });
   }
 
+  constructor(spriteStore: SpriteStore) {
+    this.spriteStore = spriteStore;
+  }
+
   public async init(): Promise<void> {
     const types = [...itemsInSet.keys()];
     this.setsByKey = [];
@@ -175,5 +183,24 @@ export class GameMap {
     return this.movingItems.find(d =>
       d.set.set.find(s => s.x === x && s.y === y)
     );
+  }
+
+  public interactObjects(state: PlayerState): void {
+    const userPos = state.position;
+    const object = this.spriteStore.spriteObjects.find(o => {
+      if (!o.interaction) return false;
+
+      const pos = o.position;
+      if (pos.z + o.height < userPos.z || pos.z > state.top) {
+        return false;
+      }
+
+      const d = (userPos.x - pos.x) ** 2 + (userPos.y - pos.y) ** 2;
+      const r = (o.width + state.halfWidth) ** 2;
+      return d <= r;
+    });
+    if (!object) return;
+
+    object.interaction!(state, this.spriteStore);
   }
 }

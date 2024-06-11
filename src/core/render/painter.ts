@@ -1,6 +1,6 @@
 import { mod } from '../exts';
 import settings from '../settings';
-import type DynamicAlpha from '../dynamicAlpha';
+import type DynamicAlpha from './dynamicAlpha';
 import type Ray from '../ray/ray';
 import type { TextureData } from '../texture/textureData';
 import type { PixelCounter } from '../types';

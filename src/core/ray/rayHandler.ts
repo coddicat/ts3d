@@ -150,7 +150,7 @@ class RayHandler implements CellHandler {
       if (!this.pixelsCounter.empty) return;
 
       for (const obj of this.refs.aboveObjects) {
-        if (obj.position.z > tile.bottom) continue;
+        if (obj.position.z >= tile.bottom) continue;
         this.handleSprite(ray, obj);
         if (!this.pixelsCounter.empty) return;
       }

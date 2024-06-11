@@ -32,7 +32,7 @@ import Disclaimer from './Disclaimer.vue';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 import { Game } from '../core/game';
-import { CanvasHandler } from '../core/canvasHandler';
+import { CanvasHandler } from '../core/handlers/canvasHandler';
 
 const canvasRef = ref(null as HTMLCanvasElement | null);
 const started = ref(false);
@@ -80,7 +80,8 @@ onMounted(async () => {
     game.HandleMouse(e);
   };
 
-  canvasHandler = new CanvasHandler(canvas);
+  canvasHandler = new CanvasHandler(canvas, game.playerState);
+
   await game.init();
   //start();
 });
@@ -92,7 +93,7 @@ onUnmounted(() => {
 
 function updateResolution(resolution: number[]) {
   game.changedResolution(resolution[0], resolution[1]);
-  canvasHandler = new CanvasHandler(canvasRef.value!);
+  canvasHandler = new CanvasHandler(canvasRef.value!, game.playerState);
 }
 </script>
 
@@ -118,6 +119,7 @@ function updateResolution(resolution: number[]) {
   background-color: #000;
   width: 64vw; //16*4
   height: 36vw; //9*4
+  image-rendering: optimizeSpeed;
 }
 .resolution {
   width: 200px;
