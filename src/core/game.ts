@@ -61,7 +61,14 @@ export class Game {
   private joystickForward = 0;
   private joystickRight = 0;
   private joystickMove = false;
+  private prevJoystickMoveType?: 'move' | 'stop' | 'start';
+  private joystickMoveUse: boolean = false;
   public handleJoystickMove(event: JoystickComponent.UpdateEvent): void {
+    this.joystickLook = event.type !== 'stop';
+    if (event.type === 'stop' && this.prevJoystickMoveType === 'start') {
+      this.joystickMoveUse = true;
+    }
+    this.prevJoystickMoveType = event.type;
     this.joystickMove = event.type !== 'stop';
     this.joystickForward = event.y ?? 0;
     this.joystickRight = event.x ?? 0;
@@ -70,8 +77,15 @@ export class Game {
   private joystickLookX = 0;
   private joystickLookY = 0;
   private joystickLook = false;
+  private prevJoystickLookType?: 'move' | 'stop' | 'start';
+  private joystickLookUse: boolean = false;
+
   public handleJoystickLook(event: JoystickComponent.UpdateEvent): void {
     this.joystickLook = event.type !== 'stop';
+    if (event.type === 'stop' && this.prevJoystickLookType === 'start') {
+      this.joystickLookUse = true;
+    }
+    this.prevJoystickLookType = event.type;
     this.joystickLookY = settings.JoystickLookYSpeed * (event.y ?? 0);
     this.joystickLookX = settings.JoystickLookXSpeed * (event.x ?? 0);
   }
@@ -81,6 +95,17 @@ export class Game {
       this.player.handleMove(this.joystickForward, this.joystickRight);
     } else {
       this.keyHandler.handle(timestamp);
+    }
+
+    if (this.joystickMoveUse) {
+      this.joystickMoveUse = false;
+      const item = this.player.checkMovingItem();
+      if (item) this.gameMap.toggleMovingItem(item, timestamp);
+    }
+
+    if (this.joystickLookUse) {
+      this.joystickLookUse = false;
+      this.player.jump();
     }
 
     if (this.joystickLook) {

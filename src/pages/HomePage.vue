@@ -144,6 +144,7 @@ function updateResolution(resolution: number[]) {
   .canvas {
     width: 100vw; //16*4
     height: 56.25vw; //9*4
+    max-height: 100vh;
   }
 }
 </style>
