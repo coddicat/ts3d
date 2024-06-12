@@ -7,6 +7,7 @@ import { GameMap } from './gameMap/gameMap';
 import SpriteStore from './sprite/spriteStore';
 import { MouseHandler } from './handlers/mouseHandler';
 import RayCasting from './ray/rayCasting';
+import type { JoystickComponent } from 'vue-joystick-component';
 
 export class Game {
   public playerState = new PlayerState(
@@ -38,11 +39,12 @@ export class Game {
   }
 
   public async init(): Promise<void> {
-    this.keyHandler.init();
     await textureStore.init();
-    this.rayCasting.init();
     await this.gameMap.init();
     await this.spriteStore.init();
+
+    this.keyHandler.init();
+    this.rayCasting.init();
   }
 
   public changedResolution(width: number, height: number) {
@@ -53,11 +55,63 @@ export class Game {
   }
 
   public HandleMouse(e: MouseEvent) {
-    this.mouseHandler.handler(e);
+    this.mouseHandler.handler(e.movementX, e.movementY);
+  }
+
+  private joystickForward = 0;
+  private joystickRight = 0;
+  private joystickMove = false;
+  private prevJoystickMoveType?: 'move' | 'stop' | 'start';
+  private joystickMoveUse: boolean = false;
+  public handleJoystickMove(event: JoystickComponent.UpdateEvent): void {
+    this.joystickLook = event.type !== 'stop';
+    if (event.type === 'stop' && this.prevJoystickMoveType === 'start') {
+      this.joystickMoveUse = true;
+    }
+    this.prevJoystickMoveType = event.type;
+    this.joystickMove = event.type !== 'stop';
+    this.joystickForward = event.y ?? 0;
+    this.joystickRight = event.x ?? 0;
+  }
+
+  private joystickLookX = 0;
+  private joystickLookY = 0;
+  private joystickLook = false;
+  private prevJoystickLookType?: 'move' | 'stop' | 'start';
+  private joystickLookUse: boolean = false;
+
+  public handleJoystickLook(event: JoystickComponent.UpdateEvent): void {
+    this.joystickLook = event.type !== 'stop';
+    if (event.type === 'stop' && this.prevJoystickLookType === 'start') {
+      this.joystickLookUse = true;
+    }
+    this.prevJoystickLookType = event.type;
+    this.joystickLookY = settings.JoystickLookYSpeed * (event.y ?? 0);
+    this.joystickLookX = settings.JoystickLookXSpeed * (event.x ?? 0);
   }
 
   public async tick(timestamp: number) {
-    this.keyHandler.handle(timestamp);
+    if (this.joystickMove) {
+      this.player.handleMove(this.joystickForward, this.joystickRight);
+    } else {
+      this.keyHandler.handle(timestamp);
+    }
+
+    if (this.joystickMoveUse) {
+      this.joystickMoveUse = false;
+      const item = this.player.checkMovingItem();
+      if (item) this.gameMap.toggleMovingItem(item, timestamp);
+    }
+
+    if (this.joystickLookUse) {
+      this.joystickLookUse = false;
+      this.player.jump();
+    }
+
+    if (this.joystickLook) {
+      this.mouseHandler.handler(this.joystickLookX, this.joystickLookY);
+    }
+
     this.gameMap.tickMovingItem(timestamp);
     this.player.tick(timestamp);
 

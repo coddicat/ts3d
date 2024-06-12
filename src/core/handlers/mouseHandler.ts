@@ -8,13 +8,13 @@ export class MouseHandler {
     this.playerState = playerState;
   }
 
-  public handler(ev: MouseEvent) {
+  public handler(movementX: number, movementY: number) {
     this.playerState.setAngle(
-      this.playerState.position.angle + settings.turnSpeed * ev.movementX
+      this.playerState.position.angle + settings.turnSpeed * movementX
     );
 
     const max = settings.maxLookVertical;
-    const newLookVertical = this.playerState.lookVertical - ev.movementY;
+    const newLookVertical = this.playerState.lookVertical - movementY;
 
     this.playerState.lookVertical = Math.max(
       -max,

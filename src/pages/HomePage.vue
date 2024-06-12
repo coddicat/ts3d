@@ -1,25 +1,40 @@
 <template>
   <div class="home">
     <div class="settings">
-      <div class="flex-inline">
-        <ResolutionSelect @update="updateResolution" />
-        <button
-          :disabled="!started || !isFullscreenSupported()"
-          @click="fullscreen"
-        >
-          Fullscreen
-        </button>
-      </div>
       <button v-if="started" @click="stop">Stop</button>
       <button v-else @click="start">Start</button>
+
+      <ResolutionSelect @update="updateResolution" />
+      <button
+        :disabled="!started || !isFullscreenSupported()"
+        @click="fullscreen"
+      >
+        Fullscreen
+      </button>
     </div>
+
     <canvas
       v-show="started"
       width="640"
       height="360"
       class="canvas"
       ref="canvasRef"
-    ></canvas>
+    >
+    </canvas>
+    <div>
+      <Joystick
+        style="position: fixed; left: 35px; bottom: 35px"
+        @move="onJoystickMove"
+        @stop="onJoystickMove"
+        @start="onJoystickMove"
+      />
+      <Joystick
+        style="position: fixed; right: 35px; bottom: 35px"
+        @move="onJoystickLook"
+        @stop="onJoystickLook"
+        @start="onJoystickLook"
+      />
+    </div>
     <div v-show="!started">
       <Disclaimer />
     </div>
@@ -29,6 +44,8 @@
 <script lang="ts" setup>
 import ResolutionSelect from '../components/ResolutionSelect.vue';
 import Disclaimer from './Disclaimer.vue';
+import type { JoystickComponent } from 'vue-joystick-component';
+import Joystick from 'vue-joystick-component';
 
 import { onMounted, onUnmounted, ref } from 'vue';
 import { Game } from '../core/game';
@@ -67,6 +84,12 @@ function fullscreen() {
   if (!canvas) return;
   canvas.requestFullscreen();
 }
+function onJoystickMove(event: JoystickComponent.UpdateEvent): void {
+  game.handleJoystickMove(event);
+}
+function onJoystickLook(event: JoystickComponent.UpdateEvent): void {
+  game.handleJoystickLook(event);
+}
 
 onMounted(async () => {
   if (!canvasRef.value) throw 'no canvas';
@@ -104,14 +127,9 @@ function updateResolution(resolution: number[]) {
   align-items: center;
   gap: 5px;
 }
-.flex-inline {
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-}
 .settings {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 5px;
 }
@@ -121,7 +139,12 @@ function updateResolution(resolution: number[]) {
   height: 36vw; //9*4
   image-rendering: optimizeSpeed;
 }
-.resolution {
-  width: 200px;
+
+@media (max-width: 1024px) {
+  .canvas {
+    width: 100vw; //16*4
+    height: 56.25vw; //9*4
+    max-height: 100vh;
+  }
 }
 </style>

@@ -101,20 +101,23 @@ async function loadTexture(url: string): Promise<TextureData> {
   img.src = url;
   return new Promise<TextureData>((resolve, reject) => {
     img.onerror = function (e: Event | string) {
-      console.error(`failed load ${url}`);
+      alert(`failed load ${url}`);
       reject(e);
     };
     img.onload = function () {
       canvas.width = img.width;
       canvas.height = img.height;
-      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const ctx = canvas.getContext('2d');
       if (!ctx) {
+        alert('Unable to get context');
+        reject('Unable to get context');
         throw 'Unable to get context';
       }
 
       ctx.drawImage(img, 0, 0, img.width, img.height);
       const imageData = ctx.getImageData(0, 0, img.width, img.height);
       const data = new Uint32Array(imageData.data.buffer);
+
       resolve(new TextureData(img.width, img.height, data, canvas));
     };
   });
@@ -124,7 +127,8 @@ async function loadTextures(): Promise<Map<TextureType, TextureData>> {
   const items = [...textureFiles.entries()];
   const promises = items.map(async x => {
     const data = await loadTexture(x[1]);
-    return { type: x[0], data };
+    const type = x[0];
+    return { type: type, data };
   });
   const res = await Promise.all(promises);
   return new Map<TextureType, TextureData>(res.map(x => [x.type, x.data]));

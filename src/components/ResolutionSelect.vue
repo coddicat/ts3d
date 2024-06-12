@@ -16,3 +16,9 @@ watch(resolution, val => {
     </option>
   </select>
 </template>
+
+<style>
+.resolution {
+  width: 110px;
+}
+</style>

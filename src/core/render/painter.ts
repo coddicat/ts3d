@@ -36,37 +36,25 @@ class Painter {
     const ratio = repeatedHeight / (y1 - y0);
 
     let spriteY = revert ? dy + heightFactor / ratio : dy;
-
     const { resolutionWidth, data } = settings;
     const { height, width, data: textureImageData } = textureData;
+    const length = textureImageData.length;
 
-    while (top <= bottom) {
-      if (data[dataIndex]) {
-        top++;
-        dataIndex += resolutionWidth;
-        spriteY++;
-        continue;
-      }
+    for (0; top <= bottom; top++, dataIndex += resolutionWidth, spriteY++) {
+      if (data[dataIndex]) continue;
 
       const index =
         Math.imul(mod((spriteY * ratio) | 0, height), width) + spriteX;
 
+      if (index < 0) continue;
+      if (index >= length) break;
+
       const pixel = textureImageData[index];
 
-      if (checkAlpha && !pixel) {
-        top++;
-        dataIndex += resolutionWidth;
-        spriteY++;
-        continue;
-      }
-
+      if (checkAlpha && !pixel) continue;
       data[dataIndex] = pixel & alphaMask;
 
       if (!this.pixelsCounter.increse()) return;
-
-      top++;
-      dataIndex += resolutionWidth;
-      spriteY++;
     }
   }
 
@@ -147,44 +135,30 @@ class Painter {
       textureData.rayTimestamp = rayAngle.timestamp;
     }
 
-    while (top <= bottom) {
-      if (data[dataIndex]) {
-        top++;
-        dataIndex += resolutionWidth;
-        continue;
-      }
+    const length = textureData.data.length;
+
+    for (0; top <= bottom; top++, dataIndex += resolutionWidth) {
+      if (data[dataIndex]) continue;
 
       const alpha = this.dynamicAlpha.setDistanceAlpha(top);
 
-      if (alpha < 1) {
-        top++;
-        dataIndex += resolutionWidth;
-        continue;
-      }
+      if (alpha < 1) continue;
 
       const diff = Math.abs(fixedDistance - this.dynamicAlpha.distance);
-      const pixel =
-        textureData.data[
-          rayState.spriteIndexGetter(
-            rayAngle,
-            rayState.offset,
-            textureData,
-            diff
-          )
-        ];
+      const index = rayState.spriteIndexGetter(
+        rayAngle,
+        rayState.offset,
+        textureData,
+        diff
+      );
 
-      if (!pixel) {
-        top++;
-        dataIndex += resolutionWidth;
-        continue;
-      }
+      if (index < 0 || index >= length) continue;
 
+      const pixel = textureData.data[index];
+      if (!pixel) continue;
       data[dataIndex] = (alpha << 24) | (pixel & 0x00ffffff);
 
-      if (!this.pixelsCounter.increse()) return;
-
-      top++;
-      dataIndex += resolutionWidth;
+      if (!this.pixelsCounter.increse()) break;
     }
   }
 }
