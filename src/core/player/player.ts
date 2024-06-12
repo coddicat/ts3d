@@ -9,17 +9,10 @@ import CollisionHandler from './collisionHandler';
 import MovingItemRayHandler from './movingItemRayHandler';
 
 const collisionDistance = 0.5;
-const quartPi = Math.PI / 4; //45deg
 const halfPi = Math.PI / 2; //90deg
-const Pi_34 = (Math.PI / 4) * 3; //135/deg
 const Pi1_5 = Math.PI * 1.5;
 const acc = -0.00001;
 const jumpSpeed = 0.004;
-
-const cos45 = Math.cos(quartPi);
-const cos135 = Math.cos(Pi_34);
-const sin45 = Math.sin(quartPi);
-const sin135 = Math.sin(Pi_34);
 
 export default class Player {
   private state: PlayerState;
@@ -39,59 +32,28 @@ export default class Player {
 
   private move(dt: number): boolean {
     const state = this.state;
-
-    let cos = state.cos;
-    let sin = state.sin;
-
     const right = this.moveRight;
     const forward = this.moveForward;
+
     if (!forward && !right) {
       return false;
     }
 
-    //45
-    if (right > 0 && forward > 0) {
-      cos = state.cos * cos45 - state.sin * sin45;
-      sin = state.sin * cos45 + state.cos * sin45;
-    }
-    //-45
-    if (right < 0 && forward > 0) {
-      cos = state.cos * cos45 + state.sin * sin45;
-      sin = state.sin * cos45 - state.cos * sin45;
-    }
-
-    //135
-    if (right > 0 && forward < 0) {
-      cos = state.cos * cos135 - state.sin * sin135;
-      sin = state.sin * cos135 + state.cos * sin135;
-    }
-    //-135
-    if (right < 0 && forward < 0) {
-      cos = state.cos * cos135 + state.sin * sin135;
-      sin = state.sin * cos135 - state.cos * sin135;
-    }
-
-    //180
-    if (right == 0 && forward < 0) {
-      cos = -state.cos;
-      sin = -state.sin;
-    }
-    //-90
-    if (right != 0 && forward == 0) {
-      cos = -state.sin * right;
-      sin = state.cos * right;
-    }
-
-    return this.moveToCollision(dt, cos, sin, state.position);
+    const cosAngle = state.cos;
+    const sinAngle = state.sin;
+    const cos = forward * cosAngle - right * sinAngle;
+    const sin = forward * sinAngle + right * cosAngle;
+    const distance =
+      settings.moveSpeed * dt * Math.sqrt(forward ** 2 + right ** 2);
+    return this.moveToCollision(distance, cos, sin, state.position);
   }
 
   private moveToCollision(
-    dt: number,
+    distance: number,
     cos: number,
     sin: number,
     pos: Vector3D
   ): boolean {
-    const distance = settings.moveSpeed * dt;
     const xDistance = Math.abs(cos * distance);
     const yDistance = Math.abs(sin * distance);
     const xSign = sign(cos);
@@ -201,10 +163,6 @@ export default class Player {
     }
   }
 
-  public objectsInteraction() {
-    this.gameMap.interactObjects(this.state);
-  }
-
   public checkMovingItem(): MovingItem | null {
     const handler = new MovingItemRayHandler(this.gameMap);
     const ray = new Ray(
@@ -220,6 +178,7 @@ export default class Player {
   public tick(timestamp: number): void {
     const dt = !this.lastTimestamp ? 0 : timestamp - this.lastTimestamp;
 
+    this.gameMap.interactObjects(this.state);
     //life
     this.state.life -= dt / 500;
     if (this.state.life <= 0) {

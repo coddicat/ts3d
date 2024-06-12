@@ -25,6 +25,8 @@ const settings = {
   resolutionHeight: 0,
   moveSpeed: 0.006,
   turnSpeed: 0.001,
+  JoystickLookXSpeed: 50,
+  JoystickLookYSpeed: -10,
   playerHeight: 1.8,
   playerWidth: 1.34,
   stairsTollerance: 0.4,

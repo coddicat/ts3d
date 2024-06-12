@@ -39,15 +39,17 @@ export class KeyHandler {
       if (item) this.gameMap.toggleMovingItem(item, timestamp);
     }
 
-    this.player.handleMove(
-      up ? 1 : down ? -1 : 0,
-      moveRight ? 1 : moveLeft ? -1 : 0
-    );
+    const right = moveRight ? 1 : moveLeft ? -1 : 0;
+    const forward = up ? 1 : down ? -1 : 0;
+
+    if (forward === 0 || right === 0) {
+      this.player.handleMove(forward, right);
+    } else {
+      this.player.handleMove(forward * 0.707, right * 0.707);
+    }
 
     if (this.activeKeys.get('Space')) {
       this.player.jump();
     }
-
-    this.player.objectsInteraction();
   }
 }
